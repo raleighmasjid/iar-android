@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.api.ApiClient
+import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
 import org.raleighmasjid.iar.ui.theme.IARTheme
 
@@ -33,12 +34,9 @@ fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
     val prayerTimes = viewModel.prayerTimes
     if (prayerTimes != null) {
         Column {
-            Text("Fajr ${prayerTimes.adhan.fajr.toString()}")
-            Text("Shuruq ${prayerTimes.adhan.shuruq.toString()}")
-            Text("Dhuhr ${prayerTimes.adhan.dhuhr.toString()}")
-            Text("Asr ${prayerTimes.adhan.asr.toString()}")
-            Text("Maghrib ${prayerTimes.adhan.maghrib.toString()}")
-            Text("Isha ${prayerTimes.adhan.isha.toString()}")
+            Prayer.values().forEach { prayer ->
+                Text("${prayer.title()} is at ${prayerTimes.adhanTime(prayer)}")
+            }
         }
 
     } else {
