@@ -9,4 +9,8 @@ data class Hijri(
     val year: Int,
     @SerializedName("month")
     val monthName: String
-)
+) {
+    fun fomatted(): String {
+        return "$monthName $day, $year h"
+    }
+}

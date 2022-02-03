@@ -1,5 +1,6 @@
 package org.raleighmasjid.iar.model
 
+import org.raleighmasjid.iar.utils.isSameDay
 import java.util.*
 
 data class PrayerDay(
@@ -8,6 +9,24 @@ data class PrayerDay(
     val adhan: AdhanSchedule,
     val iqamah: IqamahSchedule
 ) {
+    fun currentPrayer(time: Date = Date()): Prayer? {
+        return when {
+            time.after(adhan.isha) -> {
+                return if (time.isSameDay(adhan.isha)) {
+                    Prayer.ISHA
+                } else {
+                    null
+                }
+            }
+            time.after(adhan.maghrib) -> Prayer.MAGHRIB
+            time.after(adhan.asr) -> Prayer.ASR
+            time.after(adhan.dhuhr) -> Prayer.DHUHR
+            time.after(adhan.shuruq) -> Prayer.SHURUQ
+            time.after(adhan.fajr) -> Prayer.FAJR
+            else -> null
+        }
+    }
+
     fun adhanTime(prayer: Prayer): Date {
         return when (prayer) {
             Prayer.FAJR -> adhan.fajr
