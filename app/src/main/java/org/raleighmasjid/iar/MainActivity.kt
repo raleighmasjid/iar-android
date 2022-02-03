@@ -48,28 +48,31 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
     val prayerTimes = viewModel.prayerTimes
-    if (prayerTimes != null) {
-        Column {
-            Text("Prayer Times",
-                modifier = Modifier.padding(horizontal = 18.dp).padding(top = 20.dp, bottom = 6.dp),
-                fontSize = 28.sp,
-                fontWeight = FontWeight.SemiBold)
-            PrayerTimesHeader(prayerTimes)
+
+    Column {
+        Text(
+            "Prayer Times",
+            modifier = Modifier.padding(horizontal = 18.dp).padding(top = 20.dp, bottom = 6.dp),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        PrayerTimesHeader(prayerTimes)
+        if (prayerTimes != null) {
             PrayerTimesList(prayerTimes)
+        } else {
+            Text("Loading...", modifier = Modifier.padding(20.dp))
         }
-    } else {
-        Text("Loading...")
     }
 }
 
-@Composable fun PrayerTimesHeader(prayerDay: PrayerDay) {
+@Composable fun PrayerTimesHeader(prayerDay: PrayerDay?) {
     Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
-        Column(modifier = Modifier
-            .padding(horizontal = 20.dp)) {
-            Text(prayerDay.date.formatToDay())
-            Text(prayerDay.hijri.fomatted(), fontStyle = FontStyle.Italic)
+        if (prayerDay != null) {
+            Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+                Text(prayerDay.date.formatToDay())
+                Text(prayerDay.hijri.fomatted(), fontStyle = FontStyle.Italic)
+            }
         }
-
         Row(modifier = Modifier
             .background(darkGreen)
             .padding(horizontal = 20.dp, vertical = 8.dp)) {
