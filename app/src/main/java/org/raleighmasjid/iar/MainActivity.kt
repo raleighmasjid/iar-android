@@ -5,10 +5,7 @@ import android.text.format.DateUtils
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -113,10 +110,18 @@ fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
     Row(modifier = Modifier
         .background(Color.Green.copy(alpha = bgAlpha))
         .padding(horizontal = 20.dp, vertical = 8.dp)) {
-        Text(prayer.title(),
-            modifier = Modifier.weight(1f, true),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold)
+        Box(modifier = Modifier.weight(1f, true)) {
+            if (current) {
+                Text("\u2022",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.offset((-12).dp, 2.dp))
+            }
+            Text(prayer.title(),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold)
+        }
+
         Text(adhan.formatToTime(),
             modifier = Modifier.weight(1f, true),
             textAlign = TextAlign.Center,
