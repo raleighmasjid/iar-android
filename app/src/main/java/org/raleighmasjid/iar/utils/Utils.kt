@@ -21,6 +21,24 @@ class Utils {
         val timeFormatter = timeFormatter()
 
         val dayFormatter = dayFormatter()
+
+        fun formatDuration(durationMS: Long): String {
+            val duration = durationMS / 1000
+            val totalMinutes = duration / 60
+            val hours = totalMinutes / 60
+            val minutes = totalMinutes % 60
+            val seconds = duration % 60
+
+            var outputComponents = mutableListOf<String>()
+            if (hours > 0) {
+                outputComponents.add("$hours hr")
+            }
+            outputComponents.add("$minutes min")
+            if (hours == 0L && minutes <= 10L) {
+                outputComponents.add("$seconds sec")
+            }
+            return outputComponents.joinToString(separator = ", ")
+        }
     }
 }
 
