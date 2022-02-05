@@ -1,6 +1,10 @@
 # Gradle files
 .gradle/
 build/
+app/release/
+bin/
+gen/
+out/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -13,6 +17,9 @@ captures/
 .externalNativeBuild/
 .cxx/
 *.apk
+*.ap_
+*.aab
+*.dex
 output.json
 
 # IntelliJ
