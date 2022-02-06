@@ -34,7 +34,7 @@ class Utils {
                 outputComponents.add("$hours hr")
             }
             outputComponents.add("$minutes min")
-            if (hours == 0L && minutes <= 10L) {
+            if (hours == 0L) {
                 outputComponents.add("$seconds sec")
             }
             return outputComponents.joinToString(separator = ", ")
