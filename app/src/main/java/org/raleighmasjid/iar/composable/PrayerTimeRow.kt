@@ -18,7 +18,7 @@ import org.raleighmasjid.iar.utils.formatToTime
 import java.util.*
 
 @Composable
-fun PrayerTimeRow(prayer: Prayer, adhan: Date, iqamah: Date?, current: Boolean) {
+fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean) {
     val bgAlpha: Float = if (current) 0.1f else 0f
     Row(
         modifier = Modifier
@@ -36,23 +36,23 @@ fun PrayerTimeRow(prayer: Prayer, adhan: Date, iqamah: Date?, current: Boolean) 
             }
             Text(
                 prayer.title(),
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
 
         Text(
-            adhan.formatToTime(),
+            adhan?.formatToTime() ?: "-:--",
             modifier = Modifier.weight(1f, true),
             textAlign = TextAlign.Center,
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
         Text(
-            iqamah?.formatToTime() ?: "",
+            iqamah?.formatToTime() ?: " ",
             modifier = Modifier.weight(1f, true),
             textAlign = TextAlign.End,
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
     }

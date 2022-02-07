@@ -13,8 +13,6 @@ import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
 
 @Composable
 fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
-    val prayerDay = viewModel.prayerDay
-
     Column {
         Text(
             "Prayer Times",
@@ -22,11 +20,7 @@ fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold
         )
-        PrayerTimesHeader(prayerDay, viewModel.upcoming, viewModel.timeRemaining)
-        if (prayerDay != null) {
-            PrayerTimesList(prayerDay)
-        } else {
-            Text("Loading...", modifier = Modifier.padding(20.dp))
-        }
+        PrayerTimesHeader(viewModel.prayerDay, viewModel.upcoming, viewModel.timeRemaining)
+        PrayerTimesList(viewModel.prayerDay)
     }
 }

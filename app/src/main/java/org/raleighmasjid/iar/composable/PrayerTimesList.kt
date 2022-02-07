@@ -6,14 +6,16 @@ import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
 
 @Composable
-fun PrayerTimesList(prayerDay: PrayerDay) {
-    val currentPrayer = prayerDay.currentPrayer()
+fun PrayerTimesList(prayerDay: PrayerDay?) {
+    val currentPrayer = prayerDay?.currentPrayer()
+
     Column {
+        prayerColumnHeaders()
         Prayer.values().forEach { prayer ->
             PrayerTimeRow(
                 prayer = prayer,
-                adhan = prayerDay.adhanTime(prayer),
-                iqamah = prayerDay.iqamahTime(prayer),
+                adhan = prayerDay?.adhanTime(prayer),
+                iqamah = prayerDay?.iqamahTime(prayer),
                 current = currentPrayer == prayer
             )
         }
