@@ -43,7 +43,7 @@ fun PrayerTimesHeader(prayerDay: PrayerDay?, upcoming: PrayerTime?, timeRemainin
         }
     }
 
-    Column(verticalArrangement = Arrangement.spacedBy(15.dp), modifier = Modifier.padding(bottom = 15.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.padding(bottom = 10.dp)) {
         Text(countdownText(),
             modifier = Modifier.padding(horizontal = 20.dp),
             fontWeight = FontWeight.Medium,

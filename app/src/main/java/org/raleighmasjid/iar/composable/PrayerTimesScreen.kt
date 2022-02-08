@@ -17,8 +17,8 @@ fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
         Text(
             "Prayer Times",
             modifier = Modifier.padding(horizontal = 18.dp).padding(top = 20.dp, bottom = 6.dp),
-            fontSize = 28.sp,
-            fontWeight = FontWeight.SemiBold
+            fontSize = 29.sp,
+            fontWeight = FontWeight.Bold
         )
         PrayerTimesHeader(viewModel.prayerDay, viewModel.upcoming, viewModel.timeRemaining)
         PrayerTimesList(viewModel.prayerDay)
