@@ -1,8 +1,10 @@
 package org.raleighmasjid.iar.model
 
+import com.squareup.moshi.JsonClass
 import org.raleighmasjid.iar.utils.isSameDay
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class PrayerDay(
     val date: Date,
     val hijri: Hijri,

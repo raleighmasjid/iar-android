@@ -3,7 +3,6 @@ package org.raleighmasjid.iar
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.junit.Assert
 import org.junit.Test
 import org.raleighmasjid.iar.model.PrayerDay
@@ -17,7 +16,6 @@ class ModelParsingTest {
 
     private val moshi: Moshi = Moshi.Builder()
         .add(Date::class.java, Rfc3339DateJsonAdapter())
-        .add(KotlinJsonAdapterFactory())
         .build()
 
     @Test

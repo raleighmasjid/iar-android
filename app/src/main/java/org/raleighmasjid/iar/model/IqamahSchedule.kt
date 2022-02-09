@@ -1,7 +1,9 @@
 package org.raleighmasjid.iar.model
 
+import com.squareup.moshi.JsonClass
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class IqamahSchedule(
     val fajr: Date,
     val dhuhr: Date,
