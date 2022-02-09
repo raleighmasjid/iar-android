@@ -12,14 +12,14 @@ data class PrayerDay(
     companion object {
         fun upcomingPrayer(prayerDays: List<PrayerDay>, time: Date = Date()): PrayerTime? {
             return prayerDays
-                .flatMap { it.prayerTimes() }
+                .flatMap { it.prayerTimes }
                 .sortedWith(compareBy { it.adhan })
                 .firstNotNullOfOrNull { if (it.adhan.after(time)) it else null }
         }
     }
 
-    fun prayerTimes(): List<PrayerTime> {
-        return Prayer.values().map { PrayerTime(it, adhanTime(it), iqamahTime(it)) }
+    val prayerTimes: List<PrayerTime> by lazy {
+        Prayer.values().map { PrayerTime(it, adhanTime(it), iqamahTime(it)) }
     }
 
     fun currentPrayer(time: Date = Date()): Prayer? {

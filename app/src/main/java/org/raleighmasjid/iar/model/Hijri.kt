@@ -1,13 +1,13 @@
 package org.raleighmasjid.iar.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class Hijri(
     val day: Int,
-    @SerializedName("month_numeric")
+    @Json(name = "month_numeric")
     val month: Int,
     val year: Int,
-    @SerializedName("month")
+    @Json(name = "month")
     val monthName: String
 ) {
     fun fomatted(): String {

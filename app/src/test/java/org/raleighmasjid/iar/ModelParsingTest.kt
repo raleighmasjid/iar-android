@@ -1,27 +1,35 @@
 package org.raleighmasjid.iar
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.junit.Assert
 import org.junit.Test
 import org.raleighmasjid.iar.model.PrayerDay
+import java.util.*
 
 class ModelParsingTest {
 
+    inline fun <reified T> Moshi.parseList(jsonString: String): List<T>? {
+        return adapter<List<T>>(Types.newParameterizedType(List::class.java, T::class.java)).fromJson(jsonString)
+    }
+
+    private val moshi: Moshi = Moshi.Builder()
+        .add(Date::class.java, Rfc3339DateJsonAdapter())
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
     @Test
     fun parsingPrayerTimes() {
-        val gson = Gson()
-        val prayerDaysType = object : TypeToken<List<PrayerDay>>() {}.type
-        val prayerDays: List<PrayerDay> = gson.fromJson(testJSON, prayerDaysType)
-        Assert.assertEquals(2, prayerDays.count())
+        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+        Assert.assertEquals(2, prayerDays?.count())
     }
 
     @Test
     fun parsingHijriDate() {
-        val gson = Gson()
-        val prayerDaysType = object : TypeToken<List<PrayerDay>>() {}.type
-        val prayerDays: List<PrayerDay> = gson.fromJson(testJSON, prayerDaysType)
-        val hijri = prayerDays[0].hijri
+        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+        val hijri = prayerDays!![0].hijri
         Assert.assertEquals("Jumada al-thani", hijri.monthName)
         Assert.assertEquals(28, hijri.day)
         Assert.assertEquals(6, hijri.month)
@@ -30,10 +38,8 @@ class ModelParsingTest {
 
     @Test
     fun adhanTimes() {
-        val gson = Gson()
-        val prayerDaysType = object : TypeToken<List<PrayerDay>>() {}.type
-        val prayerDays: List<PrayerDay> = gson.fromJson(testJSON, prayerDaysType)
-        val adhan = prayerDays[0].adhan
+        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+        val adhan = prayerDays!![0].adhan
 
         Assert.assertEquals("Mon Jan 31 05:48:00 EST 2022", adhan.fajr.toString())
         Assert.assertEquals("Mon Jan 31 07:16:00 EST 2022", adhan.shuruq.toString())
@@ -45,10 +51,8 @@ class ModelParsingTest {
 
     @Test
     fun iqamahTimes() {
-        val gson = Gson()
-        val prayerDaysType = object : TypeToken<List<PrayerDay>>() {}.type
-        val prayerDays: List<PrayerDay> = gson.fromJson(testJSON, prayerDaysType)
-        val iqamah = prayerDays[0].iqamah
+        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+        val iqamah = prayerDays!![0].iqamah
 
         Assert.assertEquals("Mon Jan 31 06:15:00 EST 2022", iqamah.fajr.toString())
         Assert.assertEquals("Mon Jan 31 13:35:00 EST 2022", iqamah.dhuhr.toString())
