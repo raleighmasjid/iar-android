@@ -28,7 +28,7 @@ fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean)
     Row(
         modifier = Modifier
             .background(bgColor)
-            .padding(horizontal = 20.dp, vertical = 8.dp),
+            .padding(start = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.weight(1f, true), contentAlignment = Alignment.CenterStart) {
@@ -63,20 +63,24 @@ fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean)
         IconToggleButton(
             checked = isChecked,
             onCheckedChange = { isChecked = it },
-            modifier = Modifier
-                .padding(start = 25.dp)
-                .size(16.dp, 16.dp)) {
-            if (isChecked) {
+            modifier = Modifier.size(61.dp, 41.dp)) {
+            Box(contentAlignment = Alignment.CenterEnd,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(end = 20.dp)
+            ) {
+                var buttonImage = R.drawable.ic_alarm
+                var buttonTint = Color.Black.copy(alpha = 0.5f)
+                if (isChecked) {
+                    buttonImage = R.drawable.ic_alarm_fill
+                    buttonTint = darkGreen
+                }
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_alarm_fill),
-                    contentDescription = "Alarm Enabled",
-                    tint = darkGreen
-                )
-            } else {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_alarm),
-                    contentDescription = "Alarm Disabled",
-                    tint = Color.Black.copy(alpha = 0.5f)
+                    painter = painterResource(id = buttonImage),
+                    contentDescription = "Alarm",
+                    tint = buttonTint,
+                    modifier = Modifier.size(16.dp, 16.dp)
                 )
             }
         }
