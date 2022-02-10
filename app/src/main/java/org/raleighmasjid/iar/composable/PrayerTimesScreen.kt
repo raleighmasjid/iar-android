@@ -8,11 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
 
 @Composable
-fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
+fun PrayerTimesScreen(viewModel: PrayerTimesViewModel) {
     Column {
         Text(
             "Prayer Times",
@@ -21,6 +20,6 @@ fun PrayerTimesScreen(viewModel: PrayerTimesViewModel = viewModel()) {
             fontWeight = FontWeight.Bold
         )
         PrayerTimesHeader(viewModel.prayerDay, viewModel.upcoming, viewModel.timeRemaining)
-        PrayerTimesList(viewModel.prayerDay)
+        PrayerTimesList(viewModel.prayerDay, alarmPrefs = viewModel.alarmPrefs)
     }
 }

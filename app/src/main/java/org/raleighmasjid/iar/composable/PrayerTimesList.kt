@@ -4,9 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
+import org.raleighmasjid.iar.viewModel.AlarmPreferences
 
 @Composable
-fun PrayerTimesList(prayerDay: PrayerDay?) {
+fun PrayerTimesList(prayerDay: PrayerDay?, alarmPrefs: AlarmPreferences) {
     val currentPrayer = prayerDay?.currentPrayer()
 
     Column {
@@ -16,7 +17,8 @@ fun PrayerTimesList(prayerDay: PrayerDay?) {
                 prayer = prayer,
                 adhan = prayerDay?.adhanTime(prayer),
                 iqamah = prayerDay?.iqamahTime(prayer),
-                current = currentPrayer == prayer
+                current = currentPrayer == prayer,
+                alarmPrefs = alarmPrefs
             )
         }
     }

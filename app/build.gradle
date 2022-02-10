@@ -58,8 +58,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation 'com.squareup.moshi:moshi:1.13.0'
-    kapt('com.squareup.moshi:moshi-kotlin-codegen:1.13.0')
     implementation 'com.squareup.moshi:moshi-adapters:1.13.0'
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+    kapt('com.squareup.moshi:moshi-kotlin-codegen:1.13.0')
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
