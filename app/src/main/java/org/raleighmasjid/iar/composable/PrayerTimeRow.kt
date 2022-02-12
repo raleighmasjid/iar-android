@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,20 +16,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.ui.theme.darkGreen
 import org.raleighmasjid.iar.ui.theme.lightGreen
 import org.raleighmasjid.iar.utils.formatToTime
-import org.raleighmasjid.iar.viewModel.AlarmPreferences
 import java.util.*
 
 @Composable
-fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean, alarmPrefs: AlarmPreferences) {
+fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean, notificationEnabled: Flow<Boolean>, toggle: (Boolean) -> Unit) {
     val bgColor: Color = if (current) lightGreen else Color.White
-    val alarmEnabled: Boolean by alarmPrefs.getAlarm(prayer = prayer).collectAsState(initial = false)
-    val scope = rememberCoroutineScope()
+    val notification: Boolean by notificationEnabled.collectAsState(initial = false)
 
     Row(
         modifier = Modifier
@@ -72,13 +69,13 @@ fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean,
         )
 
         IconToggleButton(
-            checked = alarmEnabled,
-            onCheckedChange = { scope.launch { alarmPrefs.setAlarm(it, prayer = prayer) } },
+            checked = notification,
+            onCheckedChange = { toggle(it) },
             modifier = Modifier.size(61.dp, 41.dp)
         ) {
             var buttonImage = R.drawable.ic_alarm
             var buttonTint = Color.Black.copy(alpha = 0.5f)
-            if (alarmEnabled) {
+            if (notification) {
                 buttonImage = R.drawable.ic_alarm_fill
                 buttonTint = darkGreen
             }

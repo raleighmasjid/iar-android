@@ -20,6 +20,6 @@ fun PrayerTimesScreen(viewModel: PrayerTimesViewModel) {
             fontWeight = FontWeight.Bold
         )
         PrayerTimesHeader(viewModel.prayerDay, viewModel.upcoming, viewModel.timeRemaining)
-        PrayerTimesList(viewModel.prayerDay, alarmPrefs = viewModel.alarmPrefs)
+        PrayerTimesList(viewModel.prayerDay, dataStoreManager = viewModel.dataStoreManager)
     }
 }

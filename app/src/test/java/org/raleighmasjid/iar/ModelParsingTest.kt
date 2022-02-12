@@ -1,32 +1,22 @@
 package org.raleighmasjid.iar
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import org.junit.Assert
 import org.junit.Test
+import org.raleighmasjid.iar.api.ApiClient
+import org.raleighmasjid.iar.api.decodeList
 import org.raleighmasjid.iar.model.PrayerDay
-import java.util.*
 
 class ModelParsingTest {
-
-    inline fun <reified T> Moshi.parseList(jsonString: String): List<T>? {
-        return adapter<List<T>>(Types.newParameterizedType(List::class.java, T::class.java)).fromJson(jsonString)
-    }
-
-    private val moshi: Moshi = Moshi.Builder()
-        .add(Date::class.java, Rfc3339DateJsonAdapter())
-        .build()
-
     @Test
     fun parsingPrayerTimes() {
-        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+
+        val prayerDays = ApiClient.moshi.decodeList<PrayerDay>(testJSON)
         Assert.assertEquals(2, prayerDays?.count())
     }
 
     @Test
     fun parsingHijriDate() {
-        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+        val prayerDays = ApiClient.moshi.decodeList<PrayerDay>(testJSON)
         val hijri = prayerDays!![0].hijri
         Assert.assertEquals("Jumada al-thani", hijri.monthName)
         Assert.assertEquals(28, hijri.day)
@@ -36,7 +26,7 @@ class ModelParsingTest {
 
     @Test
     fun adhanTimes() {
-        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+        val prayerDays = ApiClient.moshi.decodeList<PrayerDay>(testJSON)
         val adhan = prayerDays!![0].adhan
 
         Assert.assertEquals("Mon Jan 31 05:48:00 EST 2022", adhan.fajr.toString())
@@ -49,7 +39,7 @@ class ModelParsingTest {
 
     @Test
     fun iqamahTimes() {
-        val prayerDays = moshi.parseList<PrayerDay>(testJSON)
+        val prayerDays = ApiClient.moshi.decodeList<PrayerDay>(testJSON)
         val iqamah = prayerDays!![0].iqamah
 
         Assert.assertEquals("Mon Jan 31 06:15:00 EST 2022", iqamah.fajr.toString())

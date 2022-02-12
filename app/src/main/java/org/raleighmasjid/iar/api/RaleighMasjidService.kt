@@ -4,6 +4,6 @@ import org.raleighmasjid.iar.model.PrayerDay
 import retrofit2.http.GET
 
 interface RaleighMasjidService {
-    @GET("prayer/app")
+    @GET("prayer")
     suspend fun getPrayerTimes(): List<PrayerDay>
 }

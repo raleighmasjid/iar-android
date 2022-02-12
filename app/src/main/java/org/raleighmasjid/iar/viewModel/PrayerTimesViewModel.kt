@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.raleighmasjid.iar.api.ApiClient
+import org.raleighmasjid.iar.data.DataStoreManager
+import org.raleighmasjid.iar.data.PrayerTimesRepository
 import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
 import org.raleighmasjid.iar.model.PrayerTime
@@ -25,9 +26,16 @@ class PrayerTimesViewModel(appContext: Context) : ViewModel() {
     var timeRemaining by mutableStateOf<Long>(0)
 
     private var prayerDays = listOf<PrayerDay>()
+        private set(value) {
+            field = value
+            prayerDay = value.firstOrNull { DateUtils.isToday(it.date.time) }
+            updateNextPrayer()
+        }
+
     private var timer: CountDownTimer? = null
 
-    val alarmPrefs = AlarmPreferences(appContext)
+    val dataStoreManager = DataStoreManager(appContext)
+    private val repository = PrayerTimesRepository(dataStoreManager)
 
     init {
         Log.d("INFO", "init view model")
@@ -40,7 +48,7 @@ class PrayerTimesViewModel(appContext: Context) : ViewModel() {
         }.start()
 
         viewModelScope.launch {
-            val flows = Prayer.values().map { prayer -> alarmPrefs.getAlarm(prayer).map { Pair(prayer, it) } }
+            val flows = Prayer.values().map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Pair(prayer, it) } }
             val combinedFlows = combine(flows = flows) { it }
             combinedFlows.collect { newValue ->
                 Log.d("INFO", "new alarm values")
@@ -62,10 +70,12 @@ class PrayerTimesViewModel(appContext: Context) : ViewModel() {
     fun loadPrayerTimes() {
         Log.d("INFO", "loadPrayerTimes")
         viewModelScope.launch {
-            val response = ApiClient.getPrayerTimes()
+            val cache = repository.getCachedPrayerTimes()
+            if (cache.isNotEmpty()) {
+                prayerDays = cache
+            }
+            val response = repository.fetchPrayerTimes()
             prayerDays = response
-            prayerDay = response.firstOrNull { DateUtils.isToday(it.date.time) }
-            updateNextPrayer()
         }
     }
 }

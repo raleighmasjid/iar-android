@@ -2,13 +2,16 @@ package org.raleighmasjid.iar.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
-import org.raleighmasjid.iar.viewModel.AlarmPreferences
 
 @Composable
-fun PrayerTimesList(prayerDay: PrayerDay?, alarmPrefs: AlarmPreferences) {
+fun PrayerTimesList(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager) {
     val currentPrayer = prayerDay?.currentPrayer()
+    val scope = rememberCoroutineScope()
 
     Column {
         prayerColumnHeaders()
@@ -18,7 +21,12 @@ fun PrayerTimesList(prayerDay: PrayerDay?, alarmPrefs: AlarmPreferences) {
                 adhan = prayerDay?.adhanTime(prayer),
                 iqamah = prayerDay?.iqamahTime(prayer),
                 current = currentPrayer == prayer,
-                alarmPrefs = alarmPrefs
+                notificationEnabled = dataStoreManager.getNotificationEnabled(prayer),
+                toggle = {
+                    scope.launch {
+                        dataStoreManager.setNotification(it, prayer)
+                    }
+                }
             )
         }
     }
