@@ -25,7 +25,12 @@ import org.raleighmasjid.iar.utils.formatToTime
 import java.util.*
 
 @Composable
-fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean, notificationEnabled: Flow<Boolean>, toggle: (Boolean) -> Unit) {
+fun PrayerTimeRow(prayer: Prayer,
+                  adhan: Date?,
+                  iqamah: Date?,
+                  current: Boolean,
+                  notificationEnabled: Flow<Boolean>,
+                  toggleAction: (Boolean) -> Unit) {
     val bgColor: Color = if (current) lightGreen else Color.White
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
 
@@ -70,7 +75,7 @@ fun PrayerTimeRow(prayer: Prayer, adhan: Date?, iqamah: Date?, current: Boolean,
 
         IconToggleButton(
             checked = notification,
-            onCheckedChange = { toggle(it) },
+            onCheckedChange = { toggleAction(it) },
             modifier = Modifier.size(61.dp, 41.dp)
         ) {
             var buttonImage = R.drawable.ic_alarm

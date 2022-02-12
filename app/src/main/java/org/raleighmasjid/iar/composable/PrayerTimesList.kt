@@ -22,7 +22,7 @@ fun PrayerTimesList(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager) {
                 iqamah = prayerDay?.iqamahTime(prayer),
                 current = currentPrayer == prayer,
                 notificationEnabled = dataStoreManager.getNotificationEnabled(prayer),
-                toggle = {
+                toggleAction = {
                     scope.launch {
                         dataStoreManager.setNotification(it, prayer)
                     }

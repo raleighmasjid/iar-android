@@ -1,6 +1,5 @@
 package org.raleighmasjid.iar.viewModel
 
-import android.content.Context
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import android.util.Log
@@ -9,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -19,8 +19,10 @@ import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
 import org.raleighmasjid.iar.model.PrayerTime
 import java.util.*
+import javax.inject.Inject
 
-class PrayerTimesViewModel(appContext: Context) : ViewModel() {
+@HiltViewModel
+class PrayerTimesViewModel @Inject constructor(val dataStoreManager: DataStoreManager) : ViewModel() {
     var prayerDay by mutableStateOf<PrayerDay?>(null)
     var upcoming by mutableStateOf<PrayerTime?>(null)
     var timeRemaining by mutableStateOf<Long>(0)
@@ -34,7 +36,6 @@ class PrayerTimesViewModel(appContext: Context) : ViewModel() {
 
     private var timer: CountDownTimer? = null
 
-    val dataStoreManager = DataStoreManager(appContext)
     private val repository = PrayerTimesRepository(dataStoreManager)
 
     init {

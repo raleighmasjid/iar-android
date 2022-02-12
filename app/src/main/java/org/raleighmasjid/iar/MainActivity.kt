@@ -1,19 +1,18 @@
 package org.raleighmasjid.iar
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import dagger.hilt.android.AndroidEntryPoint
 import org.raleighmasjid.iar.composable.PrayerTimesScreen
 import org.raleighmasjid.iar.ui.theme.IARTheme
 import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel by lazy { PrayerTimesViewModel(applicationContext) }
+    private val viewModel: PrayerTimesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -29,4 +28,3 @@ class MainActivity : ComponentActivity() {
         viewModel.loadPrayerTimes()
     }
 }
-

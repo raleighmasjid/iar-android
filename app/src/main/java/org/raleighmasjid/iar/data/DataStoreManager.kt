@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import org.raleighmasjid.iar.model.Prayer
 
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userData")
+
 class DataStoreManager(appContext: Context) {
     companion object {
-        val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userData")
-
         val CACHE_KEY = stringPreferencesKey("PRAYER_TIMES_CACHE")
 
         fun notificationKey(prayer: Prayer): Preferences.Key<Boolean> {
