@@ -49,6 +49,12 @@ class PrayerTimesViewModel @Inject constructor(val dataStoreManager: DataStoreMa
         }.start()
 
         viewModelScope.launch {
+            repository.updates.collect {
+                prayerDays = it
+            }
+        }
+
+        viewModelScope.launch {
             val flows = Prayer.values().map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Pair(prayer, it) } }
             val combinedFlows = combine(flows = flows) { it }
             combinedFlows.collect { newValue ->
@@ -69,14 +75,8 @@ class PrayerTimesViewModel @Inject constructor(val dataStoreManager: DataStoreMa
     }
 
     fun loadPrayerTimes() {
-        Log.d("INFO", "loadPrayerTimes")
         viewModelScope.launch {
-            val cache = repository.getCachedPrayerTimes()
-            if (cache.isNotEmpty()) {
-                prayerDays = cache
-            }
-            val response = repository.fetchPrayerTimes()
-            prayerDays = response
+            repository.fetchPrayerTimes()
         }
     }
 }
