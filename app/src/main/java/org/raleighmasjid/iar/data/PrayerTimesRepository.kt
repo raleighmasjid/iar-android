@@ -9,7 +9,7 @@ import org.raleighmasjid.iar.model.PrayerDay
 
 class PrayerTimesRepository(private val dataStoreManager: DataStoreManager) {
 
-    private val sharedFlow = MutableSharedFlow<List<PrayerDay>>()
+    private val sharedFlow = MutableSharedFlow<Result<List<PrayerDay>>>()
     val updates = sharedFlow.asSharedFlow()
 
     private suspend fun getCachedPrayerTimes(): List<PrayerDay> {
@@ -21,11 +21,22 @@ class PrayerTimesRepository(private val dataStoreManager: DataStoreManager) {
     suspend fun fetchPrayerTimes() {
         val cache = getCachedPrayerTimes()
         if (cache.isNotEmpty()) {
-            sharedFlow.emit(cache)
+            sharedFlow.emit(Result.success(cache))
         }
-        val prayerDays = ApiClient.getPrayerTimes()
-        val jsonString = ApiClient.moshi.encodeList(prayerDays)
-        dataStoreManager.cachePrayerTimesData(jsonString)
-        sharedFlow.emit(prayerDays)
+
+        try {
+            val response = ApiClient.getPrayerTimes()
+            val prayerDays = response.body()
+            if (!response.isSuccessful || prayerDays == null) {
+                sharedFlow.emit(Result.failure(Exception("Network Error")))
+                return
+            }
+            val jsonString = ApiClient.moshi.encodeList(prayerDays)
+            dataStoreManager.cachePrayerTimesData(jsonString)
+            sharedFlow.emit(Result.success(prayerDays))
+        } catch (e: Exception) {
+            sharedFlow.emit(Result.failure(e))
+        }
     }
+
 }

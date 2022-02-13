@@ -49,8 +49,13 @@ class PrayerTimesViewModel @Inject constructor(val dataStoreManager: DataStoreMa
         }.start()
 
         viewModelScope.launch {
-            repository.updates.collect {
-                prayerDays = it
+            repository.updates.collect { result ->
+                result.onSuccess {
+                    prayerDays = it
+                }.onFailure {
+                    Log.d("INFO", "prayer times failure: $it")
+                    // TODO display alert, maybe as toast?
+                }
             }
         }
 
