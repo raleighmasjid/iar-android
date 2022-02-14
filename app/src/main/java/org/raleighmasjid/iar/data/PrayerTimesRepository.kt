@@ -1,5 +1,6 @@
 package org.raleighmasjid.iar.data
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import org.raleighmasjid.iar.api.ApiClient
@@ -33,6 +34,7 @@ class PrayerTimesRepository(private val dataStoreManager: DataStoreManager) {
             }
             val jsonString = ApiClient.moshi.encodeList(prayerDays)
             dataStoreManager.cachePrayerTimesData(jsonString)
+            Log.d("INFO", "fetching prayer times")
             sharedFlow.emit(Result.success(prayerDays))
         } catch (e: Exception) {
             sharedFlow.emit(Result.failure(e))

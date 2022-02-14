@@ -26,6 +26,7 @@ class PrayerTimesViewModel @Inject constructor(val dataStoreManager: DataStoreMa
     var prayerDay by mutableStateOf<PrayerDay?>(null)
     var upcoming by mutableStateOf<PrayerTime?>(null)
     var timeRemaining by mutableStateOf<Long>(0)
+    var error by mutableStateOf(false)
 
     private var prayerDays = listOf<PrayerDay>()
         private set(value) {
@@ -54,7 +55,7 @@ class PrayerTimesViewModel @Inject constructor(val dataStoreManager: DataStoreMa
                     prayerDays = it
                 }.onFailure {
                     Log.d("INFO", "prayer times failure: $it")
-                    // TODO display alert, maybe as toast?
+                    error = true
                 }
             }
         }
