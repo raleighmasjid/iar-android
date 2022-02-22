@@ -29,6 +29,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadPrayerTimes()
+        viewModel.fetchLatest()
     }
 }

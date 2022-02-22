@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.os.Build
-import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.model.NotificationType
 import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
@@ -58,8 +57,7 @@ class NotificationController {
                 .filter { enabledPrayers.contains(it.prayer) && it.notificationTime() > now }
         }
 
-        fun scheduleNotifications(context: Context, prayerDays: List<PrayerDay>, dataStoreManager: DataStoreManager) {
-            val enabledPrayers = dataStoreManager.enabledNotifications()
+        fun scheduleNotifications(context: Context, prayerDays: List<PrayerDay>, enabledPrayers: List<Prayer>) {
             val prayerTimes = notificationTimes(prayerDays, enabledPrayers).take(MAX_NOTIFICATIONS)
 
             for (index in 0..MAX_NOTIFICATIONS) {

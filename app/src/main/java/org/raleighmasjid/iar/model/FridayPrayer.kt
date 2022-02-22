@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class FridaySchedule(
+data class FridayPrayer(
     val title: String,
     val shift: String,
     val time: String,

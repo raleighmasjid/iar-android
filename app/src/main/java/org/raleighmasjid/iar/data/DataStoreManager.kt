@@ -16,7 +16,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 
 class DataStoreManager(appContext: Context) {
     companion object {
-        val CACHE_KEY = stringPreferencesKey("PRAYER_TIMES_CACHE")
+        val CACHE_KEY = stringPreferencesKey("PRAYER_SCHEDULE_CACHE")
 
         fun notificationKey(prayer: Prayer): Preferences.Key<Boolean> {
             return booleanPreferencesKey(prayer.toString())
@@ -42,12 +42,12 @@ class DataStoreManager(appContext: Context) {
         return Prayer.values().filter { runBlocking { getNotificationEnabled(it).first() } }
     }
 
-    suspend fun getCachedPrayerTimesData(): String? {
+    suspend fun getCachedPrayerScheduleData(): String? {
         val data = context.dataStore.data.firstOrNull() ?: return null
         return data[DataStoreManager.CACHE_KEY]
     }
 
-    suspend fun cachePrayerTimesData(jsonString: String) {
+    suspend fun cachePrayerScheduleData(jsonString: String) {
         context.dataStore.edit { pref ->
             pref[DataStoreManager.CACHE_KEY] = jsonString
         }
