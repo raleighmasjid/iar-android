@@ -66,12 +66,12 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         modifier = Modifier.weight(0.1f, fill = false)) {
             var buttonTint = darkGreen
             if (!canGoBack()) {
-                buttonTint = buttonTint.copy(alpha = 0.5f)
+                buttonTint = buttonTint.copy(alpha = 0.3f)
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_left_chevron),
                 contentDescription = "Previous Day",
-                modifier = Modifier.size(25.dp, 25.dp),
+                modifier = Modifier.size(45.dp, 45.dp),
                 tint = buttonTint
             )
         }
@@ -92,12 +92,12 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         modifier = Modifier.weight(0.1f, fill = false)) {
             var buttonTint = darkGreen
             if (!canGoForward()) {
-                buttonTint = buttonTint.copy(alpha = 0.5f)
+                buttonTint = buttonTint.copy(alpha = 0.3f)
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_right_chevron),
                 contentDescription = "Next Day",
-                modifier = Modifier.size(25.dp, 25.dp),
+                modifier = Modifier.size(45.dp, 45.dp),
                 tint = buttonTint
             )
         }

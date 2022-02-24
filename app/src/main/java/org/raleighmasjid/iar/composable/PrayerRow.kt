@@ -1,7 +1,11 @@
 package org.raleighmasjid.iar.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.Text
@@ -19,8 +23,10 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.flow.Flow
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.Prayer
+import org.raleighmasjid.iar.ui.theme.currentPrayerBackground
+import org.raleighmasjid.iar.ui.theme.currentPrayerBorderColor
 import org.raleighmasjid.iar.ui.theme.darkGreen
-import org.raleighmasjid.iar.ui.theme.lightGreen
+import org.raleighmasjid.iar.ui.theme.prayerBorderColor
 import org.raleighmasjid.iar.utils.formatToTime
 import java.util.*
 
@@ -31,35 +37,27 @@ fun PrayerRow(prayer: Prayer,
               current: Boolean,
               notificationEnabled: Flow<Boolean>,
               toggleAction: (Boolean) -> Unit) {
-    val bgColor: Color = if (current) lightGreen else Color.White
+    val bgColor: Color = if (current) currentPrayerBackground else Color.White
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
+    val borderColor = if (current) currentPrayerBorderColor else prayerBorderColor
 
     Row(
         modifier = Modifier
-            .background(bgColor)
-            .padding(start = 20.dp),
+            .background(bgColor, shape = RoundedCornerShape(8.dp))
+            .border(width = 0.5.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
+            .padding(start = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.weight(1f, true), contentAlignment = Alignment.CenterStart) {
-            if (current) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_dot),
-                    contentDescription = "Current",
-                    modifier = Modifier
-                        .size(6.dp, 6.dp)
-                        .offset((-12).dp)
-                )
-            }
-            Text(
-                prayer.title(),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-        }
+        Text(
+            prayer.title(),
+            modifier = Modifier.weight(1f, true),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold
+        )
 
         Text(
             adhan?.formatToTime() ?: "-:--",
-            modifier = Modifier.weight(1f, true),
+            modifier = Modifier.weight(1f, true).padding(vertical = 16.dp),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
