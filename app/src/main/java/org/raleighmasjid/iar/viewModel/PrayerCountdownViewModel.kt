@@ -14,7 +14,7 @@ class PrayerCountdownViewModel(val upcoming: PrayerTime?) : ViewModel() {
     private var timer: CountDownTimer? = null
 
     init {
-        Log.d("INFO", "init view model")
+        Log.d("INFO", "init COUNTDOWN view model")
         timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
             override fun onTick(p0: Long) {
                 updateTimeRemaining()

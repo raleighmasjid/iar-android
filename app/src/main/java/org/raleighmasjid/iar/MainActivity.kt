@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
-import org.raleighmasjid.iar.composable.PrayerTimesScreen
+import org.raleighmasjid.iar.composable.PrayerScreen
 import org.raleighmasjid.iar.ui.theme.IARTheme
 import org.raleighmasjid.iar.utils.NotificationController
 import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             this.window.statusBarColor = ContextCompat.getColor(this, R.color.darkGreen)
             IARTheme {
-                PrayerTimesScreen(viewModel)
+                PrayerScreen(viewModel)
             }
         }
     }

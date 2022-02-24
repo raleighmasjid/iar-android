@@ -25,12 +25,12 @@ import org.raleighmasjid.iar.utils.formatToTime
 import java.util.*
 
 @Composable
-fun PrayerTimeRow(prayer: Prayer,
-                  adhan: Date?,
-                  iqamah: Date?,
-                  current: Boolean,
-                  notificationEnabled: Flow<Boolean>,
-                  toggleAction: (Boolean) -> Unit) {
+fun PrayerRow(prayer: Prayer,
+              adhan: Date?,
+              iqamah: Date?,
+              current: Boolean,
+              notificationEnabled: Flow<Boolean>,
+              toggleAction: (Boolean) -> Unit) {
     val bgColor: Color = if (current) lightGreen else Color.White
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
 

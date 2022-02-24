@@ -33,9 +33,11 @@ class AlarmReceiver: BroadcastReceiver() {
             return
         }
 
+        val title = if (prayer.notificationOffset() > 0) "${prayer.title()} is in ${prayer.notificationOffset()} minutes" else prayer.title()
+
         Log.d("INFO", "building notification with channel ${type.channelId()} sound ${type.soundUri(context)}")
         val builder = NotificationCompat.Builder(context, type.channelId())
-            .setContentTitle(prayer.title())
+            .setContentTitle(title)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)

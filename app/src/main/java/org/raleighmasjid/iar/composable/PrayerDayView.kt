@@ -9,14 +9,13 @@ import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerDay
 
 @Composable
-fun PrayerTimesList(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager) {
+fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager) {
     val currentPrayer = prayerDay?.currentPrayer()
     val scope = rememberCoroutineScope()
 
     Column {
-        prayerColumnHeaders()
         Prayer.values().forEach { prayer ->
-            PrayerTimeRow(
+            PrayerRow(
                 prayer = prayer,
                 adhan = prayerDay?.adhanTime(prayer),
                 iqamah = prayerDay?.iqamahTime(prayer),

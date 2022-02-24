@@ -9,13 +9,6 @@ data class PrayerTime(
     val iqamah: Date?
 ) {
     fun notificationTime(): Instant {
-        return when (prayer) {
-            Prayer.FAJR -> adhan.toInstant()
-            Prayer.SHURUQ -> adhan.toInstant().minusSeconds(30 * 60)
-            Prayer.DHUHR -> adhan.toInstant()
-            Prayer.ASR -> adhan.toInstant()
-            Prayer.MAGHRIB -> adhan.toInstant()
-            Prayer.ISHA -> adhan.toInstant()
-        }
+        return adhan.toInstant().minusSeconds(60 * prayer.notificationOffset())
     }
 }

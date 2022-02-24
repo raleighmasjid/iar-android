@@ -2,9 +2,9 @@ package org.raleighmasjid.iar.viewModel
 
 import android.content.Context
 import android.os.CountDownTimer
-import android.text.format.DateUtils
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -30,24 +30,21 @@ class PrayerTimesViewModel @Inject constructor(
         @ApplicationContext val context: Context,
         val dataStoreManager: DataStoreManager
     ) : ViewModel() {
-    var prayerDay by mutableStateOf<PrayerDay?>(null)
+
+    var prayerDays = mutableStateListOf<PrayerDay>()
+        private set
+
     var upcoming by mutableStateOf<PrayerTime?>(null)
+        private set
+
     var error by mutableStateOf(false)
+
     private var notificationJob: Job? = null
-
-    private var prayerDays = listOf<PrayerDay>()
-        private set(value) {
-            field = value
-            prayerDay = value.firstOrNull { DateUtils.isToday(it.date.time) }
-            updateNextPrayer()
-            updateNotifications()
-        }
-
     private var timer: CountDownTimer? = null
     private val repository = PrayerScheduleRepository(dataStoreManager)
 
     init {
-        Log.d("INFO", "init view model")
+        Log.d("INFO", "init view model days ${prayerDays.toList()}")
         timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
             override fun onTick(p0: Long) {
                 updateNextPrayer()
@@ -81,16 +78,26 @@ class PrayerTimesViewModel @Inject constructor(
         }
     }
 
+    private fun setPrayerDays(newDays: List<PrayerDay>) {
+        prayerDays.apply {
+            clear()
+            addAll(newDays)
+        }
+        updateNextPrayer()
+        updateNotifications()
+    }
+
     fun fetchLatest() {
         viewModelScope.launch {
             val cached = repository.getCachedPrayerSchedule()
             if (cached != null) {
-                prayerDays = cached.prayerDays
+                setPrayerDays(cached.prayerDays)
             }
 
             val scheduleResult = repository.fetchPrayerSchedule()
             scheduleResult.onSuccess {
-                prayerDays = it.prayerDays
+                Log.d("INFO", "fetched prayer times")
+                setPrayerDays(it.prayerDays)
             }.onFailure {
                 error = true
             }
