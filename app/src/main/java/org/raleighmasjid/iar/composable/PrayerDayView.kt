@@ -18,7 +18,7 @@ fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager) {
     val scope = rememberCoroutineScope()
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(14.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         Prayer.values().forEach { prayer ->

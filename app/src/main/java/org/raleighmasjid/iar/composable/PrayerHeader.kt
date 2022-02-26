@@ -56,7 +56,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         }
     }
 
-    Row(modifier = Modifier.padding(20.dp)) {
+    Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
         IconButton(onClick = {
             if (canGoBack()) {
                 scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }

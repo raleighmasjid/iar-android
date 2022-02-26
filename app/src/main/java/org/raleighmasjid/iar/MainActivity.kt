@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
+import androidx.compose.material.Scaffold
 import dagger.hilt.android.AndroidEntryPoint
 import org.raleighmasjid.iar.composable.PrayerScreen
 import org.raleighmasjid.iar.ui.theme.IARTheme
@@ -20,9 +20,10 @@ class MainActivity : ComponentActivity() {
         NotificationController.createNotificationChannel(applicationContext)
 
         setContent {
-            this.window.statusBarColor = ContextCompat.getColor(this, R.color.darkGreen)
             IARTheme {
-                PrayerScreen(viewModel)
+                Scaffold {
+                    PrayerScreen(viewModel)
+                }
             }
         }
     }

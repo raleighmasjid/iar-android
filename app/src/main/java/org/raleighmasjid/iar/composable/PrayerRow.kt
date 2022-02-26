@@ -50,14 +50,15 @@ fun PrayerRow(prayer: Prayer,
     ) {
         Text(
             prayer.title(),
-            modifier = Modifier.weight(1f, true),
+            modifier = Modifier.weight(1f, true)
+                .padding(vertical = 15.dp),
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold
         )
 
         Text(
             adhan?.formatToTime() ?: "-:--",
-            modifier = Modifier.weight(1f, true).padding(vertical = 16.dp),
+            modifier = Modifier.weight(1f, true),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
