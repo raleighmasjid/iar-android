@@ -77,10 +77,10 @@ fun PrayerRow(prayer: Prayer,
             onCheckedChange = { toggleAction(it) },
             modifier = Modifier.size(61.dp, 41.dp)
         ) {
-            var buttonImage = R.drawable.ic_alarm
+            var buttonImage = R.drawable.ic_alarm_off
             var buttonTint = Color.Black.copy(alpha = 0.5f)
             if (notification) {
-                buttonImage = R.drawable.ic_alarm_fill
+                buttonImage = R.drawable.ic_alarm_on
                 buttonTint = darkGreen
             }
             Icon(

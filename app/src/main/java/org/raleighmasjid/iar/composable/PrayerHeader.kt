@@ -69,7 +69,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 buttonTint = buttonTint.copy(alpha = 0.3f)
             }
             Icon(
-                painter = painterResource(id = R.drawable.ic_left_chevron),
+                painter = painterResource(id = R.drawable.ic_chevron_left),
                 contentDescription = "Previous Day",
                 modifier = Modifier.size(45.dp, 45.dp),
                 tint = buttonTint
@@ -95,7 +95,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 buttonTint = buttonTint.copy(alpha = 0.3f)
             }
             Icon(
-                painter = painterResource(id = R.drawable.ic_right_chevron),
+                painter = painterResource(id = R.drawable.ic_chevron_right),
                 contentDescription = "Next Day",
                 modifier = Modifier.size(45.dp, 45.dp),
                 tint = buttonTint
