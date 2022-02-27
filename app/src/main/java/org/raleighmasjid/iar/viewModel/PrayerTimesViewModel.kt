@@ -19,9 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.data.PrayerScheduleRepository
-import org.raleighmasjid.iar.model.Prayer
-import org.raleighmasjid.iar.model.PrayerDay
-import org.raleighmasjid.iar.model.PrayerTime
+import org.raleighmasjid.iar.model.*
 import org.raleighmasjid.iar.utils.NotificationController
 import javax.inject.Inject
 
@@ -32,6 +30,9 @@ class PrayerTimesViewModel @Inject constructor(
     ) : ViewModel() {
 
     var prayerDays = mutableStateListOf<PrayerDay>()
+        private set
+
+    var fridayPrayers = mutableStateListOf<FridayPrayer>()
         private set
 
     var upcoming by mutableStateOf<PrayerTime?>(null)
@@ -78,10 +79,14 @@ class PrayerTimesViewModel @Inject constructor(
         }
     }
 
-    private fun setPrayerDays(newDays: List<PrayerDay>) {
+    private fun setPrayerData(schedule: PrayerSchedule) {
         prayerDays.apply {
             clear()
-            addAll(newDays)
+            addAll(schedule.prayerDays)
+        }
+        fridayPrayers.apply {
+            clear()
+            addAll(schedule.fridaySchedule)
         }
         updateNextPrayer()
         updateNotifications()
@@ -91,13 +96,13 @@ class PrayerTimesViewModel @Inject constructor(
         viewModelScope.launch {
             val cached = repository.getCachedPrayerSchedule()
             if (cached != null) {
-                setPrayerDays(cached.prayerDays)
+                setPrayerData(cached)
             }
 
             val scheduleResult = repository.fetchPrayerSchedule()
             scheduleResult.onSuccess {
                 Log.d("INFO", "fetched prayer times")
-                setPrayerDays(it.prayerDays)
+                setPrayerData(it)
             }.onFailure {
                 error = true
             }

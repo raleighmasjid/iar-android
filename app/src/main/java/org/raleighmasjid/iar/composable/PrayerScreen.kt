@@ -70,6 +70,7 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel) {
             pagerState = pagerState,
             dataStoreManager = viewModel.dataStoreManager
         )
+        FridayScheduleView(viewModel.fridayPrayers)
 
         if (viewModel.error) {
             AlertDialog(
