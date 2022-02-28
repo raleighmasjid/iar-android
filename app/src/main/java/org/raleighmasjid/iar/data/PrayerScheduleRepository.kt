@@ -16,7 +16,7 @@ class PrayerScheduleRepository(private val dataStoreManager: DataStoreManager) {
             val response = ApiClient.getPrayerSchedule()
             val prayerSchedule = response.body()
             if (!response.isSuccessful || prayerSchedule == null) {
-                return return Result.failure(Exception("Network Error"))
+                return Result.failure(Exception("Network Error"))
             }
             val jsonString = ApiClient.moshi.adapter(PrayerSchedule::class.java).toJson(prayerSchedule)
             dataStoreManager.cachePrayerScheduleData(jsonString)
