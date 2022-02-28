@@ -3,14 +3,12 @@ package org.raleighmasjid.iar.composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
@@ -63,7 +61,18 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel) {
         .verticalScroll(rememberScrollState())
     ) {
         TopAppBar(title = { Text(text = "Prayer Times") }, backgroundColor = darkGreen)
-        PrayerCountdown(viewModel = PrayerCountdownViewModel(viewModel.upcoming))
+        Box(Modifier.fillMaxWidth()) {
+            PrayerCountdown(viewModel = PrayerCountdownViewModel(viewModel.upcoming))
+            if (viewModel.loading) {
+                Row(modifier = Modifier.padding(end = 30.dp).align(Alignment.CenterEnd)) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+
+            }
+        }
+
         PrayerHeader(viewModel.prayerDays, pagerState)
         PrayerTimesView(
             prayerDays = viewModel.prayerDays,
