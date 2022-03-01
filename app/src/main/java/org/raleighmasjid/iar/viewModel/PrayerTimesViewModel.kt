@@ -40,6 +40,8 @@ class PrayerTimesViewModel @Inject constructor(
 
     var error by mutableStateOf(false)
 
+    var loading by mutableStateOf(false)
+
     private var notificationJob: Job? = null
     private var timer: CountDownTimer? = null
     private val repository = PrayerScheduleRepository(dataStoreManager)
@@ -93,6 +95,7 @@ class PrayerTimesViewModel @Inject constructor(
     }
 
     fun fetchLatest() {
+        loading = true
         viewModelScope.launch {
             val cached = repository.getCachedPrayerSchedule()
             if (cached != null) {
@@ -106,6 +109,7 @@ class PrayerTimesViewModel @Inject constructor(
             }.onFailure {
                 error = true
             }
+            loading = false
         }
     }
 }
