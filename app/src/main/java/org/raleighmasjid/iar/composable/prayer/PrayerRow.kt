@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,12 +41,14 @@ fun PrayerRow(prayer: Prayer,
     val bgColor: Color = if (current) currentPrayerBackground else Color.White
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
     val borderColor = if (current) currentPrayerBorderColor else prayerBorderColor
+    val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.7f
 
     Row(
         modifier = Modifier
             .background(bgColor, shape = RoundedCornerShape(8.dp))
             .border(width = 0.5.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
-            .padding(start = 12.dp),
+            .padding(start = 12.dp)
+            .alpha(rowAlpha),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
