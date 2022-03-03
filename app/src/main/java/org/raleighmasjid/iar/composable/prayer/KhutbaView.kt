@@ -28,7 +28,7 @@ import org.raleighmasjid.iar.ui.theme.darkGreen
 @Composable
 fun KhutbaView(fridayPrayer: FridayPrayer) {
     Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-        Card(elevation = 3.dp,
+        Card(elevation = 0.dp,
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .height(190.dp)
