@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,23 +20,32 @@ import org.raleighmasjid.iar.viewModel.PrayerCountdownViewModel
 fun PrayerCountdown(viewModel: PrayerCountdownViewModel) {
 
     fun nextPrayerText(): String {
-        if (viewModel.upcoming != null) {
-            return "${viewModel.upcoming.prayer.title()} is in"
+        val upcoming = viewModel.upcomingPrayer
+        if (upcoming != null) {
+            return "${upcoming.prayer.title()} is in"
         } else {
             return " "
         }
     }
 
     fun countdownText(): String {
-        if (viewModel.upcoming != null) {
+        if (viewModel.upcomingPrayer != null) {
             return Utils.formatDuration(viewModel.timeRemaining)
         } else {
             return " "
         }
     }
 
+    fun badgeColor(): Color {
+        if (viewModel.upcomingPrayer != null) {
+            return badgeBackground
+        } else {
+            return Color(0)
+        }
+    }
+
     Column(modifier = Modifier.padding(start = 20.dp, top = 20.dp)) {
-        Box(modifier = Modifier.background(badgeBackground, RoundedCornerShape(8.dp))) {
+        Box(modifier = Modifier.background(badgeColor(), RoundedCornerShape(8.dp))) {
             Text(nextPrayerText(),
                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                 fontWeight = FontWeight.Medium,

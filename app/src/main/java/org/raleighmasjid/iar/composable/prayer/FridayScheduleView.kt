@@ -12,14 +12,12 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.PagerState
 import org.raleighmasjid.iar.model.FridayPrayer
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun FridayScheduleView(fridayPrayers: List<FridayPrayer>) {
-    val pagerState = rememberPagerState()
-
+fun FridayScheduleView(fridayPrayers: List<FridayPrayer>, pagerState: PagerState) {
     Column(modifier = Modifier.padding(vertical = 20.dp)) {
         Text("Friday Prayers",
             fontSize = 24.sp,

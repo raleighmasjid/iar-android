@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="darkGreen">#FF1B5E20</color>
     <color name="lightGreen">#FFEDF9EE</color>
+    <color name="statusBarColor">#FF124016</color>
 </resources>

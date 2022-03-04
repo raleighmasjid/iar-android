@@ -9,7 +9,8 @@ import androidx.lifecycle.ViewModel
 import org.raleighmasjid.iar.model.PrayerTime
 import java.util.*
 
-class PrayerCountdownViewModel(val upcoming: PrayerTime?) : ViewModel() {
+class PrayerCountdownViewModel(private val upcoming: PrayerTime?) : ViewModel() {
+    var upcomingPrayer by mutableStateOf<PrayerTime?>(upcoming)
     var timeRemaining by mutableStateOf<Long>(0)
     private var timer: CountDownTimer? = null
 

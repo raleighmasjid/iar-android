@@ -41,7 +41,7 @@ fun PrayerRow(prayer: Prayer,
     val bgColor: Color = if (current) currentPrayerBackground else Color.White
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
     val borderColor = if (current) currentPrayerBorderColor else prayerBorderColor
-    val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.7f
+    val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.9f
 
     Row(
         modifier = Modifier

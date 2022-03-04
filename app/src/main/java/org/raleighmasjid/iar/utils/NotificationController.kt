@@ -72,7 +72,7 @@ class NotificationController {
                 val pendingIntent: PendingIntent = PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 if (prayerTime != null) {
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, prayerTime.notificationTime().toEpochMilli(), pendingIntent)
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, prayerTime.notificationTime().toEpochMilli(), pendingIntent)
                 } else {
                     alarmManager.cancel(pendingIntent)
                 }

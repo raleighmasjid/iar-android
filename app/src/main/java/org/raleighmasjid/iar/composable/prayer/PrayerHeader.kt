@@ -1,5 +1,6 @@
 package org.raleighmasjid.iar.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -56,14 +57,14 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         }
     }
 
-    Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Row {
         IconButton(onClick = {
             if (canGoBack()) {
                 scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
             }
         },
         enabled = canGoBack(),
-        modifier = Modifier.weight(0.1f, fill = false)) {
+        modifier = Modifier.size(75.dp, 75.dp)) {
             var buttonTint = darkGreen
             if (!canGoBack()) {
                 buttonTint = buttonTint.copy(alpha = 0.3f)
@@ -71,16 +72,20 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_left),
                 contentDescription = "Previous Day",
-                modifier = Modifier.size(45.dp, 45.dp),
+                modifier = Modifier.size(32.dp, 32.dp),
                 tint = buttonTint
             )
         }
 
-        Column(verticalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier.weight(0.9f, fill = true),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(dateText(), fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
-            Text(hijriText(), fontWeight = FontWeight.Normal, fontSize = 13.sp)
+        Box(modifier = Modifier.weight(0.9f, fill = true).padding(vertical = 18.dp),
+            contentAlignment = Alignment.Center) {
+            Column(verticalArrangement = Arrangement.spacedBy(3.dp),
+                modifier = Modifier.clickable {
+                scope.launch { pagerState.animateScrollToPage(0) }
+            }) {
+                Text(dateText(), fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
+                Text(hijriText(), fontWeight = FontWeight.Normal, fontSize = 13.sp)
+            }
         }
 
         IconButton(onClick = {
@@ -89,7 +94,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
             }
         },
         enabled = canGoForward(),
-        modifier = Modifier.weight(0.1f, fill = false)) {
+        modifier = Modifier.size(75.dp, 75.dp)) {
             var buttonTint = darkGreen
             if (!canGoForward()) {
                 buttonTint = buttonTint.copy(alpha = 0.3f)
@@ -97,7 +102,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_right),
                 contentDescription = "Next Day",
-                modifier = Modifier.size(45.dp, 45.dp),
+                modifier = Modifier.size(32.dp, 32.dp),
                 tint = buttonTint
             )
         }
