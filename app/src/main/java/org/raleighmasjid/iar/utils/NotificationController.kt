@@ -17,6 +17,7 @@ import java.time.Instant
 class NotificationController {
     companion object {
         const val PRAYER_NAME_KEY = "PRAYER_NAME"
+        const val PRAYER_TIME_KEY = "PRAYER_TIME"
         const val NOTIFICATION_TYPE_KEY = "NOTIFICATION_TYPE"
 
         private const val MAX_NOTIFICATIONS: Int = 42
@@ -64,6 +65,7 @@ class NotificationController {
                 val prayerTime = prayerTimes.getOrNull(index)
                 val intent = Intent(context, AlarmReceiver::class.java).apply {
                     this.putExtra(PRAYER_NAME_KEY, prayerTime?.prayer.toString() ?: "")
+                    this.putExtra(PRAYER_TIME_KEY, prayerTime?.adhan?.formatToTime() ?: "")
                     // TODO get notification type from dataStoreManager
                     this.putExtra(NOTIFICATION_TYPE_KEY, NotificationType.SAADALGHAMIDI.toString())
                 }

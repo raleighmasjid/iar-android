@@ -22,6 +22,7 @@ class AlarmReceiver: BroadcastReceiver() {
 
         val prayerName = intent.getStringExtra(NotificationController.PRAYER_NAME_KEY) ?: return
         val typeName = intent.getStringExtra(NotificationController.NOTIFICATION_TYPE_KEY) ?: return
+        val prayerTime = intent.getStringExtra(NotificationController.PRAYER_TIME_KEY) ?: "-"
         Log.d("INFO", "Received Broadcast for prayer $prayerName, type $typeName")
         val prayer: Prayer
         val type: NotificationType
@@ -37,7 +38,7 @@ class AlarmReceiver: BroadcastReceiver() {
 
         Log.d("INFO", "building notification with channel ${type.channelId()} sound ${type.soundUri(context)}")
         val builder = NotificationCompat.Builder(context, type.channelId())
-            .setContentTitle(title)
+            .setContentTitle("$title ($prayerTime)")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
