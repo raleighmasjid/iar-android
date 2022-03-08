@@ -7,11 +7,11 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -27,17 +27,13 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel()) {
     val khutbaPagerState = rememberPagerState()
 
     val scope = rememberCoroutineScope()
-
-    OnLifecycleEvent {event ->
-        when (event) {
-            Lifecycle.Event.ON_RESUME -> {
-                scope.launch {
-                    viewModel.fetchLatest()
-                    prayerPagerState.scrollToPage(0)
-                    khutbaPagerState.scrollToPage(0)
-                }
+    LaunchedEffect(viewModel.didResume) {
+        if (viewModel.didResume) {
+            scope.launch {
+                prayerPagerState.scrollToPage(0)
+                khutbaPagerState.scrollToPage(0)
             }
-            else -> { }
+            viewModel.didResume = false
         }
     }
 

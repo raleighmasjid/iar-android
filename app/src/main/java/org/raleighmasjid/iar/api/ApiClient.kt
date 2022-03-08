@@ -28,5 +28,7 @@ class ApiClient {
         private val service: RaleighMasjidService = retrofit.create(RaleighMasjidService::class.java)
 
         suspend fun getPrayerSchedule() = service.getPrayerSchedule()
+
+        suspend fun getNews() = service.getNews()
     }
 }

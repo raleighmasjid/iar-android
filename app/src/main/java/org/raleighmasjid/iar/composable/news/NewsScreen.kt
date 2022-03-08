@@ -1,9 +1,8 @@
 package org.raleighmasjid.iar.composable
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -15,25 +14,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
+import org.raleighmasjid.iar.composable.news.announcementsList
 import org.raleighmasjid.iar.ui.theme.darkGreen
 import org.raleighmasjid.iar.ui.theme.lightGreen
+import org.raleighmasjid.iar.viewModel.NewsViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun NewsScreen() {
+fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
     val titles = listOf("Announcements", "Events")
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())
-    ) {
-
+    Column {
         TabRow(selectedTabIndex = pagerState.currentPage,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
@@ -56,18 +55,21 @@ fun NewsScreen() {
             state = pagerState,
         ) { page ->
             if (page == 0) {
-                Text(
-                    "Announcements",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(horizontal = 20.dp)
+                announcementsList(
+                    announcements = viewModel.news?.announcements ?: emptyList(),
+                    loading = viewModel.loading,
+                    refreshAction = {
+                        viewModel.fetchLatest()
+                    }
                 )
             } else {
                 Text(
                     "Events",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(horizontal = 20.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .fillMaxHeight()
                 )
             }
         }

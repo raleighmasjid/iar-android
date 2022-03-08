@@ -13,7 +13,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
-import org.raleighmasjid.iar.model.FridayPrayer
+import org.raleighmasjid.iar.model.json.FridayPrayer
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable

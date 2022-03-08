@@ -4,7 +4,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.raleighmasjid.iar.api.ApiClient
 import org.raleighmasjid.iar.api.decodeList
-import org.raleighmasjid.iar.model.PrayerDay
+import org.raleighmasjid.iar.model.json.PrayerDay
 
 class ModelParsingTest {
     @Test

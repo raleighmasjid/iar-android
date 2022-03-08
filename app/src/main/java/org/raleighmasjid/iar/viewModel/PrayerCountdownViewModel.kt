@@ -1,7 +1,6 @@
 package org.raleighmasjid.iar.viewModel
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,7 +14,6 @@ class PrayerCountdownViewModel(private val upcoming: PrayerTime?) : ViewModel() 
     private var timer: CountDownTimer? = null
 
     init {
-        Log.d("INFO", "init COUNTDOWN view model")
         timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
             override fun onTick(p0: Long) {
                 updateTimeRemaining()

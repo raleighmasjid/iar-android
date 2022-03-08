@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import org.raleighmasjid.iar.R
-import org.raleighmasjid.iar.model.FridayPrayer
+import org.raleighmasjid.iar.model.json.FridayPrayer
 import org.raleighmasjid.iar.ui.theme.darkGreen
 
 @Composable

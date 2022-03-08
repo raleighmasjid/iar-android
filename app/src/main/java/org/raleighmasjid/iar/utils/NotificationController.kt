@@ -10,7 +10,7 @@ import android.media.AudioAttributes
 import android.os.Build
 import org.raleighmasjid.iar.model.NotificationType
 import org.raleighmasjid.iar.model.Prayer
-import org.raleighmasjid.iar.model.PrayerDay
+import org.raleighmasjid.iar.model.json.PrayerDay
 import org.raleighmasjid.iar.model.PrayerTime
 import java.time.Instant
 

@@ -1,5 +1,6 @@
 package org.raleighmasjid.iar.composable
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberUpdatedState
@@ -15,6 +16,7 @@ fun OnLifecycleEvent(onEvent: (event: Lifecycle.Event) -> Unit) {
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle
         val observer = LifecycleEventObserver { _, event ->
+            Log.d("INFO", "event: $event")
             eventHandler.value(event)
         }
 

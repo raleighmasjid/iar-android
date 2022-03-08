@@ -1,6 +1,8 @@
-package org.raleighmasjid.iar.model
+package org.raleighmasjid.iar.model.json
 
 import com.squareup.moshi.JsonClass
+import org.raleighmasjid.iar.model.Prayer
+import org.raleighmasjid.iar.model.PrayerTime
 import org.raleighmasjid.iar.utils.isSameDay
 import java.util.*
 

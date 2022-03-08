@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.model.Prayer
-import org.raleighmasjid.iar.model.PrayerDay
+import org.raleighmasjid.iar.model.json.PrayerDay
 
 @Composable
 fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager) {

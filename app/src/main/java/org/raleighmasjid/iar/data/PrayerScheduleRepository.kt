@@ -1,8 +1,7 @@
 package org.raleighmasjid.iar.data
 
-import android.util.Log
 import org.raleighmasjid.iar.api.ApiClient
-import org.raleighmasjid.iar.model.PrayerSchedule
+import org.raleighmasjid.iar.model.json.PrayerSchedule
 
 class PrayerScheduleRepository(private val dataStoreManager: DataStoreManager) {
 
@@ -20,7 +19,6 @@ class PrayerScheduleRepository(private val dataStoreManager: DataStoreManager) {
             }
             val jsonString = ApiClient.moshi.adapter(PrayerSchedule::class.java).toJson(prayerSchedule)
             dataStoreManager.cachePrayerScheduleData(jsonString)
-            Log.d("INFO", "fetching prayer times")
             return Result.success(prayerSchedule)
         } catch (e: Exception) {
             return Result.failure(e)

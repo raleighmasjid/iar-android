@@ -1,6 +1,5 @@
 package org.raleighmasjid.iar.composable
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,12 +12,11 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import org.raleighmasjid.iar.data.DataStoreManager
-import org.raleighmasjid.iar.model.PrayerDay
+import org.raleighmasjid.iar.model.json.PrayerDay
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PrayerTimesView(prayerDays: List<PrayerDay>, pagerState: PagerState, dataStoreManager: DataStoreManager) {
-    Log.d("INFO", "recomposing PrayerTimesView with ${prayerDays.toList().map { it.date }}")
     Column {
         prayerColumnHeaders()
         HorizontalPager(count = prayerDays.count(), state = pagerState) { page ->

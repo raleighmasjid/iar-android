@@ -2,7 +2,6 @@ package org.raleighmasjid.iar.viewModel
 
 import android.content.Context
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +18,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.data.PrayerScheduleRepository
-import org.raleighmasjid.iar.model.*
+import org.raleighmasjid.iar.model.Prayer
+import org.raleighmasjid.iar.model.PrayerTime
+import org.raleighmasjid.iar.model.json.FridayPrayer
+import org.raleighmasjid.iar.model.json.PrayerDay
+import org.raleighmasjid.iar.model.json.PrayerSchedule
 import org.raleighmasjid.iar.utils.NotificationController
 import javax.inject.Inject
 
@@ -42,12 +45,13 @@ class PrayerTimesViewModel @Inject constructor(
 
     var loading by mutableStateOf(false)
 
+    var didResume: Boolean = false
+
     private var notificationJob: Job? = null
     private var timer: CountDownTimer? = null
     private val repository = PrayerScheduleRepository(dataStoreManager)
 
     init {
-        Log.d("INFO", "init view model days ${prayerDays.toList()}")
         timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
             override fun onTick(p0: Long) {
                 updateNextPrayer()
@@ -104,7 +108,6 @@ class PrayerTimesViewModel @Inject constructor(
 
             val scheduleResult = repository.fetchPrayerSchedule()
             scheduleResult.onSuccess {
-                Log.d("INFO", "fetched prayer times")
                 setPrayerData(it)
             }.onFailure {
                 error = true

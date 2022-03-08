@@ -17,7 +17,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.R
-import org.raleighmasjid.iar.model.PrayerDay
+import org.raleighmasjid.iar.model.json.PrayerDay
 import org.raleighmasjid.iar.ui.theme.darkGreen
 import org.raleighmasjid.iar.utils.formatToDay
 

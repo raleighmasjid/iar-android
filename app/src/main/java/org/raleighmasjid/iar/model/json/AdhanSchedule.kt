@@ -1,4 +1,4 @@
-package org.raleighmasjid.iar.model
+package org.raleighmasjid.iar.model.json
 
 import com.squareup.moshi.JsonClass
 import java.util.*

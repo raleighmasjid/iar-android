@@ -3,6 +3,7 @@ package org.raleighmasjid.iar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -21,9 +22,14 @@ import org.raleighmasjid.iar.composable.NewsScreen
 import org.raleighmasjid.iar.composable.PrayerScreen
 import org.raleighmasjid.iar.ui.theme.IARTheme
 import org.raleighmasjid.iar.utils.NotificationController
+import org.raleighmasjid.iar.viewModel.NewsViewModel
+import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val prayerTimesViewModel: PrayerTimesViewModel by viewModels()
+    private val newsViewModel: NewsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,30 +40,42 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Scaffold(bottomBar = { BottomNavigationBar(navController) }) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        Navigation(navController = navController)
+                        Navigation(navController, prayerTimesViewModel, newsViewModel)
                     }
                 }
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        prayerTimesViewModel.fetchLatest()
+        prayerTimesViewModel.didResume = true
+
+        newsViewModel.fetchLatest()
+    }
 }
 
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(
+    navController: NavHostController,
+    prayerTimesViewModel: PrayerTimesViewModel,
+    newsViewModel: NewsViewModel
+) {
     NavHost(navController, startDestination = NavigationItem.Prayer.route) {
         composable(NavigationItem.Prayer.route) {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(text = NavigationItem.Prayer.title) })
             }) {
-                PrayerScreen()
+                PrayerScreen(prayerTimesViewModel)
             }
         }
         composable(NavigationItem.News.route) {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(text = NavigationItem.News.title) })
             }) {
-                NewsScreen()
+                NewsScreen(newsViewModel)
             }
         }
         composable(NavigationItem.Donate.route) {
