@@ -18,7 +18,7 @@ import java.util.*
 class AlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val contentIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, UUID.randomUUID().hashCode(), contentIntent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, UUID.randomUUID().hashCode(), contentIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
         val prayerName = intent.getStringExtra(NotificationController.PRAYER_NAME_KEY) ?: return
         val typeName = intent.getStringExtra(NotificationController.NOTIFICATION_TYPE_KEY) ?: return

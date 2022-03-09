@@ -8,11 +8,13 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.os.Build
+import org.raleighmasjid.iar.MainActivity
 import org.raleighmasjid.iar.model.NotificationType
 import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerTime
 import org.raleighmasjid.iar.model.json.PrayerDay
 import java.time.Instant
+import java.util.*
 
 class NotificationController {
     companion object {
@@ -69,15 +71,12 @@ class NotificationController {
                     // TODO get notification type from dataStoreManager
                     this.putExtra(NOTIFICATION_TYPE_KEY, NotificationType.SAADALGHAMIDI.toString())
                 }
-                val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-                } else {
-                    PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-                }
+                val pendingIntent: PendingIntent = PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 if (prayerTime != null) {
-                    alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(prayerTime.notificationTime().toEpochMilli(), pendingIntent), pendingIntent)
-                    //alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, prayerTime.notificationTime().toEpochMilli(), pendingIntent)
+                    val contentIntent = Intent(context, MainActivity::class.java)
+                    val alarmIntent: PendingIntent = PendingIntent.getActivity(context, UUID.randomUUID().hashCode(), contentIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+                    alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(prayerTime.notificationTime().toEpochMilli(), alarmIntent), pendingIntent)
                 } else {
                     alarmManager.cancel(pendingIntent)
                 }
