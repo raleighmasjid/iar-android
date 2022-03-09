@@ -10,8 +10,8 @@ import android.media.AudioAttributes
 import android.os.Build
 import org.raleighmasjid.iar.model.NotificationType
 import org.raleighmasjid.iar.model.Prayer
-import org.raleighmasjid.iar.model.json.PrayerDay
 import org.raleighmasjid.iar.model.PrayerTime
+import org.raleighmasjid.iar.model.json.PrayerDay
 import java.time.Instant
 
 class NotificationController {
@@ -69,10 +69,15 @@ class NotificationController {
                     // TODO get notification type from dataStoreManager
                     this.putExtra(NOTIFICATION_TYPE_KEY, NotificationType.SAADALGHAMIDI.toString())
                 }
-                val pendingIntent: PendingIntent = PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+                val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+                } else {
+                    PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 if (prayerTime != null) {
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, prayerTime.notificationTime().toEpochMilli(), pendingIntent)
+                    alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(prayerTime.notificationTime().toEpochMilli(), pendingIntent), pendingIntent)
+                    //alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, prayerTime.notificationTime().toEpochMilli(), pendingIntent)
                 } else {
                     alarmManager.cancel(pendingIntent)
                 }
