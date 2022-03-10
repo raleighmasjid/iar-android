@@ -11,4 +11,8 @@ data class PrayerTime(
     fun notificationTime(): Instant {
         return adhan.toInstant().minusSeconds(60 * prayer.notificationOffset())
     }
+
+    fun timeRemaining(): Long {
+        return adhan.time - Date().time
+    }
 }

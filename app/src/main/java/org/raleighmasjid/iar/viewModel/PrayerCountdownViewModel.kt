@@ -6,11 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import org.raleighmasjid.iar.model.PrayerTime
-import java.util.*
 
 class PrayerCountdownViewModel(private val upcoming: PrayerTime?) : ViewModel() {
     var upcomingPrayer by mutableStateOf<PrayerTime?>(upcoming)
-    var timeRemaining by mutableStateOf<Long>(0)
+    var timeRemaining by mutableStateOf<Long>(upcoming?.timeRemaining() ?: 0)
     private var timer: CountDownTimer? = null
 
     init {
@@ -21,12 +20,11 @@ class PrayerCountdownViewModel(private val upcoming: PrayerTime?) : ViewModel() 
 
             override fun onFinish() {}
         }.start()
-
     }
 
     fun updateTimeRemaining() {
         if (upcoming != null) {
-            timeRemaining = upcoming.adhan.time - Date().time
+            timeRemaining = upcoming.timeRemaining()
         }
     }
 }

@@ -57,6 +57,5 @@ fun PrayerCountdown(viewModel: PrayerCountdownViewModel) {
             fontWeight = FontWeight.SemiBold,
             fontSize = 32.sp
         )
-
     }
 }

@@ -1,5 +1,6 @@
 package org.raleighmasjid.iar.composable.news
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,27 +10,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import org.raleighmasjid.iar.model.json.Announcement
-import org.raleighmasjid.iar.model.json.SpecialAnnouncement
+import org.raleighmasjid.iar.model.json.Event
 import org.raleighmasjid.iar.ui.theme.dividerColor
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun announcementsList(announcements: List<Announcement>, special: SpecialAnnouncement?, loading: Boolean, refreshAction: () -> Unit) {
+fun eventsList(events: Map<String, List<Event>>, loading: Boolean, refreshAction: () -> Unit) {
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = loading), onRefresh = {
         refreshAction()
     }) {
         LazyColumn {
-            if (special != null) {
-                item {
-                    specialHeader(special)
+            events.forEach { (date, eventsForDate) ->
+                stickyHeader {
+                    dateHeader(date)
                 }
-            }
-
-            items(announcements) { announcement ->
-                announcementRow(announcement)
-                Divider(color = dividerColor,
-                    thickness = 0.5.dp,
-                    modifier = Modifier.padding(horizontal = 16.dp))
+                items(eventsForDate) { event ->
+                    eventRow(event)
+                    Divider(
+                        color = dividerColor,
+                        thickness = 0.5.dp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
             }
         }
     }
