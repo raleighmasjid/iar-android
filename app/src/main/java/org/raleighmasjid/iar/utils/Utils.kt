@@ -1,11 +1,23 @@
 package org.raleighmasjid.iar.utils
 
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.*
 
 class Utils {
     companion object {
+        private const val encodingCharset = "UTF-8"
+
+        fun encodeURL(url: String): String {
+            return URLEncoder.encode(url, encodingCharset)
+        }
+
+        fun decodeURL(url: String): String {
+            return URLDecoder.decode(url, encodingCharset)
+        }
+
         private fun timeFormatter(): SimpleDateFormat {
             val timeFormatter = SimpleDateFormat("h:mm a", Locale.getDefault())
             timeFormatter.timeZone = TimeZone.getTimeZone("America/New_York")

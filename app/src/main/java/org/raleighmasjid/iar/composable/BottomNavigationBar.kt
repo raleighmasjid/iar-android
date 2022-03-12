@@ -36,9 +36,6 @@ fun BottomNavigationBar(navController: NavController) {
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,
                 onClick = {
-                    if (currentRoute == item.route) {
-                        return@BottomNavigationItem
-                    }
                     navController.navigate(item.route) {
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route) {
@@ -46,7 +43,6 @@ fun BottomNavigationBar(navController: NavController) {
                             }
                         }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 }
             )

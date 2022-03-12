@@ -1,6 +1,5 @@
 package org.raleighmasjid.iar.composable.news
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.raleighmasjid.iar.LocalNavController
+import org.raleighmasjid.iar.NavigationItem
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.json.SpecialAnnouncement
 import org.raleighmasjid.iar.ui.theme.currentPrayerBackground
@@ -24,6 +25,8 @@ import org.raleighmasjid.iar.ui.theme.darkGreen
 
 @Composable
 fun specialHeader(special: SpecialAnnouncement) {
+    val navController = LocalNavController.current
+
     Box(modifier = Modifier.fillMaxWidth()) {
         Card(
             elevation = 0.dp,
@@ -31,9 +34,9 @@ fun specialHeader(special: SpecialAnnouncement) {
             backgroundColor = currentPrayerBackground,
             border = BorderStroke(0.5.dp, darkGreen),
             modifier = Modifier
-                .padding(16.dp).
-                clickable {
-                    Log.d("INFO", "clicked special announcement")
+                .padding(16.dp)
+                .clickable {
+                    navController.navigate(NavigationItem.webRoute(special.url))
                 }
         ) {
             Column(

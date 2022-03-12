@@ -29,7 +29,7 @@ fun eventsList(events: Map<String, List<Event>>, loading: Boolean, refreshAction
                     Divider(
                         color = dividerColor,
                         thickness = 0.5.dp,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        modifier = Modifier.padding(start = 32.dp, end = 16.dp)
                     )
                 }
             }

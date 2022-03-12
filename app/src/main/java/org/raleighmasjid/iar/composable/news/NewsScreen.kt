@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -20,6 +19,7 @@ import org.raleighmasjid.iar.composable.news.eventsList
 import org.raleighmasjid.iar.ui.theme.darkGreen
 import org.raleighmasjid.iar.ui.theme.lightGreen
 import org.raleighmasjid.iar.viewModel.NewsViewModel
+
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -69,10 +69,4 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NewsScreenPreview() {
-    NewsScreen()
 }

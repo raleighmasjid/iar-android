@@ -1,12 +1,10 @@
 package org.raleighmasjid.iar.composable.news
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +19,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import org.raleighmasjid.iar.LocalNavController
+import org.raleighmasjid.iar.NavigationItem
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.json.Announcement
 import org.raleighmasjid.iar.ui.theme.darkGreen
@@ -30,8 +30,10 @@ import org.raleighmasjid.iar.utils.formatToDay
 
 @Composable
 fun announcementRow(announcement: Announcement) {
+    val navController = LocalNavController.current
+
     Box(modifier = Modifier.clickable {
-        Log.d("INFO", "clicked on $announcement")
+        navController.navigate(NavigationItem.webRoute(announcement.url))
     }) {
         Row(modifier = Modifier
             .padding(vertical = 14.dp, horizontal = 16.dp),

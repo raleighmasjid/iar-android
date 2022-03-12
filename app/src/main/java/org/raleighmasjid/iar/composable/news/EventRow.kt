@@ -1,6 +1,5 @@
 package org.raleighmasjid.iar.composable.news
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -14,6 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.raleighmasjid.iar.LocalNavController
+import org.raleighmasjid.iar.NavigationItem
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.json.Event
 import org.raleighmasjid.iar.ui.theme.darkGreen
@@ -23,11 +24,14 @@ import org.raleighmasjid.iar.utils.formatToTime
 
 @Composable
 fun eventRow(event: Event) {
+    val navController = LocalNavController.current
+
     Box(modifier = Modifier.clickable {
-        Log.d("INFO", "clicked on $event")
+        navController.navigate(NavigationItem.webRoute(event.url))
     }) {
         Row(modifier = Modifier
-            .padding(vertical = 14.dp, horizontal = 16.dp),
+            .padding(vertical = 14.dp)
+            .padding(start = 32.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)) {
 

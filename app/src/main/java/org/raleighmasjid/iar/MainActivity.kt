@@ -10,20 +10,22 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import org.raleighmasjid.iar.composable.DonateScreen
-import org.raleighmasjid.iar.composable.MoreScreen
-import org.raleighmasjid.iar.composable.NewsScreen
-import org.raleighmasjid.iar.composable.PrayerScreen
+import org.raleighmasjid.iar.composable.*
 import org.raleighmasjid.iar.ui.theme.IARTheme
 import org.raleighmasjid.iar.utils.NotificationController
+import org.raleighmasjid.iar.utils.Utils
 import org.raleighmasjid.iar.viewModel.NewsViewModel
 import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
+
+val LocalNavController = compositionLocalOf<NavHostController> { error("missing") }
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,9 +40,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             IARTheme {
                 val navController = rememberNavController()
-                Scaffold(bottomBar = { BottomNavigationBar(navController) }) { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        Navigation(navController, prayerTimesViewModel, newsViewModel)
+                CompositionLocalProvider(LocalNavController provides navController) {
+                    Scaffold(bottomBar = {
+                        BottomNavigationBar(navController)
+                    }) { innerPadding ->
+                        Box(modifier = Modifier.padding(innerPadding)) {
+                            Navigation(navController, prayerTimesViewModel, newsViewModel)
+                        }
                     }
                 }
             }
@@ -91,6 +97,11 @@ fun Navigation(
             }) {
                 MoreScreen()
             }
+        }
+        composable(NavigationItem.baseWebRoute) { backStackEntry ->
+            val url = backStackEntry.arguments?.getString("url") ?: ""
+            val decodedUrl = Utils.decodeURL(url)
+            WebScreen(decodedUrl)
         }
     }
 }

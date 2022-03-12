@@ -14,7 +14,12 @@ import org.raleighmasjid.iar.model.json.SpecialAnnouncement
 import org.raleighmasjid.iar.ui.theme.dividerColor
 
 @Composable
-fun announcementsList(announcements: List<Announcement>, special: SpecialAnnouncement?, loading: Boolean, refreshAction: () -> Unit) {
+fun announcementsList(
+    announcements: List<Announcement>,
+    special: SpecialAnnouncement?,
+    loading: Boolean,
+    refreshAction: () -> Unit,
+) {
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = loading), onRefresh = {
         refreshAction()
     }) {
