@@ -32,12 +32,12 @@ import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
 
 val LocalNavController = compositionLocalOf<NavHostController> { error("missing") }
 
-@ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val prayerTimesViewModel: PrayerTimesViewModel by viewModels()
     private val newsViewModel: NewsViewModel by viewModels()
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
