@@ -65,6 +65,24 @@ class MainActivity : ComponentActivity() {
         prayerTimesViewModel.didResume = true
 
         newsViewModel.fetchLatest()
+
+        this?.registerReceiver(
+            dayChangedBroadcastReceiver,
+            DayChangedBroadcastReceiver.getIntentFilter()
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        this?.unregisterReceiver(dayChangedBroadcastReceiver)
+    }
+
+    private val dayChangedBroadcastReceiver = object : DayChangedBroadcastReceiver() {
+
+        override fun onDayChanged() {
+            prayerTimesViewModel.fetchLatest()
+            newsViewModel.fetchLatest()
+        }
     }
 }
 
@@ -128,10 +146,16 @@ fun Navigation(
         composable(
             NavigationItem.baseWebRoute,
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(220))
+                slideIntoContainer(
+                    AnimatedContentScope.SlideDirection.Left,
+                    animationSpec = tween(220)
+                )
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(220))
+                slideOutOfContainer(
+                    AnimatedContentScope.SlideDirection.Right,
+                    animationSpec = tween(220)
+                )
             }
         ) { backStackEntry ->
             val url = backStackEntry.arguments?.getString("url") ?: ""
