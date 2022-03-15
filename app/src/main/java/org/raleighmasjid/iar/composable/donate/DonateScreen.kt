@@ -23,10 +23,9 @@ import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.ui.theme.darkGreen
 import org.raleighmasjid.iar.ui.theme.secondaryTextColor
 
-private val onClickLaunchPage = mutableStateOf(false)
-
 @Composable
 fun DonateScreen() {
+    val uriHandler = LocalUriHandler.current
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -48,7 +47,7 @@ fun DonateScreen() {
             modifier = Modifier.padding(vertical = 48.dp)
         )
         OutlinedButton(
-            onClick = {onClickLaunchPage.value = true},
+            onClick = {uriHandler.openUri("https://raleighmasjid.org/donate/")},
             colors = ButtonDefaults.textButtonColors(
                 backgroundColor = darkGreen.copy(alpha = 0.1f),
                 contentColor = darkGreen
@@ -61,16 +60,6 @@ fun DonateScreen() {
                 modifier = Modifier.padding(vertical = 8.dp))
         }
     }
-
-    if (onClickLaunchPage.value) {
-        onClickLaunchPage.value = false
-        LaunchDonatePage()
-    }
-}
-
-@Composable fun LaunchDonatePage() {
-    val uriHandler = LocalUriHandler.current
-    uriHandler.openUri("https://raleighmasjid.org/donate/")
 }
 
 @Preview(showBackground = true)
