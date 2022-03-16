@@ -17,10 +17,11 @@ import org.raleighmasjid.iar.model.json.PrayerDay
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PrayerTimesView(prayerDays: List<PrayerDay>, pagerState: PagerState, dataStoreManager: DataStoreManager) {
+    val showTaraweeh = prayerDays.any { it.hasTaraweeh() }
     Column {
         prayerColumnHeaders()
         HorizontalPager(count = prayerDays.count(), state = pagerState) { page ->
-            PrayerDayView(prayerDays.getOrNull(page), dataStoreManager)
+            PrayerDayView(prayerDays.getOrNull(page), dataStoreManager, showTaraweeh)
         }
     }
 }

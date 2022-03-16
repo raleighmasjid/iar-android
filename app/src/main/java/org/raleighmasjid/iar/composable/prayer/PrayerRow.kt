@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.flow.Flow
 import org.raleighmasjid.iar.R
-import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.ui.theme.currentPrayerBackground
 import org.raleighmasjid.iar.ui.theme.currentPrayerBorderColor
 import org.raleighmasjid.iar.ui.theme.darkGreen
@@ -32,16 +31,18 @@ import org.raleighmasjid.iar.utils.formatToTime
 import java.util.*
 
 @Composable
-fun PrayerRow(prayer: Prayer,
+fun PrayerRow(prayer: String,
               adhan: Date?,
               iqamah: Date?,
               current: Boolean,
+              displayAlarm: Boolean,
               notificationEnabled: Flow<Boolean>,
               toggleAction: (Boolean) -> Unit) {
     val bgColor: Color = if (current) currentPrayerBackground else Color.White
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
     val borderColor = if (current) currentPrayerBorderColor else prayerBorderColor
     val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.9f
+    val alarmAlpha = if (displayAlarm) 1.0f else 0f
 
     Row(
         modifier = Modifier
@@ -52,7 +53,7 @@ fun PrayerRow(prayer: Prayer,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            prayer.title(),
+            prayer,
             modifier = Modifier.weight(1f, true)
                 .padding(vertical = 15.dp),
             fontSize = 18.sp,
@@ -60,7 +61,7 @@ fun PrayerRow(prayer: Prayer,
         )
 
         Text(
-            adhan?.formatToTime() ?: "-:--",
+            adhan?.formatToTime() ?: " ",
             modifier = Modifier.weight(1f, true),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
@@ -78,7 +79,7 @@ fun PrayerRow(prayer: Prayer,
         IconToggleButton(
             checked = notification,
             onCheckedChange = { toggleAction(it) },
-            modifier = Modifier.size(61.dp, 41.dp)
+            modifier = Modifier.size(61.dp, 41.dp).alpha(alarmAlpha)
         ) {
             var buttonImage = R.drawable.ic_alarm_off
             var buttonTint = Color.Black.copy(alpha = 0.5f)

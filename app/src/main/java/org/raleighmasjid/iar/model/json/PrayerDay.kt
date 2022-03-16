@@ -65,4 +65,8 @@ data class PrayerDay(
             Prayer.ISHA -> iqamah.isha
         }
     }
+
+    fun hasTaraweeh(): Boolean {
+        return iqamah.taraweeh != null
+    }
 }
