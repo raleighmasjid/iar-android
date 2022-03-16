@@ -8,10 +8,12 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +25,7 @@ import org.raleighmasjid.iar.ui.theme.secondaryTextColor
 
 @Composable
 fun DonateScreen() {
+    val uriHandler = LocalUriHandler.current
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,7 +47,7 @@ fun DonateScreen() {
             modifier = Modifier.padding(vertical = 48.dp)
         )
         OutlinedButton(
-            onClick = { /* Do something! */ },
+            onClick = {uriHandler.openUri("https://raleighmasjid.org/donate/")},
             colors = ButtonDefaults.textButtonColors(
                 backgroundColor = darkGreen.copy(alpha = 0.1f),
                 contentColor = darkGreen
