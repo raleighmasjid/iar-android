@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        NotificationController.createNotificationChannel(applicationContext)
+        NotificationController.setupNotificationChannels(applicationContext)
 
         setContent {
             IARTheme {

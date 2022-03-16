@@ -2,6 +2,7 @@ package org.raleighmasjid.iar.model
 
 import android.content.Context
 import android.net.Uri
+import android.provider.Settings
 import org.raleighmasjid.iar.R
 
 enum class NotificationType {
@@ -17,6 +18,13 @@ enum class NotificationType {
         override fun channelId() = "SILENT"
         override fun soundUri(context: Context): Uri? {
             return null
+        }
+    },
+    SHURUQ {
+        override fun title() = "Shuruq"
+        override fun channelId() = "SHURUQ"
+        override fun soundUri(context: Context): Uri? {
+            return Settings.System.DEFAULT_NOTIFICATION_URI
         }
     };
 
