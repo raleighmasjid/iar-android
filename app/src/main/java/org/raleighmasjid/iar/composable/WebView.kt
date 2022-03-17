@@ -103,18 +103,10 @@ fun WebView(
                         onError(request, error)
                     }
 
-                    override fun shouldOverrideUrlLoading(
-                        view: WebView?,
-                        request: WebResourceRequest?
-                    ): Boolean {
-                        // Override all url loads to make the single source of truth
-                        // of the URL the state holder Url
-                        val url = request?.url?.toString() ?: return false
+                    fun utilShouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
                         if (URLUtil.isNetworkUrl(url)) {
-                            request?.let {
-                                val content = WebContent.Url(it.url.toString())
-                                state.content = content
-                            }
+                            val content = WebContent.Url(url)
+                            state.content = content
                         } else {
                             try {
                                 uriHandler.openUri(url)
@@ -130,6 +122,21 @@ fun WebView(
                             }
                         }
                         return true
+                    }
+
+                    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                        if (url != null) {
+                            return utilShouldOverrideUrlLoading(view, url)
+                        }
+                        return false
+                    }
+
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?
+                    ): Boolean {
+                        val url = request?.url?.toString() ?: return false
+                        return utilShouldOverrideUrlLoading(view, url)
                     }
                 }
             }.also { webView = it }

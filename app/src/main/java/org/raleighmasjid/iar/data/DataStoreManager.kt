@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
+import org.raleighmasjid.iar.model.NotificationType
 import org.raleighmasjid.iar.model.Prayer
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userData")
@@ -18,6 +19,7 @@ class DataStoreManager(appContext: Context) {
     companion object {
         val PRAYER_CACHE_KEY = stringPreferencesKey("PRAYER_SCHEDULE_CACHE")
         val NEWS_CACHE_KEY = stringPreferencesKey("NEWS_CACHE")
+        val NOTIFICATION_TYPE_KEY = stringPreferencesKey("NOTIFICATION_TYPE")
 
         fun notificationKey(prayer: Prayer): Preferences.Key<Boolean> {
             return booleanPreferencesKey(prayer.toString())
@@ -25,6 +27,24 @@ class DataStoreManager(appContext: Context) {
     }
 
     private val context: Context = appContext
+
+    suspend fun setNotificationType(type: NotificationType) {
+        context.dataStore.edit { pref ->
+            pref[NOTIFICATION_TYPE_KEY] = type.toString()
+        }
+    }
+
+    fun getNotificationType(): Flow<NotificationType> {
+        return context.dataStore.data.map { pref ->
+            pref[NOTIFICATION_TYPE_KEY] ?: ""
+        }.map {
+            try {
+                NotificationType.valueOf(it)
+            } catch (e: Exception) {
+                NotificationType.SAADALGHAMIDI
+            }
+        }.distinctUntilChanged()
+    }
 
     suspend fun setNotification(enabled: Boolean, prayer: Prayer) {
         Log.d("INFO", "set alarm for $prayer")

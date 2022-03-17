@@ -9,6 +9,7 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import org.raleighmasjid.iar.MainActivity
 import org.raleighmasjid.iar.model.NotificationType
@@ -66,7 +67,7 @@ class NotificationController {
                 .filter { enabledPrayers.contains(it.prayer) && it.notificationTime() > now }
         }
 
-        fun scheduleNotifications(context: Context, prayerDays: List<PrayerDay>, enabledPrayers: List<Prayer>) {
+        fun scheduleNotifications(context: Context, prayerDays: List<PrayerDay>, enabledPrayers: List<Prayer>, type: NotificationType) {
             val prayerTimes = notificationTimes(prayerDays, enabledPrayers).take(MAX_NOTIFICATIONS)
 
             for (index in 0..MAX_NOTIFICATIONS) {
@@ -74,16 +75,18 @@ class NotificationController {
                 val intent = Intent(context, AlarmReceiver::class.java).apply {
                     this.putExtra(PRAYER_NAME_KEY, prayerTime?.prayer.toString() ?: "")
                     this.putExtra(PRAYER_TIME_KEY, prayerTime?.adhan?.formatToTime() ?: "")
-                    // TODO get notification type from dataStoreManager
-                    if (prayerTime?.prayer == Prayer.SHURUQ) {
+
+                    if (prayerTime?.prayer == Prayer.SHURUQ && type != NotificationType.SILENT) {
+                        Log.d("INFO", "setting type to shuruq")
                         this.putExtra(
                             NOTIFICATION_TYPE_KEY,
                             NotificationType.SHURUQ.toString()
                         )
                     } else {
+                        Log.d("INFO", "setting type to ${type.toString()}")
                         this.putExtra(
                             NOTIFICATION_TYPE_KEY,
-                            NotificationType.SAADALGHAMIDI.toString()
+                            type.toString()
                         )
                     }
                 }

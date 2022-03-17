@@ -2,6 +2,7 @@ package org.raleighmasjid.iar.viewModel
 
 import android.content.Context
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,10 +15,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.data.PrayerScheduleRepository
+import org.raleighmasjid.iar.model.NotificationType
 import org.raleighmasjid.iar.model.Prayer
 import org.raleighmasjid.iar.model.PrayerTime
 import org.raleighmasjid.iar.model.json.FridayPrayer
@@ -61,9 +65,11 @@ class PrayerTimesViewModel @Inject constructor(
         }.start()
 
         viewModelScope.launch {
-            val flows = Prayer.values().map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Pair(prayer, it) } }
+            var flows = Prayer.values().map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Unit } }.toMutableList()
+            flows.add(dataStoreManager.getNotificationType().map { Unit })
             val combinedFlows = combine(flows = flows) { it }
             combinedFlows.collect {
+                Log.d("INFO", "firing updateNotifications")
                 updateNotifications()
             }
         }
@@ -74,7 +80,8 @@ class PrayerTimesViewModel @Inject constructor(
         notificationJob = viewModelScope.launch {
             delay(500)
             val enabledPrayers = dataStoreManager.enabledNotifications()
-            NotificationController.scheduleNotifications(context, prayerDays, enabledPrayers)
+            val type: NotificationType = runBlocking { dataStoreManager.getNotificationType().first() }
+            NotificationController.scheduleNotifications(context, prayerDays, enabledPrayers, type)
         }
     }
 

@@ -13,6 +13,13 @@ enum class NotificationType {
             return Uri.parse(("android.resource://" + context.packageName) + "/" + R.raw.saad_alghamdi)
         }
     },
+    ALAFASY {
+        override fun title() = "Alafasy"
+        override fun channelId() = "ALAFASY"
+        override fun soundUri(context: Context): Uri? {
+            return Uri.parse(("android.resource://" + context.packageName) + "/" + R.raw.alafasy)
+        }
+    },
     SILENT {
         override fun title() = "Silent"
         override fun channelId() = "SILENT"
@@ -27,6 +34,12 @@ enum class NotificationType {
             return Settings.System.DEFAULT_NOTIFICATION_URI
         }
     };
+
+    companion object {
+        fun options(): List<NotificationType> {
+            return NotificationType.values().filter { it != SHURUQ }
+        }
+    }
 
     abstract fun title(): String
     abstract fun channelId(): String
