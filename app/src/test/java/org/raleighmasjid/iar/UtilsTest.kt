@@ -5,6 +5,7 @@ import org.junit.Test
 import org.raleighmasjid.iar.utils.Utils
 import org.raleighmasjid.iar.utils.formatToDay
 import org.raleighmasjid.iar.utils.formatToTime
+import org.raleighmasjid.iar.utils.isSameDay
 import java.text.SimpleDateFormat
 
 class UtilsTest {
@@ -33,8 +34,27 @@ class UtilsTest {
     }
 
     @Test
-    fun formatToTimeTest() {
+    fun isSameDayTestEqual() {
+        val formatter = SimpleDateFormat("y-L-d'T'HH:mm:ssX")
+        val date1String = "2022-02-01T15:21:00-05:00"
+        val date2String = "2022-02-01T19:18:00-05:00"
+        val date1 = formatter.parse(date1String)
+        val date2 = formatter.parse(date2String)
+        Assert.assertTrue(date1.isSameDay(date2))
+    }
 
+    @Test
+    fun isSameDayTestUnequal() {
+        val formatter = SimpleDateFormat("y-L-d'T'HH:mm:ssX")
+        val date1String = "2022-02-01T15:21:00-05:00"
+        val date2String = "2022-02-02T19:18:00-05:00"
+        val date1 = formatter.parse(date1String)
+        val date2 = formatter.parse(date2String)
+        Assert.assertFalse(date1.isSameDay(date2))
+    }
+
+    @Test
+    fun formatToTimeTest() {
         // Adhan time for 'asr for February 1st, 2022 is 3:21 PM
         val correctAdhanDateTimeString = "2022-02-01T15:21:00-05:00"
         val formatter = SimpleDateFormat("y-L-d'T'HH:mm:ssX")

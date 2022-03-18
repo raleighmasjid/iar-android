@@ -3,6 +3,7 @@ package org.raleighmasjid.iar.utils
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
@@ -57,9 +58,13 @@ class Utils {
 }
 
 fun Date.isSameDay(comparison: Date): Boolean {
-    val local1 = this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-    val local2 = comparison.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    val local1 = this.asLocalDate()
+    val local2 = comparison.asLocalDate()
     return local1.isEqual(local2)
+}
+
+fun Date.asLocalDate(): LocalDate {
+    return this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 }
 
 fun Date.formatToTime(): String {

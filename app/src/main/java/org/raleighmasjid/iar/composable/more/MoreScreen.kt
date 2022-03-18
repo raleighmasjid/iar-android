@@ -3,6 +3,7 @@ package org.raleighmasjid.iar.composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -55,6 +56,9 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         expanded = false
                     }) {
                         Text(notifType.title())
+                    }
+                    if (notifType != NotificationType.options().lastOrNull()) {
+                        Divider()
                     }
                 }
             }
