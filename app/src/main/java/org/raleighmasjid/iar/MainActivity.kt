@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberAnimatedNavController()
                 CompositionLocalProvider(LocalNavController provides navController) {
                     Scaffold(bottomBar = {
-                        BottomNavigationBar(navController)
+                        BottomNavigationBar(navController, newsViewModel.showBadge)
                     }) { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
                             Navigation(navController, prayerTimesViewModel, newsViewModel)

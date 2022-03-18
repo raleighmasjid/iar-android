@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.data.NewsRepository
@@ -31,6 +32,8 @@ class NewsViewModel @Inject constructor(
 
     var loading by mutableStateOf(false)
 
+    var showBadge by mutableStateOf(false)
+
     private val repository = NewsRepository(dataStoreManager)
 
     fun fetchLatest() {
@@ -52,6 +55,19 @@ class NewsViewModel @Inject constructor(
         }
     }
 
+    fun setViewedSpecial(id: Int) {
+        viewModelScope.launch {
+            dataStoreManager.setViewedSpecial(id)
+            updateBadge()
+        }
+    }
+
+    private fun updateBadge() {
+        viewModelScope.launch {
+            showBadge = dataStoreManager.getViewedSpecial().first() != special?.id
+        }
+    }
+
     private fun updateNews(news: News) {
         announcements.apply {
             clear()
@@ -63,5 +79,7 @@ class NewsViewModel @Inject constructor(
             putAll(groups)
         }
         special = news.special
+
+        updateBadge()
     }
 }

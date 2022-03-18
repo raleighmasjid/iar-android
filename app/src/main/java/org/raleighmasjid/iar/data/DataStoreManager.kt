@@ -3,10 +3,7 @@ package org.raleighmasjid.iar.data
 import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
@@ -20,6 +17,7 @@ class DataStoreManager(appContext: Context) {
         val PRAYER_CACHE_KEY = stringPreferencesKey("PRAYER_SCHEDULE_CACHE")
         val NEWS_CACHE_KEY = stringPreferencesKey("NEWS_CACHE")
         val NOTIFICATION_TYPE_KEY = stringPreferencesKey("NOTIFICATION_TYPE")
+        val VIEWED_SPECIAL_KEY = intPreferencesKey("VIEWED_SPECIAL")
 
         fun notificationKey(prayer: Prayer): Preferences.Key<Boolean> {
             return booleanPreferencesKey(prayer.toString())
@@ -27,6 +25,18 @@ class DataStoreManager(appContext: Context) {
     }
 
     private val context: Context = appContext
+
+    suspend fun setViewedSpecial(id: Int) {
+        context.dataStore.edit { pref ->
+            pref[VIEWED_SPECIAL_KEY] = id
+        }
+    }
+
+    fun getViewedSpecial(): Flow<Int> {
+        return context.dataStore.data.map { pref ->
+            pref[VIEWED_SPECIAL_KEY] ?: 0
+        }.distinctUntilChanged()
+    }
 
     suspend fun setNotificationType(type: NotificationType) {
         context.dataStore.edit { pref ->
