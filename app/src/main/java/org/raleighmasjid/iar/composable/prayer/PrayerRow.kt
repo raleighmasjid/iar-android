@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,7 +39,9 @@ fun PrayerRow(prayer: String,
               displayAlarm: Boolean,
               notificationEnabled: Flow<Boolean>,
               toggleAction: (Boolean) -> Unit) {
-    val bgColor: Color = if (current) currentPrayerBackground else Color.White
+    val bgColorLight: Color = if (current) currentPrayerBackground else Color.White
+    val bgColorDark: Color = if (current) Color.Black else Color.DarkGray
+    val bgColor: Color = if (MaterialTheme.colors.isLight) bgColorDark else bgColorDark
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
     val borderColor = if (current) currentPrayerBorderColor else prayerBorderColor
     val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.9f
