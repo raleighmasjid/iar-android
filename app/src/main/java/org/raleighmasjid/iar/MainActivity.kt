@@ -25,6 +25,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.raleighmasjid.iar.composable.*
 import org.raleighmasjid.iar.ui.theme.IARTheme
+import org.raleighmasjid.iar.utils.DayChangedBroadcastReceiver
 import org.raleighmasjid.iar.utils.NotificationController
 import org.raleighmasjid.iar.utils.Utils
 import org.raleighmasjid.iar.viewModel.NewsViewModel

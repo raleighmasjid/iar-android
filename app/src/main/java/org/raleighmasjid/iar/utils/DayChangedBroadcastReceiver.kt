@@ -1,4 +1,4 @@
-package org.raleighmasjid.iar
+package org.raleighmasjid.iar.utils
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,14 +15,12 @@ abstract class DayChangedBroadcastReceiver : BroadcastReceiver() {
         val action = intent.action
         val currentDate = Date()
 
-        if ((action == Intent.ACTION_DATE_CHANGED) && !isSameDay(currentDate)) {
+        if ((action == Intent.ACTION_DATE_CHANGED)) {
             date = currentDate
             onDayChanged()
         }
     }
 
-    private fun isSameDay(currentDate: Date) =
-        dateFormat.format(currentDate) == dateFormat.format(date)
 
     abstract fun onDayChanged()
 
