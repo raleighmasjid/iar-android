@@ -22,6 +22,8 @@ class NewsViewModel @Inject constructor(
 
     var special by mutableStateOf<SpecialAnnouncement?>(null)
 
+    var featured by mutableStateOf<Announcement?>(null)
+
     var announcements = mutableStateListOf<Announcement>()
         private set
 
@@ -79,6 +81,7 @@ class NewsViewModel @Inject constructor(
             putAll(groups)
         }
         special = news.special
+        featured = news.featured
 
         updateBadge()
     }

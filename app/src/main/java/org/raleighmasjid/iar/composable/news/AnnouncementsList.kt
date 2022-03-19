@@ -17,6 +17,7 @@ import org.raleighmasjid.iar.ui.theme.dividerColor
 fun announcementsList(
     announcements: List<Announcement>,
     special: SpecialAnnouncement?,
+    featured: Announcement?,
     loading: Boolean,
     refreshAction: () -> Unit,
 ) {
@@ -30,12 +31,24 @@ fun announcementsList(
                 }
             }
 
+            if (featured != null) {
+                item {
+                    announcementRow(featured)
+                    announcementsDivider()
+                }
+            }
+
             items(announcements) { announcement ->
                 announcementRow(announcement)
-                Divider(color = dividerColor,
-                    thickness = 0.5.dp,
-                    modifier = Modifier.padding(horizontal = 16.dp))
+                announcementsDivider()
             }
         }
     }
+}
+
+@Composable
+fun announcementsDivider() {
+    Divider(color = dividerColor,
+        thickness = 0.5.dp,
+        modifier = Modifier.padding(horizontal = 16.dp))
 }

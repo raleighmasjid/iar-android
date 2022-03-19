@@ -62,6 +62,7 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
                 announcementsList(
                     announcements = viewModel.announcements,
                     special = viewModel.special,
+                    featured = viewModel.featured,
                     loading = viewModel.loading,
                     refreshAction = {
                         viewModel.fetchLatest()
