@@ -5,12 +5,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import org.raleighmasjid.iar.MainActivity
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.NotificationType
 import org.raleighmasjid.iar.model.Prayer
+import org.raleighmasjid.iar.ui.theme.darkGreen
 import java.time.Instant
 import java.util.*
 
@@ -38,8 +40,9 @@ class AlarmReceiver: BroadcastReceiver() {
 
         Log.d("INFO", "building notification with channel ${type.channelId()} sound ${type.soundUri(context)}")
         val builder = NotificationCompat.Builder(context, type.channelId())
-            .setContentTitle("$title ($prayerTime)")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(title)
+            .setSmallIcon(R.drawable.ic_stat_onesignal_default)
+            .setColor(darkGreen.toArgb())
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

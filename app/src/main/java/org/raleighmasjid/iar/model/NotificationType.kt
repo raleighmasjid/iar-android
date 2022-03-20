@@ -1,35 +1,35 @@
 package org.raleighmasjid.iar.model
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.Settings
-import org.raleighmasjid.iar.R
 
 enum class NotificationType {
     SAADALGHAMIDI {
         override fun title() = "Saad al-Ghamidi"
-        override fun channelId() = "SAAD_ALGHAMIDI"
+        override fun channelId() = namespacedId("SAAD_ALGHAMIDI")
         override fun soundUri(context: Context): Uri? {
-            return Uri.parse(("android.resource://" + context.packageName) + "/" + R.raw.saad_alghamdi)
+            return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/saad_alghamdi")
         }
     },
     ALAFASY {
         override fun title() = "Alafasy"
-        override fun channelId() = "ALAFASY"
+        override fun channelId() = namespacedId("ALAFASY")
         override fun soundUri(context: Context): Uri? {
-            return Uri.parse(("android.resource://" + context.packageName) + "/" + R.raw.alafasy)
+            return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/alafasy")
         }
     },
     SILENT {
         override fun title() = "Silent"
-        override fun channelId() = "SILENT"
+        override fun channelId() = namespacedId("SILENT")
         override fun soundUri(context: Context): Uri? {
             return null
         }
     },
     SHURUQ {
         override fun title() = "Shuruq"
-        override fun channelId() = "SHURUQ"
+        override fun channelId() = namespacedId("SHURUQ")
         override fun soundUri(context: Context): Uri? {
             return Settings.System.DEFAULT_NOTIFICATION_URI
         }
@@ -38,6 +38,10 @@ enum class NotificationType {
     companion object {
         fun options(): List<NotificationType> {
             return NotificationType.values().filter { it != SHURUQ }
+        }
+
+        fun namespacedId(id: String): String {
+            return "org.raleighmasjid.iar.b1.$id"
         }
     }
 

@@ -47,7 +47,7 @@ class NotificationController {
                 if (soundUri != null) {
                     val audioAttributes = AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                         .build()
                     setSound(soundUri, audioAttributes)
                 } else {
