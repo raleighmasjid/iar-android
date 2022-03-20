@@ -1,16 +1,20 @@
 package org.raleighmasjid.iar.viewModel
 
-import androidx.compose.runtime.*
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.data.DataStoreManager
 import org.raleighmasjid.iar.data.NewsRepository
-import org.raleighmasjid.iar.model.json.Announcement
+import org.raleighmasjid.iar.model.json.Announcements
 import org.raleighmasjid.iar.model.json.Event
 import org.raleighmasjid.iar.model.json.News
-import org.raleighmasjid.iar.model.json.SpecialAnnouncement
 import org.raleighmasjid.iar.utils.formatToDay
 import javax.inject.Inject
 
@@ -19,9 +23,7 @@ class NewsViewModel @Inject constructor(
     val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
-    var special by mutableStateOf<SpecialAnnouncement?>(null)
-
-    var announcements = mutableStateListOf<Announcement>()
+    var announcements by mutableStateOf<Announcements?>(null)
         private set
 
     var events = mutableStateMapOf<String, List<Event>>()
@@ -30,6 +32,8 @@ class NewsViewModel @Inject constructor(
     var error by mutableStateOf(false)
 
     var loading by mutableStateOf(false)
+
+    var showBadge by mutableStateOf(false)
 
     private val repository = NewsRepository(dataStoreManager)
 
@@ -52,16 +56,34 @@ class NewsViewModel @Inject constructor(
         }
     }
 
-    private fun updateNews(news: News) {
-        announcements.apply {
-            clear()
-            addAll(news.announcements)
+    fun didViewAnnouncements() {
+        Log.d("INFO", "didViewAnnouncements")
+        viewModelScope.launch {
+            val postIds = announcements?.postIds()
+            if (postIds != null) {
+                dataStoreManager.setViewedAnnouncments(postIds)
+                updateBadge()
+            }
         }
+    }
+
+    private fun updateBadge() {
+        viewModelScope.launch {
+            val viewedIds = dataStoreManager.getViewedAnnouncments().first()
+            val currentIds = announcements?.postIds() ?: emptySet()
+            val unviewedIds = currentIds.subtract(viewedIds)
+            showBadge = unviewedIds.count() > 0
+        }
+    }
+
+    private fun updateNews(news: News) {
         events.apply {
             clear()
             val groups = news.events.groupBy { it.start.formatToDay() }
             putAll(groups)
         }
-        special = news.special
+        announcements = news.announcements
+
+        updateBadge()
     }
 }

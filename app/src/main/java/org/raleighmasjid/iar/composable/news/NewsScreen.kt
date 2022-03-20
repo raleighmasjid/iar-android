@@ -6,6 +6,7 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +28,10 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
     val titles = listOf("Announcements", "Events")
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(viewModel.announcements) {
+        viewModel.didViewAnnouncements()
+    }
 
     Column {
         TabRow(selectedTabIndex = pagerState.currentPage,
@@ -53,7 +58,6 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
             if (page == 0) {
                 announcementsList(
                     announcements = viewModel.announcements,
-                    special = viewModel.special,
                     loading = viewModel.loading,
                     refreshAction = {
                         viewModel.fetchLatest()

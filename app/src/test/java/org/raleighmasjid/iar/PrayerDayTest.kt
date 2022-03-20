@@ -5,7 +5,7 @@ import org.junit.Test
 import org.raleighmasjid.iar.api.ApiClient
 import org.raleighmasjid.iar.api.decodeList
 import org.raleighmasjid.iar.model.Prayer
-import org.raleighmasjid.iar.model.PrayerDay
+import org.raleighmasjid.iar.model.json.PrayerDay
 import org.raleighmasjid.iar.model.PrayerTime
 import java.text.SimpleDateFormat
 

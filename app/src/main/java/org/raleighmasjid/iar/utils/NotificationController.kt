@@ -9,7 +9,6 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import org.raleighmasjid.iar.MainActivity
 import org.raleighmasjid.iar.model.NotificationType
@@ -77,13 +76,11 @@ class NotificationController {
                     this.putExtra(PRAYER_TIME_KEY, prayerTime?.adhan?.formatToTime() ?: "")
 
                     if (prayerTime?.prayer == Prayer.SHURUQ && type != NotificationType.SILENT) {
-                        Log.d("INFO", "setting type to shuruq")
                         this.putExtra(
                             NOTIFICATION_TYPE_KEY,
                             NotificationType.SHURUQ.toString()
                         )
                     } else {
-                        Log.d("INFO", "setting type to ${type.toString()}")
                         this.putExtra(
                             NOTIFICATION_TYPE_KEY,
                             type.toString()

@@ -28,6 +28,8 @@ import org.raleighmasjid.iar.model.json.FridayPrayer
 import org.raleighmasjid.iar.model.json.PrayerDay
 import org.raleighmasjid.iar.model.json.PrayerSchedule
 import org.raleighmasjid.iar.utils.NotificationController
+import org.raleighmasjid.iar.utils.asLocalDate
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -95,7 +97,9 @@ class PrayerTimesViewModel @Inject constructor(
     private fun setPrayerData(schedule: PrayerSchedule) {
         prayerDays.apply {
             clear()
-            addAll(schedule.prayerDays)
+            val today = Date().asLocalDate()
+            val validDays = schedule.prayerDays.filter { it.date.asLocalDate().compareTo(today) >= 0 }
+            addAll(validDays)
         }
         fridayPrayers.apply {
             clear()

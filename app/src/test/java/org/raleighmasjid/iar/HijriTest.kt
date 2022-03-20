@@ -2,7 +2,7 @@ package org.raleighmasjid.iar
 
 import org.junit.Assert
 import org.junit.Test
-import org.raleighmasjid.iar.model.Hijri
+import org.raleighmasjid.iar.model.json.Hijri
 
 class HijriTest {
 

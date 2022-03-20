@@ -10,7 +10,7 @@ class NotificationTypeTest {
 
         val saad = NotificationType.SAADALGHAMIDI
         Assert.assertEquals("Saad al-Ghamidi", saad.title())
-        Assert.assertEquals("SAAD_AL_GHAMIDI", saad.channelId())
+        Assert.assertEquals("SAAD_ALGHAMIDI", saad.channelId())
     }
 
     @Test

@@ -73,13 +73,13 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                         ),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(42.dp)
                             .clip(CircleShape)
                             .background(Color.White)
                     )
-                    Column(modifier = Modifier.padding(start = 16.dp)) {
+                    Column(modifier = Modifier.padding(start = 8.dp)) {
                         Text(fridayPrayer.speaker, color = Color.White,
-                            fontSize = 15.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis)
