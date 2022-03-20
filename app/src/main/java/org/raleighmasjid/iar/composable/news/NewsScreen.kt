@@ -29,11 +29,8 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(viewModel.special) {
-        val special = viewModel.special
-        if (special != null) {
-            viewModel.setViewedSpecial(special.id)
-        }
+    LaunchedEffect(viewModel.announcements) {
+        viewModel.didViewAnnouncements()
     }
 
     Column {
@@ -61,8 +58,6 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
             if (page == 0) {
                 announcementsList(
                     announcements = viewModel.announcements,
-                    special = viewModel.special,
-                    featured = viewModel.featured,
                     loading = viewModel.loading,
                     refreshAction = {
                         viewModel.fetchLatest()

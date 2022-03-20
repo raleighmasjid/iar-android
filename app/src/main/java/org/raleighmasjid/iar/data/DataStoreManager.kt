@@ -1,7 +1,6 @@
 package org.raleighmasjid.iar.data
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
@@ -14,10 +13,10 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 
 class DataStoreManager(appContext: Context) {
     companion object {
-        val PRAYER_CACHE_KEY = stringPreferencesKey("PRAYER_SCHEDULE_CACHE")
-        val NEWS_CACHE_KEY = stringPreferencesKey("NEWS_CACHE")
-        val NOTIFICATION_TYPE_KEY = stringPreferencesKey("NOTIFICATION_TYPE")
-        val VIEWED_SPECIAL_KEY = intPreferencesKey("VIEWED_SPECIAL")
+        val PRAYER_CACHE_KEY = stringPreferencesKey("PRAYER_SCHEDULE_CACHE_B1")
+        val NEWS_CACHE_KEY = stringPreferencesKey("NEWS_CACHE_B2")
+        val NOTIFICATION_TYPE_KEY = stringPreferencesKey("NOTIFICATION_TYPE_B1")
+        val VIEWED_ANNOUNCEMENTS_KEY = stringSetPreferencesKey("VIEWED_ANNOUNCEMENTS_B1")
 
         fun notificationKey(prayer: Prayer): Preferences.Key<Boolean> {
             return booleanPreferencesKey(prayer.toString())
@@ -26,15 +25,15 @@ class DataStoreManager(appContext: Context) {
 
     private val context: Context = appContext
 
-    suspend fun setViewedSpecial(id: Int) {
+    suspend fun setViewedAnnouncments(ids: Set<String>) {
         context.dataStore.edit { pref ->
-            pref[VIEWED_SPECIAL_KEY] = id
+            pref[VIEWED_ANNOUNCEMENTS_KEY] = ids
         }
     }
 
-    fun getViewedSpecial(): Flow<Int> {
+    fun getViewedAnnouncments(): Flow<Set<String>> {
         return context.dataStore.data.map { pref ->
-            pref[VIEWED_SPECIAL_KEY] ?: 0
+            pref[VIEWED_ANNOUNCEMENTS_KEY] ?: emptySet()
         }.distinctUntilChanged()
     }
 
@@ -57,7 +56,6 @@ class DataStoreManager(appContext: Context) {
     }
 
     suspend fun setNotification(enabled: Boolean, prayer: Prayer) {
-        Log.d("INFO", "set alarm for $prayer")
         context.dataStore.edit { pref ->
             pref[notificationKey(prayer = prayer)] = enabled
         }

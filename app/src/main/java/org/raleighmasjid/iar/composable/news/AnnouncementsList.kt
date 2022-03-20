@@ -9,15 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import org.raleighmasjid.iar.model.json.Announcement
-import org.raleighmasjid.iar.model.json.SpecialAnnouncement
+import org.raleighmasjid.iar.model.json.Announcements
 import org.raleighmasjid.iar.ui.theme.dividerColor
 
 @Composable
 fun announcementsList(
-    announcements: List<Announcement>,
-    special: SpecialAnnouncement?,
-    featured: Announcement?,
+    announcements: Announcements?,
     loading: Boolean,
     refreshAction: () -> Unit,
 ) {
@@ -25,21 +22,21 @@ fun announcementsList(
         refreshAction()
     }) {
         LazyColumn {
-            if (special != null) {
+            if (announcements?.special != null) {
                 item {
-                    specialHeader(special)
+                    specialHeader(announcements.special)
                 }
             }
 
-            if (featured != null) {
+            if (announcements?.featured != null) {
                 item {
-                    announcementRow(featured)
+                    announcementRow(announcements.featured)
                     announcementsDivider()
                 }
             }
 
-            items(announcements) { announcement ->
-                announcementRow(announcement)
+            items(announcements?.posts ?: emptyList()) { post ->
+                announcementRow(post)
                 announcementsDivider()
             }
         }

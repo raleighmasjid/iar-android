@@ -42,7 +42,7 @@ class Utils {
             val minutes = totalMinutes % 60
             val seconds = duration % 60
 
-            var outputComponents = mutableListOf<String>()
+            val outputComponents = mutableListOf<String>()
             if (hours > 0) {
                 outputComponents.add("$hours hr")
             }

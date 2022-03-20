@@ -4,8 +4,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class News (
-    val special: SpecialAnnouncement?,
-    val featured: Announcement?,
-    val announcements: List<Announcement>,
+    val announcements: Announcements,
     val events: List<Event>
 )

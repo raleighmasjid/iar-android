@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonClass
 import java.util.*
 
 @JsonClass(generateAdapter = true)
-data class Announcement(
+data class Post(
     val id: Int,
     val title: String,
     val date: Date,

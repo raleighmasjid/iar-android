@@ -22,24 +22,24 @@ import coil.compose.rememberImagePainter
 import org.raleighmasjid.iar.LocalNavController
 import org.raleighmasjid.iar.NavigationItem
 import org.raleighmasjid.iar.R
-import org.raleighmasjid.iar.model.json.Announcement
+import org.raleighmasjid.iar.model.json.Post
 import org.raleighmasjid.iar.ui.theme.darkGreen
 import org.raleighmasjid.iar.ui.theme.secondaryTextColor
 import org.raleighmasjid.iar.ui.theme.tertiaryTextcolor
 import org.raleighmasjid.iar.utils.formatToDay
 
 @Composable
-fun announcementRow(announcement: Announcement) {
+fun announcementRow(post: Post) {
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.clickable {
-        navController.navigate(NavigationItem.webRoute(announcement.url))
+        navController.navigate(NavigationItem.webRoute(post.url))
     }) {
         Row(modifier = Modifier
             .padding(vertical = 14.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            val imageData: Any? = announcement.image ?: R.drawable.news_placeholder
+            val imageData: Any? = post.image ?: R.drawable.news_placeholder
             Image(
                 painter = rememberImagePainter(
                     data = imageData
@@ -53,20 +53,20 @@ fun announcementRow(announcement: Announcement) {
             )
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1.0f)) {
-                Text(announcement.title,
+                Text(post.title,
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
-                Text(announcement.text,
+                Text(post.text,
                     color = secondaryTextColor,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     lineHeight = 18.sp)
-                Text(announcement.date.formatToDay(),
+                Text(post.date.formatToDay(),
                     color = tertiaryTextcolor,
                     fontSize = 12.sp)
             }

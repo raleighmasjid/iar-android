@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.sp
 import org.raleighmasjid.iar.LocalNavController
 import org.raleighmasjid.iar.NavigationItem
 import org.raleighmasjid.iar.R
-import org.raleighmasjid.iar.model.json.SpecialAnnouncement
+import org.raleighmasjid.iar.model.json.Post
 import org.raleighmasjid.iar.ui.theme.currentPrayerBackground
 import org.raleighmasjid.iar.ui.theme.darkGreen
 
 @Composable
-fun specialHeader(special: SpecialAnnouncement) {
+fun specialHeader(special: Post) {
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.fillMaxWidth()) {
