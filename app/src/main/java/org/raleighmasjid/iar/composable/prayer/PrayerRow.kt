@@ -24,10 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.flow.Flow
 import org.raleighmasjid.iar.R
-import org.raleighmasjid.iar.ui.theme.currentPrayerBackground
-import org.raleighmasjid.iar.ui.theme.currentPrayerBorderColor
-import org.raleighmasjid.iar.ui.theme.darkGreen
-import org.raleighmasjid.iar.ui.theme.prayerBorderColor
+import org.raleighmasjid.iar.ui.theme.*
 import org.raleighmasjid.iar.utils.formatToTime
 import java.util.*
 
@@ -39,12 +36,12 @@ fun PrayerRow(prayer: String,
               displayAlarm: Boolean,
               notificationEnabled: Flow<Boolean>,
               toggleAction: (Boolean) -> Unit) {
-    val bgColorLight: Color = if (current) currentPrayerBackground else Color.White
-    val bgColorDark: Color = if (current) Color.Black else Color.DarkGray
-    val bgColor: Color = if (MaterialTheme.colors.isLight) bgColorDark else bgColorDark
+    val colors = if (MaterialTheme.colors.isLight) LightColorMode() else DarkColorMode()
+    val bgColor: Color = if (current) colors.currentPrayerBackgroundColor() else MaterialTheme.colors.background
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
-    val borderColor = if (current) currentPrayerBorderColor else prayerBorderColor
-    val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.9f
+    val borderColor = if (current) colors.currentPrayerBorderColor() else colors.prayerBorderColor()
+    val isPrevPrayer = (!current && adhan?.before(Date()) == true)
+    val rowAlpha = if (current || !isPrevPrayer) 1.0f else 0.9f
     val alarmAlpha = if (displayAlarm) 1.0f else 0f
 
     Row(
@@ -60,7 +57,8 @@ fun PrayerRow(prayer: String,
             modifier = Modifier.weight(1f, true)
                 .padding(vertical = 15.dp),
             fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            color = if (isPrevPrayer) colors.prevPrayerColor() else colors.prayerColor()
         )
 
         Text(
@@ -68,7 +66,8 @@ fun PrayerRow(prayer: String,
             modifier = Modifier.weight(1f, true),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = if (isPrevPrayer) colors.prevPrayerColor() else colors.prayerColor()
         )
 
         Text(
@@ -76,7 +75,8 @@ fun PrayerRow(prayer: String,
             modifier = Modifier.weight(1f, true),
             textAlign = TextAlign.End,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = if (isPrevPrayer) colors.prevPrayerColor() else colors.prayerColor()
         )
 
         IconToggleButton(
@@ -84,11 +84,10 @@ fun PrayerRow(prayer: String,
             onCheckedChange = { toggleAction(it) },
             modifier = Modifier.size(61.dp, 41.dp).alpha(alarmAlpha)
         ) {
+            val buttonTint = if (isPrevPrayer) colors.prevButtonTint() else colors.buttonTint()
             var buttonImage = R.drawable.ic_alarm_off
-            var buttonTint = Color.Black.copy(alpha = 0.5f)
             if (notification) {
                 buttonImage = R.drawable.ic_alarm_on
-                buttonTint = darkGreen
             }
             Icon(
                 painter = painterResource(id = buttonImage),

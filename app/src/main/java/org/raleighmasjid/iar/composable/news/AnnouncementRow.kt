@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,13 +24,12 @@ import org.raleighmasjid.iar.LocalNavController
 import org.raleighmasjid.iar.NavigationItem
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.json.Post
-import org.raleighmasjid.iar.ui.theme.darkGreen
-import org.raleighmasjid.iar.ui.theme.secondaryTextColor
-import org.raleighmasjid.iar.ui.theme.tertiaryTextcolor
+import org.raleighmasjid.iar.ui.theme.*
 import org.raleighmasjid.iar.utils.formatToDay
 
 @Composable
 fun announcementRow(post: Post) {
+    val colors = if (MaterialTheme.colors.isLight) LightColorMode() else DarkColorMode()
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.clickable {
@@ -54,13 +54,13 @@ fun announcementRow(post: Post) {
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1.0f)) {
                 Text(post.title,
-                    color = Color.Black,
+                    color = colors.prayerColor(),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
                 Text(post.text,
-                    color = secondaryTextColor,
+                    color = colors.postTextColor(),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 3,
@@ -74,7 +74,7 @@ fun announcementRow(post: Post) {
             Icon(
                 painterResource(id = R.drawable.ic_nav_chevron),
                 contentDescription = null,
-                tint = darkGreen,
+                tint = colors.buttonTint(),
                 modifier = Modifier.size(6.dp, 12.dp))
         }
     }

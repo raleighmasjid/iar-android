@@ -12,9 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import org.raleighmasjid.iar.ui.theme.DarkColorMode
+import org.raleighmasjid.iar.ui.theme.LightColorMode
 
 @Composable
 fun BottomNavigationBar(navController: NavController, showBadge: Boolean) {
+    val colors = if (MaterialTheme.colors.isLight) LightColorMode() else DarkColorMode()
     val items = listOf(
         NavigationItem.Prayer,
         NavigationItem.News,
@@ -22,8 +25,8 @@ fun BottomNavigationBar(navController: NavController, showBadge: Boolean) {
         NavigationItem.More
     )
     BottomNavigation(
-        backgroundColor = colorResource(id = R.color.darkGreen),
-        contentColor = Color.White
+        backgroundColor = colors.bottomNavBackgroundColor(),
+        contentColor =colors.bottomNavContentColor()
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -41,8 +44,8 @@ fun BottomNavigationBar(navController: NavController, showBadge: Boolean) {
                     }
                 },
                 label = { Text(text = item.title) },
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.White.copy(0.4f),
+                selectedContentColor = colors.bottomNavSelectedContentColor(),
+                unselectedContentColor = colors.bottomNavUnselectedContentColor(),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,
                 onClick = {

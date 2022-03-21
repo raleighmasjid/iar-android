@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -18,13 +19,15 @@ import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.launch
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.json.PrayerDay
+import org.raleighmasjid.iar.ui.theme.DarkColorMode
+import org.raleighmasjid.iar.ui.theme.LightColorMode
 import org.raleighmasjid.iar.ui.theme.darkGreen
 import org.raleighmasjid.iar.utils.formatToDay
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
-
+    val colors = if (MaterialTheme.colors.isLight) LightColorMode() else DarkColorMode()
     val scope = rememberCoroutineScope()
 
     fun prayerDay(): PrayerDay? {
@@ -84,7 +87,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 scope.launch { pagerState.animateScrollToPage(0) }
             }) {
                 Text(dateText(), fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
-                Text(hijriText(), fontWeight = FontWeight.Normal, fontSize = 13.sp)
+                Text(hijriText(), fontWeight = FontWeight.Normal, fontSize = 13.sp, color= colors.hijriTextColor())
             }
         }
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,18 +21,20 @@ import org.raleighmasjid.iar.LocalNavController
 import org.raleighmasjid.iar.NavigationItem
 import org.raleighmasjid.iar.R
 import org.raleighmasjid.iar.model.json.Post
-import org.raleighmasjid.iar.ui.theme.currentPrayerBackground
+import org.raleighmasjid.iar.ui.theme.DarkColorMode
+import org.raleighmasjid.iar.ui.theme.LightColorMode
 import org.raleighmasjid.iar.ui.theme.darkGreen
 
 @Composable
 fun specialHeader(special: Post) {
+    val colors = if (MaterialTheme.colors.isLight) LightColorMode() else DarkColorMode()
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Card(
             elevation = 0.dp,
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = currentPrayerBackground,
+            backgroundColor = colors.specialHeaderBackgroundColor(),
             border = BorderStroke(0.5.dp, darkGreen),
             modifier = Modifier
                 .padding(16.dp)
@@ -49,17 +52,17 @@ fun specialHeader(special: Post) {
                     Icon(
                         painterResource(id = R.drawable.ic_special_icon),
                         contentDescription = null,
-                        tint = darkGreen,
+                        tint = colors.specialHeaderTitleColor(),
                         modifier = Modifier.size(16.dp, 16.dp))
                     Text(special.title,
-                        color = darkGreen,
+                        color = colors.specialHeaderTitleColor(),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
 
                 Text(special.text,
-                    color = Color.Black,
+                    color = colors.prayerColor(),
                     fontSize = 14.sp,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 5,
