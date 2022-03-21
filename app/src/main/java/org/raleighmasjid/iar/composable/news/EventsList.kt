@@ -14,20 +14,23 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.raleighmasjid.iar.model.json.Event
 import org.raleighmasjid.iar.ui.theme.DarkColorMode
 import org.raleighmasjid.iar.ui.theme.LightColorMode
+import org.raleighmasjid.iar.utils.formatToDay
+import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun eventsList(events: Map<String, List<Event>>, loading: Boolean, refreshAction: () -> Unit) {
+fun eventsList(events: Map<LocalDate, List<Event>>, loading: Boolean, refreshAction: () -> Unit) {
     val colors = if (MaterialTheme.colors.isLight) LightColorMode() else DarkColorMode()
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = loading), onRefresh = {
         refreshAction()
     }) {
         LazyColumn {
-            events.forEach { (date, eventsForDate) ->
+            events.keys.sorted().forEach { date ->
                 stickyHeader {
-                    dateHeader(date)
+                    dateHeader(date.formatToDay())
                 }
-                items(eventsForDate) { event ->
+                val events = events[date]?.sortedBy { it.start } ?: emptyList()
+                items(events) { event ->
                     eventRow(event)
                     Divider(
                         color = colors.dividerColor(),

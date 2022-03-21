@@ -15,7 +15,8 @@ import org.raleighmasjid.iar.data.NewsRepository
 import org.raleighmasjid.iar.model.json.Announcements
 import org.raleighmasjid.iar.model.json.Event
 import org.raleighmasjid.iar.model.json.News
-import org.raleighmasjid.iar.utils.formatToDay
+import org.raleighmasjid.iar.utils.asLocalDate
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,7 @@ class NewsViewModel @Inject constructor(
     var announcements by mutableStateOf<Announcements?>(null)
         private set
 
-    var events = mutableStateMapOf<String, List<Event>>()
+    var events = mutableStateMapOf<LocalDate, List<Event>>()
         private set
 
     var error by mutableStateOf(false)
@@ -79,7 +80,7 @@ class NewsViewModel @Inject constructor(
     private fun updateNews(news: News) {
         events.apply {
             clear()
-            val groups = news.events.groupBy { it.start.formatToDay() }
+            val groups = news.events.groupBy { it.start.asLocalDate() }
             putAll(groups)
         }
         announcements = news.announcements

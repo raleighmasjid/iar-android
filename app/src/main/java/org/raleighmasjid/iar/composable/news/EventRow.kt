@@ -1,6 +1,5 @@
 package org.raleighmasjid.iar.composable.news
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -9,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,6 +24,14 @@ import org.raleighmasjid.iar.utils.formatToTime
 fun eventRow(event: Event) {
     val colors = if (MaterialTheme.colors.isLight) LightColorMode() else DarkColorMode()
     val navController = LocalNavController.current
+
+    fun timeText(): String {
+        if (event.allDay) {
+            return "All Day"
+        } else {
+            return "${event.start.formatToTime()} - ${event.end.formatToTime()}"
+        }
+    }
 
     Box(modifier = Modifier.clickable {
         navController.navigate(NavigationItem.webRoute(event.url))
@@ -47,7 +53,9 @@ fun eventRow(event: Event) {
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text("${event.start.formatToTime()} - ${event.end.formatToTime()}",
-                        color = colors.postTextColor(),
+                        color = colors.postTextColor())
+                    Text(timeText(),
+                        color = secondaryTextColor,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal)
                     Icon(
