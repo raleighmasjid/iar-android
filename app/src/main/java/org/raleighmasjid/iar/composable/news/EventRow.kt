@@ -26,6 +26,14 @@ import org.raleighmasjid.iar.utils.formatToTime
 fun eventRow(event: Event) {
     val navController = LocalNavController.current
 
+    fun timeText(): String {
+        if (event.allDay) {
+            return "All Day"
+        } else {
+            return "${event.start.formatToTime()} - ${event.end.formatToTime()}"
+        }
+    }
+
     Box(modifier = Modifier.clickable {
         navController.navigate(NavigationItem.webRoute(event.url))
     }) {
@@ -45,7 +53,7 @@ fun eventRow(event: Event) {
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Text("${event.start.formatToTime()} - ${event.end.formatToTime()}",
+                    Text(timeText(),
                         color = secondaryTextColor,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal)

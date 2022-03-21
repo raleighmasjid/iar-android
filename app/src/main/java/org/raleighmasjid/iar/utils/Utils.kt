@@ -5,6 +5,7 @@ import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class Utils {
@@ -30,6 +31,8 @@ class Utils {
             timeFormatter.timeZone = TimeZone.getTimeZone("America/New_York")
             return timeFormatter
         }
+
+        val localDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("E, MMM d, y")
 
         val timeFormatter = timeFormatter()
 
@@ -73,4 +76,8 @@ fun Date.formatToTime(): String {
 
 fun Date.formatToDay(): String {
     return Utils.dayFormatter.format(this)
+}
+
+fun LocalDate.formatToDay(): String {
+    return Utils.localDateFormatter.format(this)
 }
