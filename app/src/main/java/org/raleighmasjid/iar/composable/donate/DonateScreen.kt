@@ -46,7 +46,7 @@ fun DonateScreen() {
             modifier = Modifier.padding(vertical = 48.dp)
         )
         OutlinedButton(
-            onClick = {uriHandler.openUri("https://raleighmasjid.org/donate/")},
+            onClick = {uriHandler.openUri("https://donate.raleighmasjid.org/giving")},
             colors = ButtonDefaults.textButtonColors(
                 backgroundColor = darkGreen.copy(alpha = 0.1f),
                 contentColor = darkGreen

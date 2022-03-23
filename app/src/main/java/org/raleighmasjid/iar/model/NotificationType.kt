@@ -7,14 +7,14 @@ import android.provider.Settings
 
 enum class NotificationType {
     SAADALGHAMIDI {
-        override fun title() = "Saad al-Ghamidi"
+        override fun title() = "Saad Al-Ghamdi"
         override fun channelId() = namespacedId("SAAD_ALGHAMIDI")
         override fun soundUri(context: Context): Uri? {
             return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/saad_alghamdi")
         }
     },
     ALAFASY {
-        override fun title() = "Alafasy"
+        override fun title() = "Mishary Alafasy"
         override fun channelId() = namespacedId("ALAFASY")
         override fun soundUri(context: Context): Uri? {
             return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/alafasy")
