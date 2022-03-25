@@ -24,14 +24,12 @@ import org.raleighmasjid.iar.viewModel.PrayerTimesViewModel
 @Composable
 fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel()) {
     val prayerPagerState = rememberPagerState()
-    val khutbaPagerState = rememberPagerState()
 
     val scope = rememberCoroutineScope()
     LaunchedEffect(viewModel.didResume) {
         if (viewModel.didResume) {
             scope.launch {
                 prayerPagerState.scrollToPage(0)
-                khutbaPagerState.scrollToPage(0)
             }
             viewModel.didResume = false
         }
@@ -57,7 +55,7 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel()) {
             pagerState = prayerPagerState,
             dataStoreManager = viewModel.dataStoreManager
         )
-        FridayScheduleView(viewModel.fridayPrayers, khutbaPagerState)
+        FridayScheduleView(viewModel.fridayPrayers)
 
         if (viewModel.error) {
             AlertDialog(
