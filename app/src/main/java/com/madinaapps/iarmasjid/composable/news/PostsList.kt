@@ -13,7 +13,7 @@ import com.madinaapps.iarmasjid.model.json.Announcements
 import com.madinaapps.iarmasjid.ui.theme.dividerColor
 
 @Composable
-fun announcementsList(
+fun postsList(
     announcements: Announcements?,
     loading: Boolean,
     refreshAction: () -> Unit,
@@ -30,13 +30,13 @@ fun announcementsList(
 
             if (announcements?.featured != null) {
                 item {
-                    announcementRow(announcements.featured)
+                    postRow(announcements.featured)
                     announcementsDivider()
                 }
             }
 
             items(announcements?.posts ?: emptyList()) { post ->
-                announcementRow(post)
+                postRow(post)
                 announcementsDivider()
             }
         }

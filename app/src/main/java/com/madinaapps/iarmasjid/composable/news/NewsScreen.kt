@@ -15,7 +15,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
-import com.madinaapps.iarmasjid.composable.news.announcementsList
+import com.madinaapps.iarmasjid.composable.news.postsList
 import com.madinaapps.iarmasjid.composable.news.eventsList
 import com.madinaapps.iarmasjid.ui.theme.darkGreen
 import com.madinaapps.iarmasjid.ui.theme.lightGreen
@@ -56,7 +56,7 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
             state = pagerState,
         ) { page ->
             if (page == 0) {
-                announcementsList(
+                postsList(
                     announcements = viewModel.announcements,
                     loading = viewModel.loading,
                     refreshAction = {

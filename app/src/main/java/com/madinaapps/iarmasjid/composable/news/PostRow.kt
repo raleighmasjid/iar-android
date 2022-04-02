@@ -29,7 +29,7 @@ import com.madinaapps.iarmasjid.ui.theme.tertiaryTextcolor
 import com.madinaapps.iarmasjid.utils.formatToDay
 
 @Composable
-fun announcementRow(post: Post) {
+fun postRow(post: Post) {
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.clickable {

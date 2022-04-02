@@ -104,7 +104,7 @@ fun WebView(
                     }
 
                     fun utilShouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
-                        if (URLUtil.isNetworkUrl(url)) {
+                        if (URLUtil.isNetworkUrl(url) && !url.endsWith(".pdf")) {
                             val content = WebContent.Url(url)
                             state.content = content
                         } else {
