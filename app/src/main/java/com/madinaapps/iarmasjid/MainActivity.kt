@@ -22,7 +22,6 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import dagger.hilt.android.AndroidEntryPoint
 import com.madinaapps.iarmasjid.composable.*
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
 import com.madinaapps.iarmasjid.utils.DayChangedBroadcastReceiver
@@ -30,6 +29,7 @@ import com.madinaapps.iarmasjid.utils.NotificationController
 import com.madinaapps.iarmasjid.utils.Utils
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 val LocalNavController = compositionLocalOf<NavHostController> { error("missing") }
 
