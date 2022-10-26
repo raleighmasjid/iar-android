@@ -23,6 +23,10 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.madinaapps.iarmasjid.composable.*
+import com.madinaapps.iarmasjid.composable.donate.DonateScreen
+import com.madinaapps.iarmasjid.composable.more.MoreScreen
+import com.madinaapps.iarmasjid.composable.news.NewsScreen
+import com.madinaapps.iarmasjid.composable.prayer.PrayerScreen
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
 import com.madinaapps.iarmasjid.utils.DayChangedBroadcastReceiver
 import com.madinaapps.iarmasjid.utils.NotificationController

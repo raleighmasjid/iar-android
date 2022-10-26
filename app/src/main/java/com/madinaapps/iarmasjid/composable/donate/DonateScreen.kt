@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid.composable
+package com.madinaapps.iarmasjid.composable.donate
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

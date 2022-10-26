@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid.composable
+package com.madinaapps.iarmasjid.composable.news
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Tab
@@ -14,12 +14,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.launch
-import com.madinaapps.iarmasjid.composable.news.postsList
-import com.madinaapps.iarmasjid.composable.news.eventsList
 import com.madinaapps.iarmasjid.ui.theme.darkGreen
 import com.madinaapps.iarmasjid.ui.theme.lightGreen
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalPagerApi::class)

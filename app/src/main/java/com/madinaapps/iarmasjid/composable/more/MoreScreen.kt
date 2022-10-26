@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid.composable
+package com.madinaapps.iarmasjid.composable.more
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,11 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.launch
 import com.madinaapps.iarmasjid.BuildConfig
-import com.madinaapps.iarmasjid.composable.more.MoreRow
 import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.viewModel.SettingsViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel()) {

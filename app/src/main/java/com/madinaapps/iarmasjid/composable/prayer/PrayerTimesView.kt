@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid.composable
+package com.madinaapps.iarmasjid.composable.prayer
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.madinaapps.iarmasjid.composable.PrayerDayView
 import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 

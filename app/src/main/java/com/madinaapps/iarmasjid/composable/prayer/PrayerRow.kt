@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid.composable
+package com.madinaapps.iarmasjid.composable.prayer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
