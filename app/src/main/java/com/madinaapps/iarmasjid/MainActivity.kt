@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -152,13 +153,13 @@ fun Navigation(
             NavigationItem.baseWebRoute,
             enterTransition = {
                 slideIntoContainer(
-                    AnimatedContentScope.SlideDirection.Left,
+                    AnimatedContentTransitionScope.SlideDirection.Left,
                     animationSpec = tween(220)
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
-                    AnimatedContentScope.SlideDirection.Right,
+                    AnimatedContentTransitionScope.SlideDirection.Right,
                     animationSpec = tween(220)
                 )
             }

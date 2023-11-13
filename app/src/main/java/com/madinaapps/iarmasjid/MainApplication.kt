@@ -2,6 +2,7 @@ package com.madinaapps.iarmasjid
 
 import android.app.Application
 import com.onesignal.OneSignal
+import com.onesignal.debug.LogLevel
 import dagger.hilt.android.HiltAndroidApp
 
 const val ONESIGNAL_APP_ID = "01fcf852-7b3f-4b53-a733-4cb8241bd193"
@@ -12,10 +13,9 @@ class MainApplication: Application() {
         super.onCreate()
 
         // Logging set to help debug issues, remove before releasing your app.
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+        OneSignal.Debug.logLevel = LogLevel.VERBOSE
 
         // OneSignal Initialization
-        OneSignal.initWithContext(this)
-        OneSignal.setAppId(ONESIGNAL_APP_ID)
+        OneSignal.initWithContext(this, ONESIGNAL_APP_ID)
     }
 }
