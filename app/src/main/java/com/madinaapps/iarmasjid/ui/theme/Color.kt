@@ -5,10 +5,10 @@ import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF1B5E20)
 val primaryDark = Color(0xFF2B9733)
-val surfaceLight = Color(0x1A1B5E20)
-val surfaceDark = Color(0x402B9733)
-val onSurfaceLight = Color(0xFF4B5555)
-val onSurfaceDark = Color(0xFFC7C7CC)
+val primaryVariantLight = Color(0x1A1B5E20)
+val primaryVariantDark = Color(0x402B9733)
+val surfaceLight = Color(0xFF1B5E20)
+val surfaceDark = Color(0xFF030303)
 
 val Colors.currentPrayerBackground: Color
     get() = if (isLight) Color(0xFFDCF9D7) else Color(0x592B9733)
@@ -33,5 +33,8 @@ val Colors.rowColor: Color
 
 val Colors.divider: Color
     get() = if (isLight) Color(0xFFAEAEB2) else Color(0xCCAEAEB2)
+
+val Colors.bottomNavText: Color
+    get() = if (isLight) Color(0xFFFFFFFF) else Color(0xFF2B9733)
 
 val darkGreen = Color(0xFF1B5E20)

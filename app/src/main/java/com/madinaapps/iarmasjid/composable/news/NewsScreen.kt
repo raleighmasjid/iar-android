@@ -37,7 +37,7 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
                     Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                 )
             },
-            backgroundColor = MaterialTheme.colors.surface,
+            backgroundColor = MaterialTheme.colors.primaryVariant,
             contentColor = MaterialTheme.colors.primary
         ) {
             titles.forEachIndexed { index, title ->
