@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -12,6 +11,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -22,9 +23,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.madinaapps.iarmasjid.composable.*
 import com.madinaapps.iarmasjid.composable.donate.DonateScreen
 import com.madinaapps.iarmasjid.composable.more.MoreScreen
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IARTheme {
-                val navController = rememberAnimatedNavController()
+                val navController = rememberNavController()
                 CompositionLocalProvider(LocalNavController provides navController) {
                     Scaffold(bottomBar = {
                         BottomNavigationBar(navController, newsViewModel.showBadge)
@@ -104,7 +105,7 @@ fun Navigation(
     prayerTimesViewModel: PrayerTimesViewModel,
     newsViewModel: NewsViewModel
 ) {
-    AnimatedNavHost(navController, startDestination = NavigationItem.Prayer.route) {
+    NavHost(navController, startDestination = NavigationItem.Prayer.route) {
         composable(
             NavigationItem.Prayer.route,
             enterTransition = { EnterTransition.None },
@@ -112,8 +113,14 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(text = NavigationItem.Prayer.title) })
-            }) {
-                PrayerScreen(prayerTimesViewModel)
+            }) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues = innerPadding)
+                ) {
+                    PrayerScreen(prayerTimesViewModel)
+                }
             }
         }
         composable(
@@ -127,8 +134,14 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(text = NavigationItem.News.title) })
-            }) {
-                NewsScreen(newsViewModel)
+            }) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues = innerPadding)
+                ) {
+                    NewsScreen(newsViewModel)
+                }
             }
         }
         composable(
@@ -138,8 +151,14 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(text = NavigationItem.Donate.title) })
-            }) {
-                DonateScreen()
+            }) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues = innerPadding)
+                ) {
+                    DonateScreen()
+                }
             }
         }
         composable(
@@ -149,8 +168,14 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(text = NavigationItem.More.title) })
-            }) {
-                MoreScreen()
+            }) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues = innerPadding)
+                ) {
+                    MoreScreen()
+                }
             }
         }
         composable(
