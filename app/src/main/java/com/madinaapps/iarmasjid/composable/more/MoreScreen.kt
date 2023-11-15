@@ -82,7 +82,7 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel()) {
         }
 
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
-            Text(text = "The Islamic Assocation of Raleigh", fontSize = 12.sp, color = Color.Gray)
+            Text(text = "The Islamic Association of Raleigh", fontSize = 12.sp, color = Color.Gray)
             Text(text = "Version $versionNumber ($buildNumber)", fontSize = 12.sp, color = Color.Gray)
         }
 

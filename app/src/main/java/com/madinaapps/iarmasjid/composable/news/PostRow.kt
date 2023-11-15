@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,9 +24,7 @@ import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.ui.theme.darkGreen
-import com.madinaapps.iarmasjid.ui.theme.secondaryTextColor
-import com.madinaapps.iarmasjid.ui.theme.tertiaryTextcolor
+import com.madinaapps.iarmasjid.ui.theme.*
 import com.madinaapps.iarmasjid.utils.formatToDay
 
 @Composable
@@ -48,33 +47,33 @@ fun postRow(post: Post) {
                 modifier = Modifier
                     .size(54.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White),
+                    .background(MaterialTheme.colors.background),
                 contentScale = ContentScale.Crop
             )
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1.0f)) {
                 Text(post.title,
-                    color = Color.Black,
+                    color = MaterialTheme.colors.onBackground,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
                 Text(post.text,
-                    color = secondaryTextColor,
+                    color = MaterialTheme.colors.secondaryText,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     lineHeight = 18.sp)
                 Text(post.date.formatToDay(),
-                    color = tertiaryTextcolor,
+                    color = MaterialTheme.colors.tertiaryText,
                     fontSize = 12.sp)
             }
 
             Icon(
                 painterResource(id = R.drawable.ic_nav_chevron),
                 contentDescription = null,
-                tint = darkGreen,
+                tint = Color.Gray,
                 modifier = Modifier.size(6.dp, 12.dp))
         }
     }

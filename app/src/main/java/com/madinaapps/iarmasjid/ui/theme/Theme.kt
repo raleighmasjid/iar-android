@@ -5,39 +5,35 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-        primary = darkGreen,
-        primaryVariant = lightGreen,
-        secondary = Teal200,
 
+private val lightColorPalette = lightColors(
+    primary = primaryLight,
+    background = Color.White,
+    surface = surfaceLight,
+    onBackground = Color.Black,
+    onSurface = onSurfaceLight,
 )
 
-private val LightColorPalette = lightColors(
-        primary = darkGreen,
-        primaryVariant = lightGreen,
-        secondary = Teal200,
-
-
-        /* Other default colors to override
-
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+private val darkColorPalette = darkColors(
+        primary = primaryDark,
+        background = Color.Black,
+        surface = surfaceDark,
+        onBackground = Color.White,
+        onSurface = onSurfaceDark,
 )
 
 @Composable
 fun IARTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-//    val colors = if (darkTheme) {
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
+    val colors = if (darkTheme) {
+        darkColorPalette
+    } else {
+        lightColorPalette
+    }
 
     MaterialTheme(
-            colors = LightColorPalette,
+            colors = colors,
             typography = Typography,
             shapes = Shapes,
             content = content

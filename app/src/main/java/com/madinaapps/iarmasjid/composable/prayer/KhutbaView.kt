@@ -21,7 +21,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.FridayPrayer
-import com.madinaapps.iarmasjid.ui.theme.darkGreen
+import com.madinaapps.iarmasjid.ui.theme.*
 
 @Composable
 fun KhutbaView(fridayPrayer: FridayPrayer) {
@@ -47,7 +47,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
-                        color = darkGreen
+                        color = primaryLight
                     )
                 }
                 Spacer(Modifier.weight(1f))

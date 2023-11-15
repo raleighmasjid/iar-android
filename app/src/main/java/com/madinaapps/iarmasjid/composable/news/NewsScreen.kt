@@ -1,6 +1,7 @@
 package com.madinaapps.iarmasjid.composable.news
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -14,8 +15,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
-import com.madinaapps.iarmasjid.ui.theme.darkGreen
-import com.madinaapps.iarmasjid.ui.theme.lightGreen
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import kotlinx.coroutines.launch
 
@@ -38,8 +37,8 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
                     Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                 )
             },
-            backgroundColor = lightGreen,
-            contentColor = darkGreen
+            backgroundColor = MaterialTheme.colors.surface,
+            contentColor = MaterialTheme.colors.primary
         ) {
             titles.forEachIndexed { index, title ->
                 Tab(

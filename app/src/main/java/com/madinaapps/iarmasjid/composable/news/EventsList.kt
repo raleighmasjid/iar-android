@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.madinaapps.iarmasjid.model.json.Event
-import com.madinaapps.iarmasjid.ui.theme.dividerColor
+import com.madinaapps.iarmasjid.ui.theme.*
 import com.madinaapps.iarmasjid.utils.formatToDay
 import java.time.LocalDate
 
@@ -30,7 +31,7 @@ fun eventsList(events: Map<LocalDate, List<Event>>, loading: Boolean, refreshAct
                 items(events) { event ->
                     eventRow(event)
                     Divider(
-                        color = dividerColor,
+                        color = MaterialTheme.colors.divider,
                         thickness = 0.5.dp,
                         modifier = Modifier.padding(start = 32.dp, end = 16.dp)
                     )

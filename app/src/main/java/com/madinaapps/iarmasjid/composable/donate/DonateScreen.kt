@@ -5,7 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,8 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.R
-import com.madinaapps.iarmasjid.ui.theme.darkGreen
-import com.madinaapps.iarmasjid.ui.theme.secondaryTextColor
+import com.madinaapps.iarmasjid.ui.theme.*
 
 @Composable
 fun DonateScreen() {
@@ -36,24 +36,28 @@ fun DonateScreen() {
             painter = painterResource(id = R.drawable.donate_graphic),
             contentDescription = null,
             contentScale = ContentScale.Inside,
-            modifier = Modifier.weight(1f, fill = false).padding(top = 24.dp)
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .padding(top = 24.dp)
         )
         Text(
             "Your Masjid relies on the generous people of this community to keep its doors open. Consider donating to help cover our running costs.",
             textAlign = TextAlign.Center,
-            color = secondaryTextColor,
+            color = MaterialTheme.colors.secondaryText,
             fontSize = 16.sp,
             modifier = Modifier.padding(vertical = 48.dp)
         )
-        OutlinedButton(
+        Button(
             onClick = {uriHandler.openUri("https://donate.raleighmasjid.org/giving")},
-            colors = ButtonDefaults.textButtonColors(
-                backgroundColor = darkGreen.copy(alpha = 0.1f),
-                contentColor = darkGreen
+            elevation = null,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MaterialTheme.colors.surface,
+                contentColor = MaterialTheme.colors.primary
             ),
-            border = BorderStroke(1.dp, Color.White),
             shape = RoundedCornerShape(27.dp),
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
         ) {
             Text("Donate Now",
                 modifier = Modifier.padding(vertical = 8.dp))

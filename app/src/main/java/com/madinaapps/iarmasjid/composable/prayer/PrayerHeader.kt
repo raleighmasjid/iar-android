@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,7 +18,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.PrayerDay
-import com.madinaapps.iarmasjid.ui.theme.darkGreen
 import com.madinaapps.iarmasjid.utils.formatToDay
 import kotlinx.coroutines.launch
 
@@ -65,9 +65,9 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         },
         enabled = canGoBack(),
         modifier = Modifier.size(75.dp, 75.dp)) {
-            var buttonTint = darkGreen
+            var buttonTint = MaterialTheme.colors.primary
             if (!canGoBack()) {
-                buttonTint = buttonTint.copy(alpha = 0.3f)
+                buttonTint = MaterialTheme.colors.onBackground.copy(alpha = 0.3f)
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_left),
@@ -95,9 +95,9 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         },
         enabled = canGoForward(),
         modifier = Modifier.size(75.dp, 75.dp)) {
-            var buttonTint = darkGreen
+            var buttonTint = MaterialTheme.colors.primary
             if (!canGoForward()) {
-                buttonTint = buttonTint.copy(alpha = 0.3f)
+                buttonTint = MaterialTheme.colors.onBackground.copy(alpha = 0.3f)
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_right),

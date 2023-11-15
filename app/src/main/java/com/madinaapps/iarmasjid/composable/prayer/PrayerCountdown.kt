@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,42 +19,38 @@ import com.madinaapps.iarmasjid.viewModel.PrayerCountdownViewModel
 
 @Composable
 fun PrayerCountdown(viewModel: PrayerCountdownViewModel) {
-
-    fun nextPrayerText(): String {
-        val upcoming = viewModel.upcomingPrayer
+    val upcoming = viewModel.upcomingPrayer
+    val nextPrayerText: String =
         if (upcoming != null) {
-            return "${upcoming.prayer.title()} is in"
+            "${upcoming.prayer.title()} is in"
         } else {
-            return " "
+            " "
         }
-    }
 
-    fun countdownText(): String {
-        if (viewModel.upcomingPrayer != null) {
-            return Utils.formatDuration(viewModel.timeRemaining)
+    val countdownText: String =
+        if (upcoming != null) {
+            Utils.formatDuration(viewModel.timeRemaining)
         } else {
-            return " "
+            " "
         }
-    }
 
-    fun badgeColor(): Color {
-        if (viewModel.upcomingPrayer != null) {
-            return badgeBackground
+    val badgeColor: Color =
+        if (upcoming != null) {
+            MaterialTheme.colors.badgeBackground
         } else {
-            return Color(0)
+            Color(0)
         }
-    }
 
     Column(modifier = Modifier.padding(start = 20.dp, top = 20.dp)) {
-        Box(modifier = Modifier.background(badgeColor(), RoundedCornerShape(8.dp))) {
-            Text(nextPrayerText(),
+        Box(modifier = Modifier.background(badgeColor, RoundedCornerShape(8.dp))) {
+            Text(nextPrayerText,
                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
             )
         }
 
-        Text(countdownText(),
+        Text(countdownText,
             fontWeight = FontWeight.SemiBold,
             fontSize = 32.sp
         )

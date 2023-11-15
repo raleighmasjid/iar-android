@@ -10,8 +10,10 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -56,7 +58,9 @@ class MainActivity : ComponentActivity() {
                     Scaffold(bottomBar = {
                         BottomNavigationBar(navController, newsViewModel.showBadge)
                     }) { innerPadding ->
-                        Box(modifier = Modifier.padding(innerPadding)) {
+                        Box(modifier = Modifier
+                            .padding(innerPadding)
+                            .background(MaterialTheme.colors.background)) {
                             Navigation(navController, prayerTimesViewModel, newsViewModel)
                         }
                     }
