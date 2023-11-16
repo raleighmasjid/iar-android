@@ -1,7 +1,12 @@
 package com.madinaapps.iarmasjid.composable.news
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -18,20 +23,15 @@ import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Event
-import com.madinaapps.iarmasjid.ui.theme.*
+import com.madinaapps.iarmasjid.ui.theme.secondaryText
+import com.madinaapps.iarmasjid.ui.theme.tertiaryText
 import com.madinaapps.iarmasjid.utils.formatToTime
 
 @Composable
-fun eventRow(event: Event) {
+fun EventRow(event: Event) {
     val navController = LocalNavController.current
 
-    fun timeText(): String {
-        if (event.allDay) {
-            return "All Day"
-        } else {
-            return "${event.start.formatToTime()} - ${event.end.formatToTime()}"
-        }
-    }
+    val timeText: String = if (event.allDay) "All Day" else "${event.start.formatToTime()} - ${event.end.formatToTime()}"
 
     Box(modifier = Modifier.clickable {
         navController.navigate(NavigationItem.webRoute(event.url))
@@ -52,7 +52,7 @@ fun eventRow(event: Event) {
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Text(timeText(),
+                    Text(timeText,
                         color = MaterialTheme.colors.secondaryText,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal)

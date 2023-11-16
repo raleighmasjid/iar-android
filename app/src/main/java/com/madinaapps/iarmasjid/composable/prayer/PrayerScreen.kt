@@ -1,6 +1,8 @@
 package com.madinaapps.iarmasjid.composable.prayer
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
@@ -14,16 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 import com.madinaapps.iarmasjid.viewModel.PrayerCountdownViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel()) {
-    val prayerPagerState = rememberPagerState()
+    val prayerPagerState = rememberPagerState(pageCount = { viewModel.prayerDays.count() })
 
     val scope = rememberCoroutineScope()
     LaunchedEffect(viewModel.didResume) {

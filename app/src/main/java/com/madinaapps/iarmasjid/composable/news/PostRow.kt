@@ -3,7 +3,12 @@ package com.madinaapps.iarmasjid.composable.news
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -19,16 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.ui.theme.*
+import com.madinaapps.iarmasjid.ui.theme.secondaryText
+import com.madinaapps.iarmasjid.ui.theme.tertiaryText
 import com.madinaapps.iarmasjid.utils.formatToDay
 
 @Composable
-fun postRow(post: Post) {
+fun PostRow(post: Post) {
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.clickable {
@@ -40,8 +46,8 @@ fun postRow(post: Post) {
             horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val imageData: Any? = post.image ?: R.drawable.news_placeholder
             Image(
-                painter = rememberImagePainter(
-                    data = imageData
+                painter = rememberAsyncImagePainter(
+                    model = imageData
                 ),
                 contentDescription = null,
                 modifier = Modifier

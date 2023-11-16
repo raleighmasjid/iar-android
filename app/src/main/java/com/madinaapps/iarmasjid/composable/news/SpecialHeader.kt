@@ -2,7 +2,13 @@ package com.madinaapps.iarmasjid.composable.news
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -11,7 +17,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,10 +26,11 @@ import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.ui.theme.*
+import com.madinaapps.iarmasjid.ui.theme.currentPrayerBackground
+import com.madinaapps.iarmasjid.ui.theme.currentPrayerBorder
 
 @Composable
-fun specialHeader(special: Post) {
+fun SpecialHeader(special: Post) {
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.fillMaxWidth()) {

@@ -8,13 +8,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun dateHeader(date: String) {
+fun DateHeader(date: String) {
     Box(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxWidth()) {
         Text(text = date,
             fontSize = 21.sp,

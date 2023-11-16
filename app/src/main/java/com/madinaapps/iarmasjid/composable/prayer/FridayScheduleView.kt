@@ -9,10 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.madinaapps.iarmasjid.model.json.FridayPrayer
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun FridayScheduleView(fridayPrayers: List<FridayPrayer>) {
     Column(modifier = Modifier.padding(vertical = 20.dp)) {

@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,10 +22,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.madinaapps.iarmasjid.composable.*
+import androidx.navigation.compose.rememberNavController
+import com.madinaapps.iarmasjid.composable.BottomNavigationBar
+import com.madinaapps.iarmasjid.composable.WebScreen
 import com.madinaapps.iarmasjid.composable.donate.DonateScreen
 import com.madinaapps.iarmasjid.composable.more.MoreScreen
 import com.madinaapps.iarmasjid.composable.news.NewsScreen
@@ -46,7 +46,6 @@ class MainActivity : ComponentActivity() {
     private val prayerTimesViewModel: PrayerTimesViewModel by viewModels()
     private val newsViewModel: NewsViewModel by viewModels()
 
-    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -97,8 +96,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-@ExperimentalAnimationApi
 @Composable
 fun Navigation(
     navController: NavHostController,
@@ -129,6 +126,12 @@ fun Navigation(
                 when (initialState.destination.route) {
                     NavigationItem.baseWebRoute -> null
                     else -> EnterTransition.None
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    NavigationItem.baseWebRoute -> null
+                    else -> ExitTransition.None
                 }
             }
         ) {

@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid
+package com.madinaapps.iarmasjid.composable
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Badge
@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.ui.theme.bottomNavText
 
 @Composable

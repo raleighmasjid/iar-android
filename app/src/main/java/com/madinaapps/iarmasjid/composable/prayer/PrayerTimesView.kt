@@ -1,6 +1,9 @@
 package com.madinaapps.iarmasjid.composable.prayer
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,20 +11,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.madinaapps.iarmasjid.composable.PrayerDayView
 import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrayerTimesView(prayerDays: List<PrayerDay>, pagerState: PagerState, dataStoreManager: DataStoreManager) {
     val showTaraweeh = prayerDays.any { it.hasTaraweeh() }
     Column {
         prayerColumnHeaders()
-        HorizontalPager(count = prayerDays.count(), state = pagerState) { page ->
+        HorizontalPager(state = pagerState) { page ->
             PrayerDayView(prayerDays.getOrNull(page), dataStoreManager, showTaraweeh)
         }
     }

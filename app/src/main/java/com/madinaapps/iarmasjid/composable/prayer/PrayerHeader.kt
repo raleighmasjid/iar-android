@@ -1,7 +1,14 @@
 package com.madinaapps.iarmasjid.composable.prayer
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -14,59 +21,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.utils.formatToDay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
 
     val scope = rememberCoroutineScope()
-
-    fun prayerDay(): PrayerDay? {
-        return prayerDays.elementAtOrNull(pagerState.currentPage)
-    }
-
-    fun canGoBack(): Boolean {
-        return pagerState.currentPage > 0
-    }
-
-    fun canGoForward(): Boolean {
-        return pagerState.currentPage < prayerDays.count() - 1
-    }
-
-    fun dateText(): String {
-        val day = prayerDay()
-        if (day != null) {
-            return day.date.formatToDay()
-        } else {
-            return "Loading..."
-        }
-    }
-
-    fun hijriText(): String {
-        val day = prayerDay()
-        if (day != null) {
-            return day.hijri.fomatted()
-        } else {
-            return " "
-        }
-    }
+    val prayerDay: PrayerDay? = prayerDays.elementAtOrNull(pagerState.currentPage)
+    val canGoBack: Boolean = pagerState.currentPage > 0
+    val canGoForward: Boolean = pagerState.currentPage < prayerDays.count() - 1
+    val dateText: String = prayerDay?.date?.formatToDay() ?: "Loading..."
+    val hijriText: String = prayerDay?.hijri?.fomatted() ?: ""
 
     Row {
         IconButton(onClick = {
-            if (canGoBack()) {
+            if (canGoBack) {
                 scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
             }
         },
-        enabled = canGoBack(),
+        enabled = canGoBack,
         modifier = Modifier.size(75.dp, 75.dp)) {
             var buttonTint = MaterialTheme.colors.primary
-            if (!canGoBack()) {
+            if (!canGoBack) {
                 buttonTint = MaterialTheme.colors.onBackground.copy(alpha = 0.3f)
             }
             Icon(
@@ -83,20 +63,20 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 modifier = Modifier.clickable {
                 scope.launch { pagerState.animateScrollToPage(0) }
             }) {
-                Text(dateText(), fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
-                Text(hijriText(), fontWeight = FontWeight.Normal, fontSize = 13.sp)
+                Text(dateText, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
+                Text(hijriText, fontWeight = FontWeight.Normal, fontSize = 13.sp)
             }
         }
 
         IconButton(onClick = {
-            if (canGoForward()) {
+            if (canGoForward) {
                 scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
             }
         },
-        enabled = canGoForward(),
+        enabled = canGoForward,
         modifier = Modifier.size(75.dp, 75.dp)) {
             var buttonTint = MaterialTheme.colors.primary
-            if (!canGoForward()) {
+            if (!canGoForward) {
                 buttonTint = MaterialTheme.colors.onBackground.copy(alpha = 0.3f)
             }
             Icon(
