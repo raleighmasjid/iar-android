@@ -1,8 +1,8 @@
 plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
-    id "kotlin-kapt"
     id "dagger.hilt.android.plugin"
+    id "com.google.devtools.ksp"
 }
 
 android {
@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.madinaapps.iarmasjid"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 217
         versionName "3.1.0"
 
@@ -29,14 +29,15 @@ android {
     }
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion "1.5.11"
@@ -72,16 +73,12 @@ dependencies {
     implementation 'com.google.dagger:hilt-android:2.51.1'
     implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
     implementation 'io.coil-kt:coil-compose:2.6.0'
-    kapt 'com.google.dagger:hilt-android-compiler:2.51.1'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.15.1'
+    ksp 'com.google.dagger:hilt-android-compiler:2.51.1'
+    ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.1'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-}
-
-kapt {
-    correctErrorTypes = true
 }
