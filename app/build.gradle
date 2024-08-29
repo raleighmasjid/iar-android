@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.onesignal:OneSignal:5.1.13'
+    implementation 'com.onesignal:OneSignal:5.1.20'
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
@@ -70,10 +70,10 @@ dependencies {
     implementation 'com.squareup.moshi:moshi:1.15.1'
     implementation 'com.squareup.moshi:moshi-adapters:1.15.1'
     implementation 'androidx.datastore:datastore-preferences:1.1.1'
-    implementation 'com.google.dagger:hilt-android:2.51.1'
+    implementation 'com.google.dagger:hilt-android:2.52'
     implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
-    implementation 'io.coil-kt:coil-compose:2.6.0'
-    ksp 'com.google.dagger:hilt-android-compiler:2.51.1'
+    implementation 'io.coil-kt:coil-compose:2.7.0'
+    ksp 'com.google.dagger:hilt-android-compiler:2.52'
     ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.1'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.1'
     testImplementation "junit:junit:4.13.2"
