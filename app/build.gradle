@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.madinaapps.iarmasjid"
         minSdk 23
-        targetSdk 34
+        targetSdk 35
         versionCode 217
         versionName "3.1.0"
 
@@ -51,31 +51,31 @@ android {
 }
 
 dependencies {
-    implementation 'com.onesignal:OneSignal:5.1.21'
-    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'com.onesignal:OneSignal:5.1.27'
+    implementation 'androidx.core:core-ktx:1.15.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.runtime:runtime:$compose_version"
-    implementation 'androidx.navigation:navigation-compose:2.8.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.6'
-    implementation 'androidx.activity:activity-compose:1.9.2'
+    implementation 'androidx.navigation:navigation-compose:2.8.6'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
+    implementation 'androidx.activity:activity-compose:1.10.0'
     implementation 'com.google.accompanist:accompanist-pager:0.36.0'
     implementation 'com.google.accompanist:accompanist-pager-indicators:0.36.0'
     implementation 'com.google.accompanist:accompanist-swiperefresh:0.36.0'
     implementation 'com.google.accompanist:accompanist-navigation-animation:0.36.0'
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.11.0'
-    implementation 'com.squareup.moshi:moshi:1.15.1'
-    implementation 'com.squareup.moshi:moshi-adapters:1.15.1'
-    implementation 'androidx.datastore:datastore-preferences:1.1.1'
-    implementation 'com.google.dagger:hilt-android:2.52'
+    implementation 'com.squareup.moshi:moshi:1.15.2'
+    implementation 'com.squareup.moshi:moshi-adapters:1.15.2'
+    implementation 'androidx.datastore:datastore-preferences:1.1.2'
+    implementation 'com.google.dagger:hilt-android:2.55'
     implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
     implementation 'io.coil-kt:coil-compose:2.7.0'
-    ksp 'com.google.dagger:hilt-android-compiler:2.52'
-    ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.1'
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+    ksp 'com.google.dagger:hilt-android-compiler:2.55'
+    ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.2'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.2.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
