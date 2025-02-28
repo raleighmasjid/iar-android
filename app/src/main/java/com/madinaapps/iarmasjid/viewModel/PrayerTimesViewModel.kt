@@ -9,16 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.data.PrayerScheduleRepository
 import com.madinaapps.iarmasjid.model.NotificationType
@@ -29,7 +19,16 @@ import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.model.json.PrayerSchedule
 import com.madinaapps.iarmasjid.utils.NotificationController
 import com.madinaapps.iarmasjid.utils.asLocalDate
-import java.util.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,7 +66,7 @@ class PrayerTimesViewModel @Inject constructor(
         }.start()
 
         viewModelScope.launch {
-            var flows = Prayer.values().map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Unit } }.toMutableList()
+            val flows = Prayer.entries.map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Unit } }.toMutableList()
             flows.add(dataStoreManager.getNotificationType().map { Unit })
             val combinedFlows = combine(flows = flows) { it }
             combinedFlows.collect {

@@ -1,5 +1,6 @@
 package com.madinaapps.iarmasjid.composable
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Badge
 import androidx.compose.material.BadgedBox
@@ -21,7 +22,7 @@ import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.ui.theme.bottomNavText
 
 @Composable
-fun BottomNavigationBar(navController: NavController, showBadge: Boolean) {
+fun BottomNavigationBar(navController: NavController, showBadge: Boolean, modifier: Modifier) {
     val items = listOf(
         NavigationItem.Prayer,
         NavigationItem.News,
@@ -36,6 +37,7 @@ fun BottomNavigationBar(navController: NavController, showBadge: Boolean) {
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             BottomNavigationItem(
+                modifier = Modifier.navigationBarsPadding(),
                 icon = {
                     BadgedBox(badge = {
                         if (item == NavigationItem.News && showBadge) {

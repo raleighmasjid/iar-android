@@ -12,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 CompositionLocalProvider(LocalNavController provides navController) {
                     Scaffold(bottomBar = {
-                        BottomNavigationBar(navController, newsViewModel.showBadge)
+                        BottomNavigationBar(navController, newsViewModel.showBadge,  modifier = Modifier.navigationBarsPadding())
                     }) { innerPadding ->
                         Box(modifier = Modifier
                             .padding(innerPadding)

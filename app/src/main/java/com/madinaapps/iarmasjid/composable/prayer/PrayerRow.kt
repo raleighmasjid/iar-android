@@ -23,10 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.R
-import com.madinaapps.iarmasjid.ui.theme.*
+import com.madinaapps.iarmasjid.ui.theme.currentPrayerBackground
+import com.madinaapps.iarmasjid.ui.theme.currentPrayerBorder
+import com.madinaapps.iarmasjid.ui.theme.prayerBorder
 import com.madinaapps.iarmasjid.utils.formatToTime
 import kotlinx.coroutines.flow.Flow
-import java.util.*
+import java.util.Date
 
 @Composable
 fun PrayerRow(prayer: String,
@@ -77,7 +79,18 @@ fun PrayerRow(prayer: String,
 
         IconToggleButton(
             checked = notification,
-            onCheckedChange = { toggleAction(it) },
+            onCheckedChange = {
+//                if (permissionState.status.isGranted) {
+//                    toggleAction(it)
+//                } else if (permissionState.status.shouldShowRationale) {
+//                    pendingToggle = Pair(true, it)
+//                    showPermissionAlert = true
+//                } else {
+//                    pendingToggle = Pair(true, it)
+//                    permissionState.launchPermissionRequest()
+//                }
+                toggleAction(it)
+            },
             modifier = Modifier.size(61.dp, 41.dp).alpha(alarmAlpha)
         ) {
             var buttonImage = R.drawable.ic_alarm_off

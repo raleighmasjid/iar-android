@@ -2,12 +2,20 @@ package com.madinaapps.iarmasjid.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
 import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.model.Prayer
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userData")
 
@@ -68,7 +76,7 @@ class DataStoreManager(appContext: Context) {
     }
 
     fun enabledNotifications(): List<Prayer> {
-        return Prayer.values().filter { runBlocking { getNotificationEnabled(it).first() } }
+        return Prayer.entries.filter { runBlocking { getNotificationEnabled(it).first() } }
     }
 
     suspend fun getCachedPrayerScheduleData(): String? {

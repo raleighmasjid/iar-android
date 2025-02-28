@@ -16,7 +16,7 @@ import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 class NotificationController {
     companion object {
@@ -30,7 +30,7 @@ class NotificationController {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationType.values().forEach { type ->
+                NotificationType.entries.forEach { type ->
                     createChannel(type.title(), type.channelId(), type.soundUri(context), context)
                 }
             }
