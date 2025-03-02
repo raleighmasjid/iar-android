@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,6 +36,7 @@ import com.madinaapps.iarmasjid.composable.prayer.PrayerScreen
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
 import com.madinaapps.iarmasjid.utils.DayChangedBroadcastReceiver
 import com.madinaapps.iarmasjid.utils.NotificationController
+import com.madinaapps.iarmasjid.utils.RefreshNotificationsWorker
 import com.madinaapps.iarmasjid.utils.Utils
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
@@ -72,20 +74,23 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        RefreshNotificationsWorker.schedulePeriodic(applicationContext)
         prayerTimesViewModel.fetchLatest()
         prayerTimesViewModel.didResume = true
 
         newsViewModel.fetchLatest()
 
-        this?.registerReceiver(
+        ContextCompat.registerReceiver(
+            this,
             dayChangedBroadcastReceiver,
-            DayChangedBroadcastReceiver.getIntentFilter()
+            DayChangedBroadcastReceiver.getIntentFilter(),
+            ContextCompat.RECEIVER_NOT_EXPORTED
         )
     }
 
     override fun onPause() {
         super.onPause()
-        this?.unregisterReceiver(dayChangedBroadcastReceiver)
+        this.unregisterReceiver(dayChangedBroadcastReceiver)
     }
 
     private val dayChangedBroadcastReceiver = object : DayChangedBroadcastReceiver() {

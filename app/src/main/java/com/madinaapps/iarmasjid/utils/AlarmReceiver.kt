@@ -1,11 +1,14 @@
 package com.madinaapps.iarmasjid.utils
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.madinaapps.iarmasjid.MainActivity
@@ -14,7 +17,7 @@ import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.ui.theme.darkGreen
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 
 class AlarmReceiver: BroadcastReceiver() {
@@ -24,8 +27,6 @@ class AlarmReceiver: BroadcastReceiver() {
 
         val prayerName = intent.getStringExtra(NotificationController.PRAYER_NAME_KEY) ?: return
         val typeName = intent.getStringExtra(NotificationController.NOTIFICATION_TYPE_KEY) ?: return
-        val prayerTime = intent.getStringExtra(NotificationController.PRAYER_TIME_KEY) ?: "-"
-        Log.d("INFO", "Received Broadcast for prayer $prayerName, type $typeName")
         val prayer: Prayer
         val type: NotificationType
         try {
@@ -38,7 +39,6 @@ class AlarmReceiver: BroadcastReceiver() {
 
         val title = if (prayer.notificationOffset() > 0) "${prayer.title()} is in ${prayer.notificationOffset()} minutes" else prayer.title()
 
-        Log.d("INFO", "building notification with channel ${type.channelId()} sound ${type.soundUri(context)}")
         val builder = NotificationCompat.Builder(context, type.channelId())
             .setContentTitle(title)
             .setSmallIcon(R.drawable.ic_stat_onesignal_default)
@@ -51,7 +51,9 @@ class AlarmReceiver: BroadcastReceiver() {
             .setShowWhen(true)
             .setWhen(Instant.now().toEpochMilli())
         with(NotificationManagerCompat.from(context)) {
-            notify(UUID.randomUUID().hashCode(), builder.build())
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                notify(UUID.randomUUID().hashCode(), builder.build())
+            }
         }
     }
 }

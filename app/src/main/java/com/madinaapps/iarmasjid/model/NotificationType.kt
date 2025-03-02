@@ -37,7 +37,7 @@ enum class NotificationType {
 
     companion object {
         fun options(): List<NotificationType> {
-            return NotificationType.values().filter { it != SHURUQ }
+            return NotificationType.entries.filter { it != SHURUQ }
         }
 
         fun namespacedId(id: String): String {

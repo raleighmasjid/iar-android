@@ -1,21 +1,20 @@
 package com.madinaapps.iarmasjid.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.data.NewsRepository
 import com.madinaapps.iarmasjid.model.json.Announcements
 import com.madinaapps.iarmasjid.model.json.Event
 import com.madinaapps.iarmasjid.model.json.News
 import com.madinaapps.iarmasjid.utils.asLocalDate
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -58,7 +57,6 @@ class NewsViewModel @Inject constructor(
     }
 
     fun didViewAnnouncements() {
-        Log.d("INFO", "didViewAnnouncements")
         viewModelScope.launch {
             val postIds = announcements?.postIds()
             if (postIds != null) {

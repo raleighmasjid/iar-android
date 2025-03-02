@@ -2,7 +2,6 @@ package com.madinaapps.iarmasjid.viewModel
 
 import android.content.Context
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,17 +17,16 @@ import com.madinaapps.iarmasjid.model.json.FridayPrayer
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.model.json.PrayerSchedule
 import com.madinaapps.iarmasjid.utils.NotificationController
-import com.madinaapps.iarmasjid.utils.asLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -69,8 +67,7 @@ class PrayerTimesViewModel @Inject constructor(
             val flows = Prayer.entries.map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Unit } }.toMutableList()
             flows.add(dataStoreManager.getNotificationType().map { Unit })
             val combinedFlows = combine(flows = flows) { it }
-            combinedFlows.collect {
-                Log.d("INFO", "firing updateNotifications")
+            combinedFlows.drop(1).collect {
                 updateNotifications()
             }
         }
@@ -93,19 +90,19 @@ class PrayerTimesViewModel @Inject constructor(
         }
     }
 
-    private fun setPrayerData(schedule: PrayerSchedule) {
+    private fun setPrayerData(schedule: PrayerSchedule, cached: Boolean) {
         prayerDays.apply {
             clear()
-            val today = Date().asLocalDate()
-            val validDays = schedule.prayerDays.filter { it.date.asLocalDate().compareTo(today) >= 0 }
-            addAll(validDays)
+            addAll(schedule.validDays())
         }
         fridayPrayers.apply {
             clear()
             addAll(schedule.fridaySchedule)
         }
         updateNextPrayer()
-        updateNotifications()
+        if (!cached) {
+            updateNotifications()
+        }
     }
 
     fun fetchLatest() {
@@ -113,12 +110,12 @@ class PrayerTimesViewModel @Inject constructor(
         viewModelScope.launch {
             val cached = repository.getCachedPrayerSchedule()
             if (cached != null) {
-                setPrayerData(cached)
+                setPrayerData(cached, true)
             }
 
             val scheduleResult = repository.fetchPrayerSchedule()
             scheduleResult.onSuccess {
-                setPrayerData(it)
+                setPrayerData(it, false)
             }.onFailure {
                 error = true
             }

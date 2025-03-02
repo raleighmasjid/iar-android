@@ -6,18 +6,20 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class Utils {
     companion object {
-        private const val encodingCharset = "UTF-8"
+        private const val ENCODING_CHARSET = "UTF-8"
 
         fun encodeURL(url: String): String {
-            return URLEncoder.encode(url, encodingCharset)
+            return URLEncoder.encode(url, ENCODING_CHARSET)
         }
 
         fun decodeURL(url: String): String {
-            return URLDecoder.decode(url, encodingCharset)
+            return URLDecoder.decode(url, ENCODING_CHARSET)
         }
 
         private fun timeFormatter(): SimpleDateFormat {

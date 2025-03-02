@@ -21,7 +21,6 @@ import java.util.UUID
 class NotificationController {
     companion object {
         const val PRAYER_NAME_KEY = "PRAYER_NAME"
-        const val PRAYER_TIME_KEY = "PRAYER_TIME"
         const val NOTIFICATION_TYPE_KEY = "NOTIFICATION_TYPE"
 
         private const val MAX_NOTIFICATIONS: Int = 42
@@ -72,19 +71,20 @@ class NotificationController {
             for (index in 0..MAX_NOTIFICATIONS) {
                 val prayerTime = prayerTimes.getOrNull(index)
                 val intent = Intent(context, AlarmReceiver::class.java).apply {
-                    this.putExtra(PRAYER_NAME_KEY, prayerTime?.prayer.toString() ?: "")
-                    this.putExtra(PRAYER_TIME_KEY, prayerTime?.adhan?.formatToTime() ?: "")
+                    if (prayerTime != null) {
+                        this.putExtra(PRAYER_NAME_KEY, prayerTime.prayer.toString())
 
-                    if (prayerTime?.prayer == Prayer.SHURUQ && type != NotificationType.SILENT) {
-                        this.putExtra(
-                            NOTIFICATION_TYPE_KEY,
-                            NotificationType.SHURUQ.toString()
-                        )
-                    } else {
-                        this.putExtra(
-                            NOTIFICATION_TYPE_KEY,
-                            type.toString()
-                        )
+                        if (prayerTime.prayer == Prayer.SHURUQ && type != NotificationType.SILENT) {
+                            this.putExtra(
+                                NOTIFICATION_TYPE_KEY,
+                                NotificationType.SHURUQ.toString()
+                            )
+                        } else {
+                            this.putExtra(
+                                NOTIFICATION_TYPE_KEY,
+                                type.toString()
+                            )
+                        }
                     }
                 }
                 val pendingIntent: PendingIntent = PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
