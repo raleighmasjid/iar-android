@@ -47,14 +47,14 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
                     announcements = viewModel.announcements,
                     loading = viewModel.loading,
                     refreshAction = {
-                        viewModel.fetchLatest()
+                        viewModel.loadData(forceRefresh = true)
                     }
                 )
             } else {
                 EventsList(events = viewModel.events,
                     loading = viewModel.loading,
                     refreshAction = {
-                        viewModel.fetchLatest()
+                        viewModel.loadData(forceRefresh = true)
                     }
                 )
             }

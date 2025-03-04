@@ -75,10 +75,10 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         RefreshNotificationsWorker.schedulePeriodic(applicationContext)
-        prayerTimesViewModel.fetchLatest()
+        prayerTimesViewModel.loadData()
         prayerTimesViewModel.didResume = true
 
-        newsViewModel.fetchLatest()
+        newsViewModel.loadData(forceRefresh = false)
 
         ContextCompat.registerReceiver(
             this,
@@ -96,8 +96,8 @@ class MainActivity : ComponentActivity() {
     private val dayChangedBroadcastReceiver = object : DayChangedBroadcastReceiver() {
 
         override fun onDayChanged() {
-            prayerTimesViewModel.fetchLatest()
-            newsViewModel.fetchLatest()
+            prayerTimesViewModel.loadData()
+            newsViewModel.loadData(forceRefresh = false)
         }
     }
 }

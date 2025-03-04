@@ -80,15 +80,6 @@ fun PrayerRow(prayer: String,
         IconToggleButton(
             checked = notification,
             onCheckedChange = {
-//                if (permissionState.status.isGranted) {
-//                    toggleAction(it)
-//                } else if (permissionState.status.shouldShowRationale) {
-//                    pendingToggle = Pair(true, it)
-//                    showPermissionAlert = true
-//                } else {
-//                    pendingToggle = Pair(true, it)
-//                    permissionState.launchPermissionRequest()
-//                }
                 toggleAction(it)
             },
             modifier = Modifier.size(61.dp, 41.dp).alpha(alarmAlpha)

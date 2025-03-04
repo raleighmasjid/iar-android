@@ -61,7 +61,7 @@ class RefreshNotificationsWorker(private val appContext: Context, workerParams: 
         val enabledPrayers = dataStoreManager.enabledNotifications()
         val repository = PrayerScheduleRepository(dataStoreManager)
         val type: NotificationType = dataStoreManager.getNotificationType().first()
-        val scheduleResult = repository.fetchPrayerSchedule()
+        val scheduleResult = repository.fetchPrayerSchedule(forceRefresh = false)
         if (scheduleResult.isSuccess) {
             val prayerDays = scheduleResult.getOrNull()?.validDays() ?: emptyList()
             if (prayerDays.isNotEmpty() && enabledPrayers.isNotEmpty()) {

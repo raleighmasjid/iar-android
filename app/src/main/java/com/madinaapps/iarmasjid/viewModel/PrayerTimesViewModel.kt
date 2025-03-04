@@ -105,15 +105,14 @@ class PrayerTimesViewModel @Inject constructor(
         }
     }
 
-    fun fetchLatest() {
+    fun loadData() {
         loading = true
         viewModelScope.launch {
-            val cached = repository.getCachedPrayerSchedule()
-            if (cached != null) {
-                setPrayerData(cached, true)
+            repository.getCachedPrayerSchedule()?.also { cache ->
+                setPrayerData(cache, true)
             }
 
-            val scheduleResult = repository.fetchPrayerSchedule()
+            val scheduleResult = repository.fetchPrayerSchedule(forceRefresh = false)
             scheduleResult.onSuccess {
                 setPrayerData(it, false)
             }.onFailure {

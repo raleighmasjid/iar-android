@@ -81,23 +81,23 @@ class DataStoreManager(appContext: Context) {
 
     suspend fun getCachedPrayerScheduleData(): String? {
         val data = context.dataStore.data.firstOrNull() ?: return null
-        return data[DataStoreManager.PRAYER_CACHE_KEY]
+        return data[PRAYER_CACHE_KEY]
     }
 
     suspend fun cachePrayerScheduleData(jsonString: String) {
         context.dataStore.edit { pref ->
-            pref[DataStoreManager.PRAYER_CACHE_KEY] = jsonString
+            pref[PRAYER_CACHE_KEY] = jsonString
         }
     }
 
     suspend fun getCachedNewsData(): String? {
         val data = context.dataStore.data.firstOrNull() ?: return null
-        return data[DataStoreManager.NEWS_CACHE_KEY]
+        return data[NEWS_CACHE_KEY]
     }
 
     suspend fun cacheNewsData(jsonString: String) {
         context.dataStore.edit { pref ->
-            pref[DataStoreManager.NEWS_CACHE_KEY] = jsonString
+            pref[NEWS_CACHE_KEY] = jsonString
         }
     }
 }

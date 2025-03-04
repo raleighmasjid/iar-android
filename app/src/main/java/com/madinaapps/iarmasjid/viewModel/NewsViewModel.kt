@@ -37,16 +37,16 @@ class NewsViewModel @Inject constructor(
 
     private val repository = NewsRepository(dataStoreManager)
 
-    fun fetchLatest() {
+    fun loadData(forceRefresh: Boolean) {
         loading = true
         viewModelScope.launch {
-
-            val cached = repository.getCachedNews()
-            if (cached != null) {
-                updateNews(cached)
+            if (!forceRefresh) {
+                repository.getCachedNews()?.also { cache ->
+                    updateNews(cache)
+                }
             }
 
-            val scheduleResult = repository.fetchNews()
+            val scheduleResult = repository.fetchNews(forceRefresh)
             scheduleResult.onSuccess {
                 updateNews(it)
             }.onFailure {
