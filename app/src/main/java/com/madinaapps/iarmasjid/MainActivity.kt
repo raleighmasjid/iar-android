@@ -1,8 +1,11 @@
 package com.madinaapps.iarmasjid
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
@@ -11,9 +14,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -53,6 +58,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         NotificationController.setupNotificationChannels(applicationContext)
+        enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
 
         setContent {
             IARTheme {
@@ -115,7 +121,10 @@ fun Navigation(
             exitTransition = { ExitTransition.None }
         ) {
             Scaffold(topBar = {
-                TopAppBar(title = { Text(text = NavigationItem.Prayer.title) })
+                TopAppBar(
+                    windowInsets = WindowInsets.statusBars,
+                    title = { Text(text = NavigationItem.Prayer.title) }
+                )
             }) { innerPadding ->
                 Column(
                     modifier = Modifier
@@ -130,19 +139,22 @@ fun Navigation(
             NavigationItem.News.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    NavigationItem.baseWebRoute -> null
+                    NavigationItem.BASE_WEB_ROUTE -> null
                     else -> EnterTransition.None
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    NavigationItem.baseWebRoute -> null
+                    NavigationItem.BASE_WEB_ROUTE -> null
                     else -> ExitTransition.None
                 }
             }
         ) {
             Scaffold(topBar = {
-                TopAppBar(title = { Text(text = NavigationItem.News.title) })
+                TopAppBar(
+                    windowInsets = WindowInsets.statusBars,
+                    title = { Text(text = NavigationItem.News.title) }
+                )
             }) { innerPadding ->
                 Column(
                     modifier = Modifier
@@ -159,7 +171,10 @@ fun Navigation(
             exitTransition = { ExitTransition.None }
         ) {
             Scaffold(topBar = {
-                TopAppBar(title = { Text(text = NavigationItem.Donate.title) })
+                TopAppBar(
+                    windowInsets = WindowInsets.statusBars,
+                    title = { Text(text = NavigationItem.Donate.title) }
+                )
             }) { innerPadding ->
                 Column(
                     modifier = Modifier
@@ -176,7 +191,10 @@ fun Navigation(
             exitTransition = { ExitTransition.None }
         ) {
             Scaffold(topBar = {
-                TopAppBar(title = { Text(text = NavigationItem.More.title) })
+                TopAppBar(
+                    windowInsets = WindowInsets.statusBars,
+                    title = { Text(text = NavigationItem.More.title) }
+                )
             }) { innerPadding ->
                 Column(
                     modifier = Modifier
@@ -188,7 +206,7 @@ fun Navigation(
             }
         }
         composable(
-            NavigationItem.baseWebRoute,
+            NavigationItem.BASE_WEB_ROUTE,
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,

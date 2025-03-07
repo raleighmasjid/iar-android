@@ -4,7 +4,7 @@ import com.madinaapps.iarmasjid.utils.Utils
 
 sealed class NavigationItem(var route: String, var icon: Int, var title: String) {
     companion object {
-        const val baseWebRoute = "webpage/{url}"
+        const val BASE_WEB_ROUTE = "webpage/{url}"
         fun webRoute(url: String): String {
             return "webpage/${Utils.encodeURL(url)}"
         }
