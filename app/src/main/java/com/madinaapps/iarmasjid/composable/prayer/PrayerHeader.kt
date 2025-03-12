@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -45,9 +45,9 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         },
         enabled = canGoBack,
         modifier = Modifier.size(75.dp, 75.dp)) {
-            var buttonTint = MaterialTheme.colors.primary
+            var buttonTint = MaterialTheme.colorScheme.primary
             if (!canGoBack) {
-                buttonTint = MaterialTheme.colors.onBackground.copy(alpha = 0.3f)
+                buttonTint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_left),
@@ -75,9 +75,9 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
         },
         enabled = canGoForward,
         modifier = Modifier.size(75.dp, 75.dp)) {
-            var buttonTint = MaterialTheme.colors.primary
+            var buttonTint = MaterialTheme.colorScheme.primary
             if (!canGoForward) {
-                buttonTint = MaterialTheme.colors.onBackground.copy(alpha = 0.3f)
+                buttonTint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_right),

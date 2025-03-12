@@ -7,7 +7,7 @@ import androidx.compose.material.BadgedBox
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.madinaapps.iarmasjid.NavigationItem
-import com.madinaapps.iarmasjid.ui.theme.bottomNavText
+import com.madinaapps.iarmasjid.ui.theme.AppColors
 
 @Composable
 fun BottomNavigationBar(navController: NavController, showBadge: Boolean, modifier: Modifier) {
@@ -30,8 +30,8 @@ fun BottomNavigationBar(navController: NavController, showBadge: Boolean, modifi
         NavigationItem.More
     )
     BottomNavigation(
-        backgroundColor = MaterialTheme.colors.surface,
-        contentColor = MaterialTheme.colors.bottomNavText
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        contentColor = AppColors.bottomNavText
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -50,7 +50,7 @@ fun BottomNavigationBar(navController: NavController, showBadge: Boolean, modifi
                     }
                 },
                 label = { Text(text = item.title) },
-                selectedContentColor = MaterialTheme.colors.bottomNavText,
+                selectedContentColor = AppColors.bottomNavText,
                 unselectedContentColor = Color.White.copy(0.4f),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,

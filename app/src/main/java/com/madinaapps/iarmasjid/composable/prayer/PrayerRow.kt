@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,9 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.R
-import com.madinaapps.iarmasjid.ui.theme.currentPrayerBackground
-import com.madinaapps.iarmasjid.ui.theme.currentPrayerBorder
-import com.madinaapps.iarmasjid.ui.theme.prayerBorder
+import com.madinaapps.iarmasjid.ui.theme.AppColors
 import com.madinaapps.iarmasjid.utils.formatToTime
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
@@ -38,9 +36,9 @@ fun PrayerRow(prayer: String,
               displayAlarm: Boolean,
               notificationEnabled: Flow<Boolean>,
               toggleAction: (Boolean) -> Unit) {
-    val bgColor: Color = if (current) MaterialTheme.colors.currentPrayerBackground else MaterialTheme.colors.background
+    val bgColor: Color = if (current) AppColors.currentPrayerBackground else MaterialTheme.colorScheme.background
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
-    val borderColor = if (current) MaterialTheme.colors.currentPrayerBorder else MaterialTheme.colors.prayerBorder
+    val borderColor = if (current) AppColors.currentPrayerBorder else AppColors.prayerBorder
     val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.9f
     val alarmAlpha = if (displayAlarm) 1.0f else 0f
 
@@ -63,7 +61,7 @@ fun PrayerRow(prayer: String,
         Text(
             adhan?.formatToTime() ?: " ",
             modifier = Modifier.weight(1f, true),
-            color = MaterialTheme.colors.onBackground,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
@@ -85,10 +83,10 @@ fun PrayerRow(prayer: String,
             modifier = Modifier.size(61.dp, 41.dp).alpha(alarmAlpha)
         ) {
             var buttonImage = R.drawable.ic_alarm_off
-            var buttonTint = MaterialTheme.colors.onBackground.copy(alpha = 0.5f)
+            var buttonTint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
             if (notification) {
                 buttonImage = R.drawable.ic_alarm_on
-                buttonTint = MaterialTheme.colors.primary
+                buttonTint = MaterialTheme.colorScheme.primary
             }
             Icon(
                 painter = painterResource(id = buttonImage),

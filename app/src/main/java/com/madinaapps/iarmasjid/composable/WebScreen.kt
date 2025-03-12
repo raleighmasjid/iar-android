@@ -1,24 +1,28 @@
 package com.madinaapps.iarmasjid.composable
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,9 +36,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.R
 
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebScreen(url: String) {
     val state by remember { mutableStateOf(WebViewState(WebContent.Url(url))) }
@@ -65,7 +71,7 @@ fun WebScreen(url: String) {
         if (currentUrl != null) {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_VIEW
-                data = Uri.parse(currentUrl)
+                data = currentUrl.toUri()
             }
             val shareIntent = Intent.createChooser(sendIntent, null)
             context.startActivity(shareIntent)
@@ -75,6 +81,8 @@ fun WebScreen(url: String) {
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                contentColor = Color.White,
                 windowInsets = WindowInsets.statusBars,
                 title = {
                     Text(text = state.content.getCurrentUrl() ?: url,
@@ -108,19 +116,21 @@ fun WebScreen(url: String) {
                                 onDismissRequest = {
                                     expanded = false
                                 }) {
-                                DropdownMenuItem(onClick = {
-                                    shareUrl()
-                                    expanded = false
-                                }) {
-                                    Text("Share")
-                                }
-                                Divider()
-                                DropdownMenuItem(onClick = {
+                                DropdownMenuItem(
+                                    onClick = {
+                                        shareUrl()
+                                        expanded = false
+                                    },
+                                    text = { Text("Share") }
+                                    )
+                                HorizontalDivider()
+                                DropdownMenuItem(
+                                    onClick = {
                                     openUrl()
                                     expanded = false
-                                }) {
-                                    Text("Open in Browser")
-                                }
+                                    },
+                                    text = { Text("Open in Browser") }
+                                )
                             }
                         }
 
@@ -149,11 +159,27 @@ fun WebScreen(url: String) {
                 .fillMaxSize()
                 .padding(paddingValues = innerPadding)
         ) {
-            WebView(state,
-                onCreated = { webView ->
-                    webView.settings.javaScriptEnabled = true
+            Box {
+                WebView(state,
+                    onCreated = { webView ->
+                        webView.settings.javaScriptEnabled = true
+                    },
+                    modifier = Modifier.background(Color.Red)
+                )
+                if (state.isLoading || !didStart) {
+                    Column(modifier = Modifier.background(Color.LightGray)) {
+                        LinearProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.Start)
+                                .padding(vertical = 1.dp),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                            trackColor = Color.Transparent
+                        )
+                    }
+
                 }
-            )
+            }
         }
     }
 }

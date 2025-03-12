@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,8 +29,6 @@ import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.ui.theme.secondaryText
-import com.madinaapps.iarmasjid.ui.theme.tertiaryText
 import com.madinaapps.iarmasjid.utils.formatToDay
 
 @Composable
@@ -53,26 +51,26 @@ fun PostRow(post: Post) {
                 modifier = Modifier
                     .size(54.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colors.background),
+                    .background(MaterialTheme.colorScheme.background),
                 contentScale = ContentScale.Crop
             )
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1.0f)) {
                 Text(post.title,
-                    color = MaterialTheme.colors.onBackground,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
                 Text(post.text,
-                    color = MaterialTheme.colors.secondaryText,
+                    color = MaterialTheme.colorScheme.onSecondary,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     lineHeight = 18.sp)
                 Text(post.date.formatToDay(),
-                    color = MaterialTheme.colors.tertiaryText,
+                    color = MaterialTheme.colorScheme.onTertiary,
                     fontSize = 12.sp)
             }
 

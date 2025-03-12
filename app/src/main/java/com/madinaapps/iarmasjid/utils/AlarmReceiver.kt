@@ -15,7 +15,7 @@ import com.madinaapps.iarmasjid.MainActivity
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.model.Prayer
-import com.madinaapps.iarmasjid.ui.theme.darkGreen
+import com.madinaapps.iarmasjid.ui.theme.AppColors
 import java.time.Instant
 import java.util.UUID
 
@@ -42,7 +42,7 @@ class AlarmReceiver: BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, type.channelId())
             .setContentTitle(title)
             .setSmallIcon(R.drawable.ic_stat_onesignal_default)
-            .setColor(darkGreen.toArgb())
+            .setColor(AppColors.darkGreen.toArgb())
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

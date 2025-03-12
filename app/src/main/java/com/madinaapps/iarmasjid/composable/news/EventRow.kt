@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,8 +23,6 @@ import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Event
-import com.madinaapps.iarmasjid.ui.theme.secondaryText
-import com.madinaapps.iarmasjid.ui.theme.tertiaryText
 import com.madinaapps.iarmasjid.utils.formatToTime
 
 @Composable
@@ -44,7 +42,7 @@ fun EventRow(event: Event) {
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1.0f)) {
                 Text(event.title,
-                    color = MaterialTheme.colors.onBackground,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
@@ -53,17 +51,17 @@ fun EventRow(event: Event) {
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(timeText,
-                        color = MaterialTheme.colors.secondaryText,
+                        color = MaterialTheme.colorScheme.onSecondary,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal)
                     Icon(
                         painterResource(id = R.drawable.ic_repeat_icon),
                         contentDescription = null,
-                        tint = MaterialTheme.colors.secondaryText,
+                        tint = MaterialTheme.colorScheme.onSecondary,
                         modifier = Modifier.size(16.dp, 14.dp))
                 }
                 Text(event.description,
-                    color = MaterialTheme.colors.tertiaryText,
+                    color = MaterialTheme.colorScheme.onTertiary,
                     fontSize = 12.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,

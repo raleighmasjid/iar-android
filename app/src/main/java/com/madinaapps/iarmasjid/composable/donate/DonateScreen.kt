@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
-import com.madinaapps.iarmasjid.ui.theme.secondaryText
 
 @Composable
 fun DonateScreen() {
@@ -46,7 +45,7 @@ fun DonateScreen() {
         Text(
             "Your Masjid relies on the generous people of this community to keep its doors open. Consider donating to help cover our running costs.",
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.secondaryText,
+            color = MaterialTheme.colorScheme.onSecondary,
             fontSize = 16.sp,
             modifier = Modifier.padding(vertical = 48.dp)
         )
@@ -54,8 +53,8 @@ fun DonateScreen() {
             onClick = {uriHandler.openUri("https://donate.raleighmasjid.org/giving")},
             elevation = null,
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colors.primaryVariant,
-                contentColor = MaterialTheme.colors.primary
+                backgroundColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(27.dp),
             modifier = Modifier

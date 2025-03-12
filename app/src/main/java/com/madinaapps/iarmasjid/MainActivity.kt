@@ -1,6 +1,5 @@
 package com.madinaapps.iarmasjid
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -19,14 +18,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         NotificationController.setupNotificationChannels(applicationContext)
-        enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
+        enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.Transparent.hashCode()))
 
         setContent {
             IARTheme {
@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                     }) { innerPadding ->
                         Box(modifier = Modifier
                             .padding(innerPadding)
-                            .background(MaterialTheme.colors.background)) {
+                            .background(MaterialTheme.colorScheme.background)) {
                             Navigation(navController, prayerTimesViewModel, newsViewModel)
                         }
                     }
@@ -122,6 +122,8 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(
+                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    contentColor = Color.White,
                     windowInsets = WindowInsets.statusBars,
                     title = { Text(text = NavigationItem.Prayer.title) }
                 )
@@ -152,6 +154,8 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(
+                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    contentColor = Color.White,
                     windowInsets = WindowInsets.statusBars,
                     title = { Text(text = NavigationItem.News.title) }
                 )
@@ -172,6 +176,8 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(
+                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    contentColor = Color.White,
                     windowInsets = WindowInsets.statusBars,
                     title = { Text(text = NavigationItem.Donate.title) }
                 )
@@ -192,6 +198,8 @@ fun Navigation(
         ) {
             Scaffold(topBar = {
                 TopAppBar(
+                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    contentColor = Color.White,
                     windowInsets = WindowInsets.statusBars,
                     title = { Text(text = NavigationItem.More.title) }
                 )

@@ -1,41 +1,43 @@
 package com.madinaapps.iarmasjid.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 
-private val lightColorPalette = lightColors(
+private val LightColorScheme = lightColorScheme(
     primary = primaryLight,
-    primaryVariant = primaryVariantLight,
+    secondary = secondaryLight,
     background = Color.White,
     surface = surfaceLight,
     onBackground = Color.Black,
+    onSecondary = onSecondaryLight,
+    onTertiary = onTertiaryLight
 )
 
-private val darkColorPalette = darkColors(
-        primary = primaryDark,
-        primaryVariant = primaryVariantDark,
-        background = Color.Black,
-        surface = surfaceDark,
-        onBackground = Color.White,
+private val DarkColorScheme = darkColorScheme(
+    primary = primaryDark,
+    secondary = secondaryDark,
+    background = Color.Black,
+    surface = surfaceDark,
+    onBackground = Color.White,
+    onSecondary = onSecondaryDark,
+    onTertiary = onTertiaryDark
 )
 
 @Composable
 fun IARTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
-        darkColorPalette
-    } else {
-        lightColorPalette
+    val colorScheme = when {
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
     }
 
     MaterialTheme(
-            colors = colors,
+            colorScheme = colorScheme,
             typography = Typography,
-            shapes = Shapes,
             content = content
     )
 }

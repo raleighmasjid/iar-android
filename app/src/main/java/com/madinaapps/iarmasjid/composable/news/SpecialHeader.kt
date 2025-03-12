@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,8 +26,7 @@ import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.ui.theme.currentPrayerBackground
-import com.madinaapps.iarmasjid.ui.theme.currentPrayerBorder
+import com.madinaapps.iarmasjid.ui.theme.AppColors
 
 @Composable
 fun SpecialHeader(special: Post) {
@@ -37,8 +36,8 @@ fun SpecialHeader(special: Post) {
         Card(
             elevation = 0.dp,
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = MaterialTheme.colors.currentPrayerBackground,
-            border = BorderStroke(0.5.dp, MaterialTheme.colors.currentPrayerBorder),
+            backgroundColor = AppColors.currentPrayerBackground,
+            border = BorderStroke(0.5.dp, AppColors.currentPrayerBorder),
             modifier = Modifier
                 .padding(16.dp)
                 .clickable {
@@ -55,17 +54,17 @@ fun SpecialHeader(special: Post) {
                     Icon(
                         painterResource(id = R.drawable.ic_special_icon),
                         contentDescription = null,
-                        tint = MaterialTheme.colors.primary,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(16.dp, 16.dp))
                     Text(special.title,
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
 
                 Text(special.text,
-                    color = MaterialTheme.colors.onBackground,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 14.sp,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 5,

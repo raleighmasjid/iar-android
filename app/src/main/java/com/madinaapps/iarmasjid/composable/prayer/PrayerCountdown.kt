@@ -5,15 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.madinaapps.iarmasjid.ui.theme.badgeBackground
+import com.madinaapps.iarmasjid.ui.theme.AppColors
 import com.madinaapps.iarmasjid.utils.Utils
 import com.madinaapps.iarmasjid.viewModel.PrayerCountdownViewModel
 
@@ -36,7 +35,7 @@ fun PrayerCountdown(viewModel: PrayerCountdownViewModel) {
 
     val badgeColor: Color =
         if (upcoming != null) {
-            MaterialTheme.colors.badgeBackground
+            AppColors.badgeBackground
         } else {
             Color(0)
         }
