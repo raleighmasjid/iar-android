@@ -25,6 +25,7 @@ sealed class NavigationItem(var route: String, var icon: Int, var title: String)
             }
             return when (navBackStackEntry?.destination?.route) {
                 Prayer.route -> "Prayer"
+                Qibla.route -> "Qibla"
                 News.route -> "News"
                 Donate.route -> "Donate"
                 More.route -> "More"
@@ -34,6 +35,7 @@ sealed class NavigationItem(var route: String, var icon: Int, var title: String)
     }
 
     data object Prayer : NavigationItem("prayer", R.drawable.ic_tab_prayer, "Prayer")
+    data object Qibla : NavigationItem("qibla", R.drawable.ic_tab_qibla, "Qibla")
     data object News : NavigationItem("news", R.drawable.ic_tab_news, "News")
     data object Donate : NavigationItem("donate", R.drawable.ic_tab_donate, "Donate")
     data object More : NavigationItem("more", R.drawable.ic_tab_more, "More")

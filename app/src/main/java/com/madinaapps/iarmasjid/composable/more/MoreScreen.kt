@@ -3,6 +3,7 @@ package com.madinaapps.iarmasjid.composable.more
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,7 +34,7 @@ import com.madinaapps.iarmasjid.viewModel.SettingsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel()) {
+fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: PaddingValues) {
     val uriHandler = LocalUriHandler.current
     var expanded by remember { mutableStateOf(false) }
     val notificationType = viewModel.dataStoreManager.getNotificationType().collectAsState(initial = viewModel.currentNotificationType())
@@ -46,6 +47,7 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel()) {
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
+            .padding(paddingValues)
     ) {
 
         Box {
@@ -56,7 +58,6 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     Text("Prayer Alert", modifier = Modifier.weight(1f))
                     Text(notificationType.value.title(), modifier = Modifier.padding(end = 20.dp))
                 }
-
             }
             DropdownMenu(
                 expanded = expanded,
@@ -104,5 +105,5 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel()) {
 @Preview(showBackground = true)
 @Composable
 fun MoreScreenPreview() {
-    MoreScreen()
+    MoreScreen(paddingValues = PaddingValues())
 }

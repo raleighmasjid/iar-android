@@ -30,6 +30,7 @@ import com.madinaapps.iarmasjid.composable.donate.DonateScreen
 import com.madinaapps.iarmasjid.composable.more.MoreScreen
 import com.madinaapps.iarmasjid.composable.news.NewsScreen
 import com.madinaapps.iarmasjid.composable.prayer.PrayerScreen
+import com.madinaapps.iarmasjid.composable.qibla.QiblaScreen
 import com.madinaapps.iarmasjid.utils.Utils
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
@@ -44,8 +45,12 @@ fun Navigation(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val view = LocalView.current
     val darkMode = isSystemInDarkTheme()
-    val defaultEnterTransition = fadeIn(animationSpec = tween(220))
-    val defaultExitTransition = fadeOut(animationSpec = tween(220))
+
+    val tweenDuration = 220
+    val defaultEnterTransition = fadeIn(animationSpec = tween(tweenDuration))
+    val defaultExitTransition = fadeOut(animationSpec = tween(tweenDuration))
+
+    val noNavbarRoutes = listOf(NavigationItem.Prayer.route, NavigationItem.Donate.route)
 
     LaunchedEffect(navBackStackEntry) {
         val window = (view.context as Activity).window
@@ -56,7 +61,7 @@ fun Navigation(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            if (navBackStackEntry?.destination?.route != NavigationItem.Prayer.route) {
+            if (!noNavbarRoutes.contains(navBackStackEntry?.destination?.route)) {
                 TopAppBar(
                     title = {
                         Text(NavigationItem.routeTitle(navBackStackEntry))
@@ -74,7 +79,7 @@ fun Navigation(
             }
         },
         bottomBar = {
-            BottomNavigationBar(navController)
+            BottomNavigationBar(navController, newsViewModel)
         }
     ) { innerPadding ->
         NavHost(
@@ -90,12 +95,20 @@ fun Navigation(
             }
 
             composable(
+                NavigationItem.Qibla.route,
+                enterTransition = { defaultEnterTransition },
+                exitTransition = { defaultExitTransition }
+            ) {
+                QiblaScreen(innerPadding)
+            }
+
+            composable(
                 NavigationItem.News.route,
                 enterTransition = {
                     when (initialState.destination.route) {
                         NavigationItem.BASE_WEB_ROUTE -> slideIntoContainer(
                             AnimatedContentTransitionScope.SlideDirection.Right,
-                            animationSpec = tween(220)
+                            animationSpec = tween(tweenDuration)
                         )
                         else -> defaultEnterTransition
                     }
@@ -104,7 +117,7 @@ fun Navigation(
                     when (targetState.destination.route) {
                         NavigationItem.BASE_WEB_ROUTE -> slideOutOfContainer(
                             AnimatedContentTransitionScope.SlideDirection.Left,
-                            animationSpec = tween(220)
+                            animationSpec = tween(tweenDuration)
                         )
                         else -> defaultExitTransition
                     }
@@ -118,7 +131,7 @@ fun Navigation(
                 enterTransition = { defaultEnterTransition },
                 exitTransition = { defaultExitTransition }
             ) {
-                DonateScreen()
+                DonateScreen(innerPadding)
             }
 
             composable(
@@ -126,7 +139,7 @@ fun Navigation(
                 enterTransition = { defaultEnterTransition },
                 exitTransition = { defaultExitTransition }
             ) {
-                MoreScreen()
+                MoreScreen(paddingValues = innerPadding)
             }
 
             composable(
@@ -134,14 +147,14 @@ fun Navigation(
                 enterTransition = {
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(220)
+                        animationSpec = tween(tweenDuration)
                     )
                 },
                 exitTransition = {
                     when (targetState.destination.route) {
                         NavigationItem.News.route -> slideOutOfContainer(
                             AnimatedContentTransitionScope.SlideDirection.Right,
-                            animationSpec = tween(220)
+                            animationSpec = tween(tweenDuration)
                         )
                         else -> defaultExitTransition
                     }
@@ -149,7 +162,7 @@ fun Navigation(
             ) { backStackEntry ->
                 val url = backStackEntry.arguments?.getString("url") ?: ""
                 val decodedUrl = Utils.decodeURL(url)
-                WebScreen(decodedUrl)
+                WebScreen(decodedUrl, innerPadding)
             }
         }
     }
