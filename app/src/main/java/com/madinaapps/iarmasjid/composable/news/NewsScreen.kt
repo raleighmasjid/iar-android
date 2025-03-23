@@ -1,66 +1,56 @@
 package com.madinaapps.iarmasjid.composable.news
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
-import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: PaddingValues) {
-    val titles = listOf("Announcements", "Events")
-    val pagerState = rememberPagerState(pageCount = { 2 })
-    val scope = rememberCoroutineScope()
+    val announcements = viewModel.announcements
+
+    val pullRefreshState = rememberPullRefreshState(viewModel.loading, {
+        viewModel.loadData(forceRefresh = true)
+    })
 
     LaunchedEffect(viewModel.announcements) {
         viewModel.didViewAnnouncements()
     }
 
-    Column(modifier = Modifier.padding(paddingValues)) {
-        TabRow(
-            selectedTabIndex = pagerState.currentPage,
-            backgroundColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.primary
-        ) {
-            titles.forEachIndexed { index, title ->
-                Tab(
-                    text = { Text(title) },
-                    selected = pagerState.currentPage == index,
-                    onClick = { scope.launch { pagerState.animateScrollToPage(index) } }
-                )
+    Box(Modifier.pullRefresh(pullRefreshState)) {
+        LazyColumn(modifier = Modifier.padding(paddingValues)) {
+            if (announcements?.special != null) {
+                item {
+                    SpecialHeader(announcements.special)
+                }
+            }
+
+            if (announcements?.featured != null) {
+                item {
+                    PostRow(announcements.featured)
+                    AnnouncementsDivider()
+                }
+            }
+
+            items(announcements?.posts ?: emptyList()) { post ->
+                PostRow(post)
+                AnnouncementsDivider()
             }
         }
-        HorizontalPager(state = pagerState) { page ->
-            if (page == 0) {
-                PostsList(
-                    announcements = viewModel.announcements,
-                    loading = viewModel.loading,
-                    refreshAction = {
-                        viewModel.loadData(forceRefresh = true)
-                    }
-                )
-            } else {
-                EventsList(events = viewModel.events,
-                    loading = viewModel.loading,
-                    refreshAction = {
-                        viewModel.loadData(forceRefresh = true)
-                    }
-                )
-            }
-        }
+        PullRefreshIndicator(viewModel.loading, pullRefreshState, Modifier.align(Alignment.TopCenter), backgroundColor = MaterialTheme.colorScheme.primary)
     }
 }
