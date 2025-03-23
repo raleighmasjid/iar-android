@@ -18,6 +18,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -30,7 +32,9 @@ import com.madinaapps.iarmasjid.composable.more.MoreScreen
 import com.madinaapps.iarmasjid.composable.news.NewsScreen
 import com.madinaapps.iarmasjid.composable.prayer.PrayerScreen
 import com.madinaapps.iarmasjid.composable.qibla.QiblaScreen
+import com.madinaapps.iarmasjid.composable.web.WebContent
 import com.madinaapps.iarmasjid.composable.web.WebScreen
+import com.madinaapps.iarmasjid.composable.web.WebViewState
 import com.madinaapps.iarmasjid.utils.Utils
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
@@ -43,6 +47,8 @@ fun Navigation(
     newsViewModel: NewsViewModel
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val webState by remember { mutableStateOf(WebViewState(WebContent.Url(""))) }
+
     val view = LocalView.current
     val darkMode = isSystemInDarkTheme()
 
@@ -77,7 +83,7 @@ fun Navigation(
                     },
                     actions = {
                         if (navBackStackEntry?.destination?.route == NavigationItem.BASE_WEB_ROUTE) {
-                            WebActions()
+                            WebActions(webState)
                         }
                     }
                 )
@@ -167,7 +173,8 @@ fun Navigation(
             ) { backStackEntry ->
                 val url = backStackEntry.arguments?.getString("url") ?: ""
                 val decodedUrl = Utils.decodeURL(url)
-                WebScreen(decodedUrl, innerPadding)
+                webState.content = WebContent.Url(decodedUrl)
+                WebScreen(webState, innerPadding)
             }
         }
     }
