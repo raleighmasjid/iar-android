@@ -20,9 +20,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.LocalNavController
-import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Event
+import com.madinaapps.iarmasjid.navigation.NavigationItem
 import com.madinaapps.iarmasjid.utils.formatToTime
 
 @Composable
@@ -32,7 +32,7 @@ fun EventRow(event: Event) {
     val timeText: String = if (event.allDay) "All Day" else "${event.start.formatToTime()} - ${event.end.formatToTime()}"
 
     Box(modifier = Modifier.clickable {
-        navController.navigate(NavigationItem.webRoute(event.url))
+        navController.navigate(NavigationItem.webRoute(event.url, event.title))
     }) {
         Row(modifier = Modifier
             .padding(vertical = 14.dp)

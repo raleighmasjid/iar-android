@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.madinaapps.iarmasjid.model.json.Event
-import com.madinaapps.iarmasjid.ui.theme.AppColors
 import com.madinaapps.iarmasjid.utils.formatToDay
 import java.time.LocalDate
 
@@ -37,7 +36,7 @@ fun EventsList(events: Map<LocalDate, List<Event>>, loading: Boolean, refreshAct
                     HorizontalDivider(
                         modifier = Modifier.padding(start = 32.dp, end = 16.dp),
                         thickness = 0.5.dp,
-                        color = AppColors.divider
+                        color = MaterialTheme.colorScheme.outline
                     )
                 }
             }

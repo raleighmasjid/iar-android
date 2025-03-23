@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.madinaapps.iarmasjid.ui.theme.AppColors
 import com.madinaapps.iarmasjid.utils.Utils
 import com.madinaapps.iarmasjid.viewModel.PrayerCountdownViewModel
 
@@ -35,7 +34,7 @@ fun PrayerCountdown(viewModel: PrayerCountdownViewModel) {
 
     val badgeColor: Color =
         if (upcoming != null) {
-            AppColors.badgeBackground
+            Color.LightGray
         } else {
             Color(0)
         }

@@ -1,7 +1,6 @@
 package com.madinaapps.iarmasjid.composable.prayer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.R
-import com.madinaapps.iarmasjid.ui.theme.AppColors
 import com.madinaapps.iarmasjid.utils.formatToTime
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
@@ -36,16 +34,14 @@ fun PrayerRow(prayer: String,
               displayAlarm: Boolean,
               notificationEnabled: Flow<Boolean>,
               toggleAction: (Boolean) -> Unit) {
-    val bgColor: Color = if (current) AppColors.currentPrayerBackground else MaterialTheme.colorScheme.background
+    val bgColor: Color = if (current) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.background
     val notification: Boolean by notificationEnabled.collectAsState(initial = false)
-    val borderColor = if (current) AppColors.currentPrayerBorder else AppColors.prayerBorder
     val rowAlpha = if (current || (adhan?.after(Date()) == true)) 1.0f else 0.9f
     val alarmAlpha = if (displayAlarm) 1.0f else 0f
 
     Row(
         modifier = Modifier
             .background(bgColor, shape = RoundedCornerShape(8.dp))
-            .border(width = 0.5.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
             .padding(start = 12.dp)
             .alpha(rowAlpha),
         verticalAlignment = Alignment.CenterVertically

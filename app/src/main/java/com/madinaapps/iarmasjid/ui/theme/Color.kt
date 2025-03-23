@@ -1,52 +1,43 @@
 package com.madinaapps.iarmasjid.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val primaryLight = Color(0xFF1B5E20)
-val primaryDark = Color(0xFF2B9733)
+val primaryLight = Color(0xFF008A00)
+val primaryDark = Color(0xFF61C469)
 
-val secondaryLight = Color(0x1A1B5E20)
-val secondaryDark = Color(0x402B9733)
+val backgroundLight = Color(0xFFFFFFFF)
+val backgroundDark = Color(0xFF202B28)
 
-val surfaceLight = Color(0xFF1B5E20)
-val surfaceDark = Color(0xFF030303)
+val outlineLight = Color(0xFFD4DBDC)
+val outlineDark = Color(0xFF647374)
 
-val onSecondaryLight = Color(0xFF4B5555)
-val onSecondaryDark = Color(0xFFC7C7CC)
+val outlineVariantLight = Color(0x80008A00)
+val outlineVariantDark = Color(0x8061C469)
 
-val onTertiaryLight = Color(0xFF8E8E93)
-val onTertiaryDark = Color(0xFF8E8E93)
+val primaryContainerLight = Color(0x1A008A00)
+val primaryContainerDark = Color(0x2661C469)
+
+val onBackgroundLight = Color(0xFF002500)
+val onBackgroundDark = Color(0xFFFFFFFF)
+
+val onSecondaryLight = Color(0xFF647374)
+val onSecondaryDark = Color(0xFFA6B1B5)
+
+val surfaceLight = Color(0xFFF7F8F6)
+val surfaceDark = Color(0xFF2B312F)
+
+val surfaceContainerLight = Color(0xFFFFFFFF)
+val surfaceContainerDark = Color(0xFF202B28)
+
+val surfaceVariantLight = Color(0xFFF2F2F2)
+val surfaceVariantDark = Color(0xFF141B14)
+
+val tertiaryContainerLight = Color(0x0D008A00)
+val tertiaryContainerDark = Color(0x1A61C469)
+
+val onTertiaryLight = Color(0xFFA6B1B5)
+val onTertiaryDark = Color(0xFF647374)
 
 object AppColors {
-    val currentPrayerBackground: Color
-    @Composable
-    get() = if (!isSystemInDarkTheme()) Color(0xFFDCF9D7) else Color(0x592B9733)
-
-    val prayerBorder:  Color
-    @Composable
-    get() = if (!isSystemInDarkTheme()) Color(0xFFBCBEC0) else Color(0xFF636366)
-
-    val currentPrayerBorder:  Color
-    @Composable
-    get() = if (!isSystemInDarkTheme()) Color(0xFF1B5E20) else Color(0xFF2B9733)
-
-    val badgeBackground: Color
-    @Composable
-    get() = if (!isSystemInDarkTheme()) Color(0x1A4B5555) else Color(0x33FFFFFF)
-
-    val rowColor: Color
-    @Composable
-    get() = if (!isSystemInDarkTheme()) Color(0xFFF2F2F7) else Color(0xFF1B1B1D)
-
-    val divider: Color
-    @Composable
-    get() = if (!isSystemInDarkTheme()) Color(0xFFAEAEB2) else Color(0xCCAEAEB2)
-
-    val bottomNavText: Color
-    @Composable
-    get() = if (!isSystemInDarkTheme()) Color(0xFFFFFFFF) else Color(0xFF2B9733)
-
-    val darkGreen = Color(0xFF1B5E20)
+    val primaryFixed = Color(0xFF1B5E20)
 }

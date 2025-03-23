@@ -42,7 +42,7 @@ class AlarmReceiver: BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, type.channelId())
             .setContentTitle(title)
             .setSmallIcon(R.drawable.ic_stat_onesignal_default)
-            .setColor(AppColors.darkGreen.toArgb())
+            .setColor(AppColors.primaryFixed.toArgb())
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

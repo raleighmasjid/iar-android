@@ -37,14 +37,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.R
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebScreen(url: String) {
     val state by remember { mutableStateOf(WebViewState(WebContent.Url(url))) }
-    val navController = LocalNavController.current
     var didStart by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
@@ -138,19 +136,19 @@ fun WebScreen(url: String) {
 
                 },
                 elevation = 5.dp,
-                navigationIcon = if (navController.previousBackStackEntry != null) {
-                    {
-                        IconButton(onClick = {
-                            navController.navigateUp()
-                        }) {
-                            Icon(painterResource(id = R.drawable.ic_back_chevron),
-                                contentDescription = "Back"
-                            )
-                        }
-                    }
-                } else {
-                    null
-                }
+//                navigationIcon = if (navController.previousBackStackEntry != null) {
+//                    {
+//                        IconButton(onClick = {
+//                            navController.navigateUp()
+//                        }) {
+//                            Icon(painterResource(id = R.drawable.ic_back_chevron),
+//                                contentDescription = "Back"
+//                            )
+//                        }
+//                    }
+//                } else {
+//                    null
+//                }
             )
         }
     ) { innerPadding ->

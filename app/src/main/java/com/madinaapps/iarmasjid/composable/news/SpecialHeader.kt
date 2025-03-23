@@ -23,10 +23,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.LocalNavController
-import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.ui.theme.AppColors
+import com.madinaapps.iarmasjid.navigation.NavigationItem
 
 @Composable
 fun SpecialHeader(special: Post) {
@@ -36,12 +35,12 @@ fun SpecialHeader(special: Post) {
         Card(
             elevation = 0.dp,
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = AppColors.currentPrayerBackground,
-            border = BorderStroke(0.5.dp, AppColors.currentPrayerBorder),
+            backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+            border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outline),
             modifier = Modifier
                 .padding(16.dp)
                 .clickable {
-                    navController.navigate(NavigationItem.webRoute(special.url))
+                    navController.navigate(NavigationItem.webRoute(special.url, special.title))
                 }
         ) {
             Column(

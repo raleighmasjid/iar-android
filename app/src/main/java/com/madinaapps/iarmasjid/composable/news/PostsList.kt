@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.madinaapps.iarmasjid.model.json.Announcements
-import com.madinaapps.iarmasjid.ui.theme.AppColors
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -54,6 +53,6 @@ fun PostsList(
 fun AnnouncementsDivider() {
     HorizontalDivider(
         modifier = Modifier.padding(horizontal = 16.dp), thickness = 0.5.dp,
-        color = AppColors.divider
+        color = MaterialTheme.colorScheme.outline
     )
 }

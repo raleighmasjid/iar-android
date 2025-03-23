@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.madinaapps.iarmasjid.LocalNavController
-import com.madinaapps.iarmasjid.NavigationItem
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
+import com.madinaapps.iarmasjid.navigation.NavigationItem
 import com.madinaapps.iarmasjid.utils.formatToDay
 
 @Composable
@@ -36,7 +36,7 @@ fun PostRow(post: Post) {
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.clickable {
-        navController.navigate(NavigationItem.webRoute(post.url))
+        navController.navigate(NavigationItem.webRoute(post.url, post.title))
     }) {
         Row(modifier = Modifier
             .padding(vertical = 14.dp, horizontal = 16.dp),

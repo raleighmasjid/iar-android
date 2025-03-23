@@ -2,6 +2,8 @@ package com.madinaapps.iarmasjid.composable.news
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Tab
@@ -11,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +21,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
+fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: PaddingValues) {
     val titles = listOf("Announcements", "Events")
     val pagerState = rememberPagerState(pageCount = { 2 })
     val scope = rememberCoroutineScope()
@@ -27,7 +30,7 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
         viewModel.didViewAnnouncements()
     }
 
-    Column {
+    Column(modifier = Modifier.padding(paddingValues)) {
         TabRow(
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = MaterialTheme.colorScheme.secondary,
