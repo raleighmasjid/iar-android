@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid.composable
+package com.madinaapps.iarmasjid.composable.web
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.ViewGroup
 import android.webkit.*
 import androidx.activity.compose.BackHandler
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -41,6 +42,7 @@ fun WebView(
     var webView by remember { mutableStateOf<WebView?>(null) }
     var canGoBack: Boolean by remember { mutableStateOf(false) }
     val uriHandler = LocalUriHandler.current
+    val backgroundColor = MaterialTheme.colorScheme.background
 
     BackHandler(captureBackPresses && canGoBack) {
         webView?.goBack()
@@ -50,7 +52,7 @@ fun WebView(
         factory = { context ->
             WebView(context).apply {
                 onCreated(this)
-
+                setBackgroundColor(backgroundColor.hashCode())
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
@@ -124,6 +126,7 @@ fun WebView(
                         return true
                     }
 
+                    @Deprecated("Deprecated in Java")
                     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                         if (url != null) {
                             return utilShouldOverrideUrlLoading(view, url)

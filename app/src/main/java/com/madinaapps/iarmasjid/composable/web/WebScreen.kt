@@ -1,8 +1,7 @@
-package com.madinaapps.iarmasjid.composable
+package com.madinaapps.iarmasjid.composable.web
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,11 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -29,7 +25,6 @@ fun WebScreen(url: String, paddingValues: PaddingValues) {
     val state by remember { mutableStateOf(WebViewState(WebContent.Url(url))) }
     var didStart by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    var expanded by remember { mutableStateOf(false) }
 
     if (state.isLoading) {
         didStart = true
@@ -69,21 +64,14 @@ fun WebScreen(url: String, paddingValues: PaddingValues) {
             WebView(state,
                 onCreated = { webView ->
                     webView.settings.javaScriptEnabled = true
-                },
-                modifier = Modifier.background(Color.Red)
+                }
             )
             if (state.isLoading || !didStart) {
-                Column(modifier = Modifier.background(Color.LightGray)) {
-                    LinearProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Start)
-                            .padding(vertical = 1.dp),
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                        trackColor = Color.Transparent
-                    )
-                }
-
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.surface
+                )
             }
         }
     }

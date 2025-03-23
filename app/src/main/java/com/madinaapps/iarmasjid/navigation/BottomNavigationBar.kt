@@ -17,10 +17,10 @@ import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 
 @Composable
-fun TabIcon(item: NavigationItem, newsViewModel: NewsViewModel) {
+fun TabIcon(item: NavigationItem, newsViewModel: NewsViewModel, selected: Boolean) {
     val darkMode = isSystemInDarkTheme()
 
-    if (item.route == NavigationItem.News.route && newsViewModel.showBadge) {
+    if (item.route == NavigationItem.News.route && newsViewModel.showBadge && !selected) {
         if (darkMode) {
             Icon(painterResource(id = R.drawable.ic_tab_news_badge_dark), contentDescription = item.title, tint = Color.Unspecified)
         } else {
@@ -40,9 +40,10 @@ fun BottomNavigationBar(navController: NavController, newsViewModel: NewsViewMod
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         items.forEach {
+            val isSelected = navBackStackEntry?.destination?.route?.startsWith(it.route) ?: false
             NavigationBarItem(
                 icon = {
-                    TabIcon(it, newsViewModel)
+                    TabIcon(it, newsViewModel, isSelected)
                 },
                 label = {
                     Text(it.title)
@@ -64,7 +65,7 @@ fun BottomNavigationBar(navController: NavController, newsViewModel: NewsViewMod
                         launchSingleTop = true
                     }
                 },
-                selected = navBackStackEntry?.destination?.route?.startsWith(it.route) ?: false
+                selected = isSelected
             )
         }
     }

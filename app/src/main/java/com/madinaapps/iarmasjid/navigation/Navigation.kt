@@ -25,12 +25,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.madinaapps.iarmasjid.composable.WebScreen
 import com.madinaapps.iarmasjid.composable.donate.DonateScreen
 import com.madinaapps.iarmasjid.composable.more.MoreScreen
 import com.madinaapps.iarmasjid.composable.news.NewsScreen
 import com.madinaapps.iarmasjid.composable.prayer.PrayerScreen
 import com.madinaapps.iarmasjid.composable.qibla.QiblaScreen
+import com.madinaapps.iarmasjid.composable.web.WebScreen
 import com.madinaapps.iarmasjid.utils.Utils
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
@@ -73,6 +73,11 @@ fun Navigation(
                             }) {
                                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                             }
+                        }
+                    },
+                    actions = {
+                        if (navBackStackEntry?.destination?.route == NavigationItem.BASE_WEB_ROUTE) {
+                            WebActions()
                         }
                     }
                 )
