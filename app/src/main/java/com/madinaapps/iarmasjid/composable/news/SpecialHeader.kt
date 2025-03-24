@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.navigation.NavigationItem
+import com.madinaapps.iarmasjid.navigation.AppDestination
 
 @Composable
 fun SpecialHeader(special: Post) {
@@ -40,7 +40,7 @@ fun SpecialHeader(special: Post) {
             modifier = Modifier
                 .padding(16.dp)
                 .clickable {
-                    navController.navigate(NavigationItem.webRoute(special.url, special.title))
+                    navController.navigate(AppDestination.Web(special.url, special.title))
                 }
         ) {
             Column(

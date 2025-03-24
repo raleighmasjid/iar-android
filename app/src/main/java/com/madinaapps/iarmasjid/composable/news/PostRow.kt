@@ -28,7 +28,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
-import com.madinaapps.iarmasjid.navigation.NavigationItem
+import com.madinaapps.iarmasjid.navigation.AppDestination
 import com.madinaapps.iarmasjid.utils.formatToDay
 
 @Composable
@@ -36,13 +36,13 @@ fun PostRow(post: Post) {
     val navController = LocalNavController.current
 
     Box(modifier = Modifier.clickable {
-        navController.navigate(NavigationItem.webRoute(post.url, post.title))
+        navController.navigate(AppDestination.Web(post.url, post.title))
     }) {
         Row(modifier = Modifier
             .padding(vertical = 14.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            val imageData: Any? = post.image ?: R.drawable.news_placeholder
+            val imageData: Any = post.image ?: R.drawable.news_placeholder
             Image(
                 painter = rememberAsyncImagePainter(
                     model = imageData

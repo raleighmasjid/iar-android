@@ -1,4 +1,4 @@
-package com.madinaapps.iarmasjid.navigation
+package com.madinaapps.iarmasjid.composable.web
 
 import android.content.Intent
 import androidx.compose.material.icons.Icons
@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
-import com.madinaapps.iarmasjid.composable.web.WebViewState
 
 @Composable
 fun WebActions(state: WebViewState) {
