@@ -6,12 +6,10 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.madinaapps.iarmasjid.navigation.Navigation
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
 import com.madinaapps.iarmasjid.utils.DayChangedBroadcastReceiver
@@ -20,8 +18,6 @@ import com.madinaapps.iarmasjid.utils.RefreshNotificationsWorker
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
-val LocalNavController = compositionLocalOf<NavHostController> { error("missing") }
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -36,10 +32,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IARTheme {
-                val navController = rememberNavController()
-                CompositionLocalProvider(LocalNavController provides navController) {
-                    Navigation(navController, prayerTimesViewModel, newsViewModel)
-                }
+                Navigation(prayerTimesViewModel, newsViewModel)
             }
         }
     }

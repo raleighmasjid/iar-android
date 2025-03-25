@@ -22,15 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
 import com.madinaapps.iarmasjid.navigation.AppDestination
 
 @Composable
-fun SpecialHeader(special: Post) {
-    val navController = LocalNavController.current
-
+fun SpecialHeader(special: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Card(
             elevation = 0.dp,
@@ -40,7 +37,7 @@ fun SpecialHeader(special: Post) {
             modifier = Modifier
                 .padding(16.dp)
                 .clickable {
-                    navController.navigate(AppDestination.Web(special.url, special.title))
+                    navigateToWeb(AppDestination.Web(special.url, special.title))
                 }
         ) {
             Column(

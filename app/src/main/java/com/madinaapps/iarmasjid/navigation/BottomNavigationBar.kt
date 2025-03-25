@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 
@@ -16,12 +17,9 @@ import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 fun BottomNavigationBar(navController: NavController, newsViewModel: NewsViewModel) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface
-    ) {
-
+    NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
         TabBarItem.entries.forEach { tabItem ->
-            val isSelected = navBackStackEntry?.destination?.hasRoute(tabItem.route::class) == true
+            val isSelected = navBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(tabItem.route::class) } == true
 
             NavigationBarItem(
                 icon = {

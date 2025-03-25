@@ -25,18 +25,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.madinaapps.iarmasjid.LocalNavController
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.Post
 import com.madinaapps.iarmasjid.navigation.AppDestination
 import com.madinaapps.iarmasjid.utils.formatToDay
 
 @Composable
-fun PostRow(post: Post) {
-    val navController = LocalNavController.current
-
+fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
     Box(modifier = Modifier.clickable {
-        navController.navigate(AppDestination.Web(post.url, post.title))
+        navigateToWeb(AppDestination.Web(post.url, post.title))
     }) {
         Row(modifier = Modifier
             .padding(vertical = 14.dp, horizontal = 16.dp),

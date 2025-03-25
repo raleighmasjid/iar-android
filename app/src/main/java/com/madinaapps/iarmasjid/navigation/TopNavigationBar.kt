@@ -10,8 +10,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
 import com.madinaapps.iarmasjid.composable.qibla.LocationCard
@@ -20,19 +21,27 @@ import com.madinaapps.iarmasjid.composable.web.WebViewState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavigationBar(navController: NavHostController, webState: WebViewState) {
+fun TopNavigationBar(navController: NavController, webState: WebViewState) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     fun title(): String {
         if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true) {
             return navBackStackEntry?.toRoute<AppDestination.Web>()?.title ?: ""
         }
-        TabBarItem.entries.forEach {
-            if (navBackStackEntry?.destination?.hasRoute(it.route::class) == true) {
-                return it.title
+
+        TabBarItem.entries.forEach { tabItem ->
+            navBackStackEntry?.destination?.hierarchy?.forEach {
+                if (it.hasRoute(tabItem.route::class)) {
+                    return tabItem.title
+                }
             }
         }
         return ""
+    }
+
+    fun showBackButton(): Boolean {
+        return navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true
+                && navController.previousBackStackEntry != null
     }
 
     TopAppBar(
@@ -42,7 +51,7 @@ fun TopNavigationBar(navController: NavHostController, webState: WebViewState) {
             )
         },
         navigationIcon = {
-            if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true && navController.previousBackStackEntry != null) {
+            if (showBackButton()) {
                 IconButton(onClick = {
                     navController.navigateUp()
                 }) {
@@ -53,9 +62,7 @@ fun TopNavigationBar(navController: NavHostController, webState: WebViewState) {
         actions = {
             if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true) {
                 WebActions(webState)
-            }
-
-            if (navBackStackEntry?.destination?.hasRoute(AppDestination.Qibla::class) == true) {
+            } else if (navBackStackEntry?.destination?.hasRoute(AppDestination.Qibla::class) == true) {
                 LocationCard(null)
             }
         }

@@ -15,12 +15,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.madinaapps.iarmasjid.navigation.AppDestination
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: PaddingValues) {
+fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: PaddingValues, navigateToWeb: (AppDestination.Web) -> Unit) {
     val announcements = viewModel.announcements
 
     val pullRefreshState = rememberPullRefreshState(viewModel.loading, {
@@ -35,19 +36,19 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: Paddin
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             if (announcements?.special != null) {
                 item {
-                    SpecialHeader(announcements.special)
+                    SpecialHeader(announcements.special, navigateToWeb)
                 }
             }
 
             if (announcements?.featured != null) {
                 item {
-                    PostRow(announcements.featured)
+                    PostRow(announcements.featured, navigateToWeb)
                     AnnouncementsDivider()
                 }
             }
 
             items(announcements?.posts ?: emptyList()) { post ->
-                PostRow(post)
+                PostRow(post, navigateToWeb)
                 AnnouncementsDivider()
             }
         }

@@ -1,9 +1,6 @@
 package com.madinaapps.iarmasjid.navigation
 
 import android.app.Activity
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -13,13 +10,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.madinaapps.iarmasjid.composable.donate.DonateScreen
 import com.madinaapps.iarmasjid.composable.more.MoreScreen
@@ -34,19 +33,16 @@ import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
 
 @Composable
 fun Navigation(
-    navController: NavHostController,
     prayerTimesViewModel: PrayerTimesViewModel,
     newsViewModel: NewsViewModel
 ) {
+    val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val webState by remember { mutableStateOf(WebViewState(WebContent.Url(""))) }
 
     val view = LocalView.current
+    val density = LocalDensity.current
     val darkMode = isSystemInDarkTheme()
-
-    val tweenDuration = 220
-    val defaultEnterTransition = fadeIn(animationSpec = tween(tweenDuration))
-    val defaultExitTransition = fadeOut(animationSpec = tween(tweenDuration))
 
     val hideTopBar = TabBarItem.entries.filter { it.hideTopBar }.any {
         navBackStackEntry?.destination?.hasRoute(it.route::class) == true
@@ -72,8 +68,8 @@ fun Navigation(
         NavHost(
             navController,
             startDestination = AppDestination.Prayer,
-            enterTransition = { defaultEnterTransition },
-            exitTransition = { defaultExitTransition }
+            enterTransition = { NavTransition.defaultEnterTransition },
+            exitTransition = { NavTransition.defaultExitTransition }
         ) {
             composable<AppDestination.Prayer> {
                 PrayerScreen(prayerTimesViewModel, innerPadding)
@@ -83,21 +79,43 @@ fun Navigation(
                 QiblaScreen(innerPadding)
             }
 
+            navigation<AppDestination.NewsTab>(AppDestination.News) {
+                composable<AppDestination.News>(
+                    popEnterTransition = { NavTransition.popEnterTransition() },
+                    exitTransition = {
+                        if (targetState.destination.hasRoute(AppDestination.Web::class)) {
+                            NavTransition.pushExitTransition(density)
+                        } else {
+                            NavTransition.defaultExitTransition
+                        }
+                    }
+                ) {
+                    NewsScreen(newsViewModel, innerPadding) {
+                        navController.navigate(it)
+                    }
+                }
+
+                composable<AppDestination.Web>(
+                    enterTransition = { NavTransition.pushEnterTransition() },
+                    popExitTransition = {
+                        if (targetState.destination.hasRoute(AppDestination.News::class)) {
+                            NavTransition.popExitTransition(density)
+                        } else {
+                            NavTransition.defaultExitTransition
+                        }
+                    }
+                ) { backStackEntry ->
+                    webState.content = WebContent.Url(backStackEntry.toRoute<AppDestination.Web>().url)
+                    WebScreen(webState, innerPadding)
+                }
+            }
+
             composable<AppDestination.Donate> {
                 DonateScreen(innerPadding)
             }
 
             composable<AppDestination.More> {
                 MoreScreen(paddingValues = innerPadding)
-            }
-
-            composable<AppDestination.News> {
-                NewsScreen(newsViewModel, innerPadding)
-            }
-
-            composable<AppDestination.Web> { backStackEntry ->
-                webState.content = WebContent.Url(backStackEntry.toRoute<AppDestination.Web>().url)
-                WebScreen(webState, innerPadding)
             }
         }
     }

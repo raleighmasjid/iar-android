@@ -10,10 +10,10 @@ sealed class AppDestination {
     data object Qibla : AppDestination()
 
     @Serializable
-    data object News : AppDestination()
+    data object NewsTab : AppDestination()
 
     @Serializable
-    data object NewsGraph : AppDestination()
+    data object News : AppDestination()
 
     @Serializable
     data object Donate : AppDestination()
