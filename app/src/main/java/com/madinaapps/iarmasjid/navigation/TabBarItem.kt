@@ -7,5 +7,5 @@ enum class TabBarItem(val route: AppDestination, val icon: Int, val title: Strin
     QIBLA(AppDestination.Qibla, R.drawable.ic_tab_qibla, "Qibla"),
     NEWS(AppDestination.NewsTab, R.drawable.ic_tab_news, "News"),
     DONATE(AppDestination.Donate, R.drawable.ic_tab_donate, "Donate", hideTopBar = true),
-    MORE(AppDestination.More, R.drawable.ic_tab_more, "More")
+    MORE(AppDestination.More, R.drawable.ic_tab_more, "Settings")
 }

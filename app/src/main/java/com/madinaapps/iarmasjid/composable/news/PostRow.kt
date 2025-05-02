@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,8 +35,8 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
         navigateToWeb(AppDestination.Web(post.url, post.title))
     }) {
         Row(modifier = Modifier
-            .padding(vertical = 14.dp, horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            .padding(16.dp),
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val imageData: Any = post.image ?: R.drawable.news_placeholder
             Image(
@@ -46,36 +45,42 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                 ),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(54.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(104.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.background),
                 contentScale = ContentScale.Crop
             )
 
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1.0f)) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.weight(1.0f)) {
                 Text(post.title,
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        painterResource(id = R.drawable.ic_calendar),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(13.dp, 13.dp))
+                    Text(
+                        post.date.formatToDay(),
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 13.sp
+                    )
+                }
                 Text(post.text,
                     color = MaterialTheme.colorScheme.onSecondary,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
-                    lineHeight = 18.sp)
-                Text(post.date.formatToDay(),
-                    color = MaterialTheme.colorScheme.onTertiary,
-                    fontSize = 12.sp)
+                    lineHeight = 18.sp,
+                    overflow = TextOverflow.Ellipsis)
             }
-
-            Icon(
-                painterResource(id = R.drawable.ic_nav_chevron),
-                contentDescription = null,
-                tint = Color.Gray,
-                modifier = Modifier.size(6.dp, 12.dp))
         }
     }
 }

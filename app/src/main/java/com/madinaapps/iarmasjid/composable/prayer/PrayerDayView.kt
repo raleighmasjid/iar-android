@@ -1,10 +1,11 @@
 package com.madinaapps.iarmasjid.composable.prayer
 
 import android.os.Build
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +26,16 @@ import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+
+@Composable
+fun PrayerRowDivider() {
+    HorizontalDivider(
+        modifier = Modifier
+            .padding(horizontal = 16.dp),
+        color = MaterialTheme.colorScheme.outline,
+        thickness = 0.5.dp
+    )
+}
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -59,12 +70,9 @@ fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager, sho
         )
     }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-
+    Column {
         Prayer.entries.forEach { prayer ->
+            PrayerRowDivider()
             PrayerRow(
                 prayer = prayer.title(),
                 adhan = prayerDay?.adhanTime(prayer),
@@ -89,6 +97,7 @@ fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager, sho
         }
 
         if (showTaraweeh) {
+            PrayerRowDivider()
             Box(modifier = Modifier.alpha(taraweehAlpha)) {
                 PrayerRow(
                     prayer = "Taraweeh",

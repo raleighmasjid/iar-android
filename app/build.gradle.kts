@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.play.services.location)
+    implementation(libs.adhan)
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
     coreLibraryDesugaring(libs.desugar.jdk.libs)

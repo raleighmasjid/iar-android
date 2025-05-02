@@ -46,15 +46,15 @@ fun DonateScreen(paddingValues: PaddingValues) {
         )
         Text(
             "Your Masjid relies on the generous people of this community to keep its doors open. Consider donating to help cover our running costs.",
-            textAlign = TextAlign.Start,
+            textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSecondary,
-            fontSize = 16.sp,
+            fontSize = 17.sp,
             modifier = Modifier.padding(vertical = 48.dp)
         )
         Button(
             onClick = {uriHandler.openUri("https://donate.raleighmasjid.org/giving")},
             elevation = null,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.primary
@@ -63,9 +63,9 @@ fun DonateScreen(paddingValues: PaddingValues) {
                 .fillMaxWidth()
         ) {
             Text("Donate Now",
-                fontSize = 16.sp,
+                fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(vertical = 8.dp))
+                modifier = Modifier.padding(vertical = 10.dp))
         }
     }
 }

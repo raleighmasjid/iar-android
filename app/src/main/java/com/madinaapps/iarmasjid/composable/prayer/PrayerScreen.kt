@@ -1,51 +1,81 @@
 package com.madinaapps.iarmasjid.composable.prayer
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.madinaapps.iarmasjid.ui.theme.AppColors
-import com.madinaapps.iarmasjid.viewModel.PrayerCountdownViewModel
+import com.madinaapps.iarmasjid.R
+import com.madinaapps.iarmasjid.utils.Countdown
+import com.madinaapps.iarmasjid.utils.pxToDp
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValues: PaddingValues) {
     val prayerPagerState = rememberPagerState(pageCount = { viewModel.prayerDays.count() })
-
+    val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
+    var headerSize by remember { mutableIntStateOf(0) }
+    var smallHeaderSize by remember { mutableIntStateOf(0) }
+    var remainingTime by remember { mutableLongStateOf(viewModel.upcoming?.timeRemaining() ?: -1) }
+
+    Countdown(viewModel.upcoming?.adhan?.time ?: 0) {
+        remainingTime = it
+    }
+
+    fun headerOpacity(): Float {
+        val position = scrollState.value - paddingValues.calculateTopPadding().value
+        return if (position <= 265) {
+            0.0f
+        } else if (position >= 290) {
+            1.0f
+        } else {
+            (position - 265) / 25
+        }
+    }
+
+    fun countdownOpacity(): Float {
+        val position = scrollState.value - paddingValues.calculateTopPadding().value
+        return if (position <= 240) {
+            1.0f
+        } else if (position >= 290) {
+            0.0f
+        } else {
+            1 - ((position - 240) / 50)
+        }
+    }
 
     LaunchedEffect(viewModel.didResume) {
         if (viewModel.didResume) {
@@ -56,79 +86,93 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
         }
     }
 
-    Box {
-        Column(modifier = Modifier
-            .height(with(LocalDensity.current) { WindowInsets.statusBars.getTop(this).toDp() })
-            .fillMaxWidth()
-            .background(AppColors.primaryFixed)) {
-        }
-        Column(modifier = Modifier
+    Box(modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant)) {
+        Image(
+            painter = painterResource(id = R.drawable.prayer_header),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            alignment = Alignment.TopCenter,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height((40.dp + headerSize.pxToDp() + paddingValues.calculateTopPadding()) - scrollState.value.pxToDp())
+        )
 
-            .verticalScroll(rememberScrollState())
+        Column(modifier = Modifier
+            .verticalScroll(scrollState)
             .fillMaxWidth()
             .padding(paddingValues)
-
+            .padding(horizontal = 16.dp)
         ) {
-            Box(Modifier.fillMaxWidth()) {
-                PrayerCountdown(viewModel = PrayerCountdownViewModel(viewModel.upcoming))
+            Box(Modifier
+                .fillMaxWidth()
+                .onSizeChanged {
+                    headerSize = it.height
+                }
+            ) {
+                Box(modifier = Modifier.alpha(countdownOpacity())) {
+                    PrayerCountdown(viewModel.upcoming, timeRemaining = remainingTime)
+                }
                 if (viewModel.loading) {
-                    Row(modifier = Modifier.padding(end = 30.dp).align(Alignment.CenterEnd)) {
+                    Row(modifier = Modifier.padding(end = 30.dp).align(Alignment.TopEnd)) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(25.dp)
+                            modifier = Modifier.size(25.dp),
+                            color = Color.White
                         )
                     }
 
                 }
             }
 
-            PrayerHeader(viewModel.prayerDays, prayerPagerState)
-            PrayerTimesView(
-                prayerDays = viewModel.prayerDays,
-                pagerState = prayerPagerState,
-                dataStoreManager = viewModel.dataStoreManager
-            )
+            Box(modifier = Modifier
+                .shadow(elevation = 24.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    spotColor = Color.Black.copy(alpha = 0.05f)
+                )
+            ) {
+                Column(modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceContainer, shape = RoundedCornerShape(16.dp))
+                    .clip(RoundedCornerShape(16.dp))
+                ) {
+                    PrayerHeader(viewModel.prayerDays, prayerPagerState)
+                    PrayerTimesView(
+                        prayerDays = viewModel.prayerDays,
+                        pagerState = prayerPagerState,
+                        dataStoreManager = viewModel.dataStoreManager
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.size(32.dp))
+
             FridayScheduleView(viewModel.fridayPrayers)
 
             if (viewModel.error) {
-                BasicAlertDialog(
-                    onDismissRequest = {
+                PrayerTimesLoadError(
+                    dismissAction = {
                         viewModel.error = false
-                    }
-                ) {
-                    Surface(modifier = Modifier.wrapContentWidth().wrapContentHeight(),
-                        shape = MaterialTheme.shapes.large,
-                        tonalElevation = AlertDialogDefaults. TonalElevation
-                    ) {
-                        Column(modifier = Modifier. padding(16.dp)) {
-                            Text("Error",
-                                modifier = Modifier
-                                    .padding(bottom = 16.dp) // space between title and content
-                                    .semantics { heading() },
-                                style = MaterialTheme.typography.headlineSmall
-                            )
-                            Text("Unable to load prayer times",
-                                modifier = Modifier
-                                    .padding(bottom = 24.dp))
+                    },
+                    retryAction = {
+                        viewModel.error = false
+                        viewModel.loadData()
+                    })
+            }
+        }
 
-                            Row(modifier = Modifier.align(Alignment.End)) {
-                                TextButton(
-                                    onClick = { viewModel.error = false }
-                                ) {
-                                    Text("Dismiss")
-                                }
-                                TextButton(
-                                    onClick = {
-                                        viewModel.error = false
-                                        viewModel.loadData()
-                                    }
-                                ) {
-                                    Text("Retry")
-                                }
-                            }
-
-                        }
-                    }
-                }
+        Box(modifier = Modifier.alpha(headerOpacity())) {
+            Image(
+                painter = painterResource(id = R.drawable.prayer_header),
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth,
+                alignment = Alignment.TopCenter,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(smallHeaderSize.pxToDp() + paddingValues.calculateTopPadding())
+            )
+            Box(modifier = Modifier.padding(paddingValues).onSizeChanged { smallHeaderSize = it.height }) {
+                SmallPrayerCountdown(
+                    upcoming = viewModel.upcoming,
+                    timeRemaining = remainingTime
+                )
             }
         }
     }

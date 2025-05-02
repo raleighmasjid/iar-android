@@ -17,7 +17,7 @@ import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 fun BottomNavigationBar(navController: NavController, newsViewModel: NewsViewModel) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         TabBarItem.entries.forEach { tabItem ->
             val isSelected = navBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(tabItem.route::class) } == true
 

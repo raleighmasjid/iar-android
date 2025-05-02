@@ -1,5 +1,16 @@
 package com.madinaapps.iarmasjid.utils
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import kotlinx.coroutines.delay
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
@@ -9,6 +20,37 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+
+@Composable
+fun Countdown(targetTime: Long, content: @Composable (remainingTime: Long) -> Unit) {
+    var remainingTime by remember {
+        mutableLongStateOf(targetTime - System.currentTimeMillis())
+    }
+    var isRunning by remember { mutableStateOf(false) }
+
+    content.invoke(remainingTime)
+
+    LifecycleResumeEffect(Unit) {
+        isRunning = true
+        onPauseOrDispose {
+            isRunning = false
+        }
+    }
+
+    LaunchedEffect(isRunning, targetTime) {
+        while (isRunning) {
+            remainingTime = targetTime - Date().time
+            delay(1000)
+        }
+    }
+}
+
+@Composable
+fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
+
+
+@Composable
+fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }
 
 class Utils {
     companion object {

@@ -6,7 +6,7 @@ enum class Prayer {
         override fun notificationOffset() = 0L
      },
     SHURUQ {
-        override fun title() = "Shuruq"
+        override fun title() = "Sunrise"
         override fun notificationOffset() = 30L
     },
     DHUHR {

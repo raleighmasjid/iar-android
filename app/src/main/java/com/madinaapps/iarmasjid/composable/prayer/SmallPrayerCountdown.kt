@@ -1,11 +1,8 @@
 package com.madinaapps.iarmasjid.composable.prayer
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +15,7 @@ import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.utils.Utils
 
 @Composable
-fun PrayerCountdown(upcoming: PrayerTime?, timeRemaining: Long) {
+fun SmallPrayerCountdown(upcoming: PrayerTime?, timeRemaining: Long) {
     val nextPrayerText: String =
         if (upcoming != null) {
             "${upcoming.prayer.title()} is in"
@@ -33,32 +30,15 @@ fun PrayerCountdown(upcoming: PrayerTime?, timeRemaining: Long) {
             " "
         }
 
-    val badgeColor: Color =
-        if (upcoming != null) {
-            Color.White.copy(alpha = 0.15f)
-        } else {
-            Color(0)
-        }
-
     Column(
         modifier = Modifier
-            .padding(vertical = 40.dp)
+            .padding(vertical = 8.dp, horizontal = 30.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(modifier = Modifier.background(badgeColor, RoundedCornerShape(8.dp))) {
-            Text(nextPrayerText,
-                modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
-                fontWeight = FontWeight.Medium,
-                fontSize = 17.sp,
-                color = Color.White
-            )
-        }
-
-        Text(countdownText,
-            fontWeight = FontWeight.Normal,
-            fontSize = 48.sp,
-            modifier = Modifier.padding(top = 12.dp),
-            color = Color.White
+        Text("$nextPrayerText $countdownText",
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 18.sp,
+            color = Color.White,
         )
     }
 }

@@ -2,6 +2,7 @@ package com.madinaapps.iarmasjid.viewModel
 
 import android.os.CountDownTimer
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,7 @@ import com.madinaapps.iarmasjid.model.PrayerTime
 
 class PrayerCountdownViewModel(private val upcoming: PrayerTime?) : ViewModel() {
     var upcomingPrayer by mutableStateOf<PrayerTime?>(upcoming)
-    var timeRemaining by mutableStateOf<Long>(upcoming?.timeRemaining() ?: 0)
+    var timeRemaining by mutableLongStateOf(upcoming?.timeRemaining() ?: -1)
     private var timer: CountDownTimer? = null
 
     init {

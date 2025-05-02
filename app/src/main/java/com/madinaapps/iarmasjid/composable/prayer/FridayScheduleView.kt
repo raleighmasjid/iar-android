@@ -3,7 +3,8 @@ package com.madinaapps.iarmasjid.composable.prayer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -13,13 +14,13 @@ import com.madinaapps.iarmasjid.model.json.FridayPrayer
 
 @Composable
 fun FridayScheduleView(fridayPrayers: List<FridayPrayer>) {
-    Column(modifier = Modifier.padding(vertical = 20.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("Friday Prayers",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 20.dp))
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(horizontal = 20.dp)) {
+            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.SemiBold)
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(bottom = 32.dp)) {
             fridayPrayers.forEach {
                 KhutbaView(it)
             }

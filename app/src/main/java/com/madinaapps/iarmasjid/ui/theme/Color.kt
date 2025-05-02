@@ -38,6 +38,9 @@ val tertiaryContainerDark = Color(0x1A61C469)
 val onTertiaryLight = Color(0xFFA6B1B5)
 val onTertiaryDark = Color(0xFF647374)
 
+val tertiaryLight = Color(0x071b5e20)
+val tertiaryDark = Color(0x0761c469)
+
 object AppColors {
     val primaryFixed = Color(0xFF1B5E20)
 }
