@@ -14,6 +14,7 @@ import androidx.work.WorkerParameters
 import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.data.PrayerScheduleRepository
 import com.madinaapps.iarmasjid.model.NotificationType
+import com.madinaapps.iarmasjid.model.Prayer
 import kotlinx.coroutines.flow.first
 import java.util.concurrent.TimeUnit
 
@@ -58,7 +59,7 @@ class RefreshNotificationsWorker(private val appContext: Context, workerParams: 
 
     override suspend fun doWork(): Result {
         val dataStoreManager = DataStoreManager(appContext = appContext)
-        val enabledPrayers = dataStoreManager.enabledNotifications()
+        val enabledPrayers = Prayer.entries.filter { dataStoreManager.getNotificationEnabled(it).first() }
         val repository = PrayerScheduleRepository(dataStoreManager)
         val type: NotificationType = dataStoreManager.getNotificationType().first()
         val scheduleResult = repository.fetchPrayerSchedule(forceRefresh = false)

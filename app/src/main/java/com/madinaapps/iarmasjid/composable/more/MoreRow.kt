@@ -1,44 +1,49 @@
 package com.madinaapps.iarmasjid.composable.more
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import com.madinaapps.iarmasjid.R
 
 @Composable
-fun MoreRow(onClick: () -> Unit, content: @Composable() () -> Unit) {
-    Card(
-        elevation = 0.dp,
-        shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colorScheme.background,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                onClick()
+fun MoreRow(content: @Composable() () -> Unit, icon: Painter, showDivider: Boolean = true, onClick: () -> Unit) {
+    Box(Modifier.clickable { onClick() }) {
+        Column(Modifier.padding(horizontal = 16.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(16.dp, 16.dp)
+                )
+                Box(modifier = Modifier.weight(1.0f)) {
+                    content()
+                }
             }
-    ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(modifier = Modifier.weight(1.0f)) {
-                content()
+            if (showDivider) {
+                HorizontalDivider(
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outline
+                )
             }
-            Icon(
-                painterResource(id = R.drawable.ic_nav_chevron),
-                contentDescription = null,
-                tint = Color.Gray,
-                modifier = Modifier.size(6.dp, 12.dp))
         }
     }
 }

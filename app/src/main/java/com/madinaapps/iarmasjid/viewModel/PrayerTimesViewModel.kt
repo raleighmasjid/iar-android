@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -77,8 +76,8 @@ class PrayerTimesViewModel @Inject constructor(
         notificationJob?.cancel()
         notificationJob = viewModelScope.launch {
             delay(500)
-            val enabledPrayers = dataStoreManager.enabledNotifications()
-            val type: NotificationType = runBlocking { dataStoreManager.getNotificationType().first() }
+            val enabledPrayers = Prayer.entries.filter { dataStoreManager.getNotificationEnabled(it).first() }
+            val type: NotificationType = dataStoreManager.getNotificationType().first()
             NotificationController.scheduleNotifications(context, prayerDays, enabledPrayers, type)
         }
     }
