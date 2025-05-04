@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,10 +42,11 @@ import com.madinaapps.iarmasjid.utils.Countdown
 import com.madinaapps.iarmasjid.utils.pxToDp
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
 import kotlinx.coroutines.launch
+import kotlin.math.max
 
 @Composable
 fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValues: PaddingValues) {
-    val prayerPagerState = rememberPagerState(pageCount = { viewModel.prayerDays.count() })
+    val prayerPagerState = rememberPagerState(pageCount = { max(1, viewModel.prayerDays.count()) })
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
     var headerSize by remember { mutableIntStateOf(0) }
@@ -86,7 +88,11 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
         }
     }
 
-    Box(modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant)) {
+    Box(
+        modifier = Modifier
+        .fillMaxHeight()
+        .background(MaterialTheme.colorScheme.surfaceVariant)
+    ) {
         Image(
             painter = painterResource(id = R.drawable.prayer_header),
             contentDescription = null,
@@ -143,7 +149,9 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
 
             Spacer(modifier = Modifier.size(32.dp))
 
-            FridayScheduleView(viewModel.fridayPrayers)
+            if (viewModel.fridayPrayers.isNotEmpty()) {
+                FridayScheduleView(viewModel.fridayPrayers)
+            }
 
             if (viewModel.error) {
                 PrayerTimesLoadError(

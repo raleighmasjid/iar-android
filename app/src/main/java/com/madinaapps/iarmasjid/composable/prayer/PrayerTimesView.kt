@@ -22,10 +22,7 @@ fun PrayerTimesView(prayerDays: List<PrayerDay>, pagerState: PagerState) {
     Column {
         PrayerColumnHeaders()
         HorizontalPager(state = pagerState) { page ->
-            val prayerDay = prayerDays.getOrNull(page)
-            if (prayerDay != null) {
-                PrayerDayView(prayerDay, showTaraweeh)
-            }
+            PrayerDayView(prayerDays.getOrNull(page), showTaraweeh)
         }
     }
 }

@@ -1,10 +1,10 @@
 package com.madinaapps.iarmasjid.model.json
 
-import com.squareup.moshi.JsonClass
 import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.utils.isSameDay
-import java.util.*
+import com.squareup.moshi.JsonClass
+import java.util.Date
 
 @JsonClass(generateAdapter = true)
 data class PrayerDay(
@@ -23,7 +23,7 @@ data class PrayerDay(
     }
 
     val prayerTimes: List<PrayerTime> by lazy {
-        Prayer.values().map { PrayerTime(it, adhanTime(it), iqamahTime(it)) }
+        Prayer.entries.map { PrayerTime(it, adhanTime(it), iqamahTime(it)) }
     }
 
     fun currentPrayer(time: Date = Date()): Prayer? {
