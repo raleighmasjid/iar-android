@@ -4,15 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.IconToggleButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.utils.formatToTime
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
 
 @Composable
@@ -30,10 +30,10 @@ fun PrayerRow(prayer: String,
               iqamah: Date?,
               current: Boolean,
               displayAlarm: Boolean,
-              notificationEnabled: Flow<Boolean>,
+              notificationEnabled: StateFlow<Boolean>,
               toggleAction: (Boolean) -> Unit) {
     val bgColor: Color = if (current) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.background
-    val notification: Boolean by notificationEnabled.collectAsState(initial = false)
+    val notification = notificationEnabled.collectAsState()
     val textColor: Color = if (current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
 
     Row(
@@ -70,15 +70,18 @@ fun PrayerRow(prayer: String,
         )
 
         IconToggleButton(
-            checked = notification,
+            checked = notification.value,
             onCheckedChange = {
                 toggleAction(it)
             },
-            modifier = Modifier.size(64.dp, 24.dp)
+            enabled = displayAlarm,
+            modifier = Modifier
+                .size(64.dp, 24.dp)
+                .alpha(if (displayAlarm) 1.0f else 0.0f)
         ) {
             var buttonImage = R.drawable.ic_alarm_off
             var buttonTint = MaterialTheme.colorScheme.onTertiary
-            if (notification) {
+            if (notification.value) {
                 buttonImage = R.drawable.ic_alarm_on
                 buttonTint = MaterialTheme.colorScheme.primary
             }

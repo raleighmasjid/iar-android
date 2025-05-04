@@ -14,16 +14,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 
 @Composable
-fun PrayerTimesView(prayerDays: List<PrayerDay>, pagerState: PagerState, dataStoreManager: DataStoreManager) {
+fun PrayerTimesView(prayerDays: List<PrayerDay>, pagerState: PagerState) {
     val showTaraweeh = prayerDays.any { it.hasTaraweeh() }
     Column {
         PrayerColumnHeaders()
         HorizontalPager(state = pagerState) { page ->
-            PrayerDayView(prayerDays.getOrNull(page), dataStoreManager, showTaraweeh)
+            val prayerDay = prayerDays.getOrNull(page)
+            if (prayerDay != null) {
+                PrayerDayView(prayerDay, showTaraweeh)
+            }
         }
     }
 }

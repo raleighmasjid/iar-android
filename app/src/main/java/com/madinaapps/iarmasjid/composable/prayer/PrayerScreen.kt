@@ -136,8 +136,7 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
                     PrayerHeader(viewModel.prayerDays, prayerPagerState)
                     PrayerTimesView(
                         prayerDays = viewModel.prayerDays,
-                        pagerState = prayerPagerState,
-                        dataStoreManager = viewModel.dataStoreManager
+                        pagerState = prayerPagerState
                     )
                 }
             }

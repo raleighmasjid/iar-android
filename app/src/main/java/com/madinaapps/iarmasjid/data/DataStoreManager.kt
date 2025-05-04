@@ -12,10 +12,8 @@ import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.model.Prayer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userData")
 
@@ -73,10 +71,6 @@ class DataStoreManager(appContext: Context) {
         return context.dataStore.data.map { pref ->
             pref[notificationKey(prayer = prayer)] ?: false
         }.distinctUntilChanged()
-    }
-
-    fun enabledNotifications(): List<Prayer> {
-        return Prayer.entries.filter { runBlocking { getNotificationEnabled(it).first() } }
     }
 
     suspend fun getCachedPrayerScheduleData(): String? {

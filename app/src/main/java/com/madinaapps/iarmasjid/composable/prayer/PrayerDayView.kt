@@ -11,21 +11,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.model.json.PrayerDay
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
+import com.madinaapps.iarmasjid.viewModel.SettingsViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun PrayerRowDivider() {
@@ -39,12 +38,11 @@ fun PrayerRowDivider() {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager, showTaraweeh: Boolean) {
+fun PrayerDayView(prayerDay: PrayerDay?, showTaraweeh: Boolean, viewModel: SettingsViewModel = hiltViewModel()) {
     val currentPrayer = prayerDay?.currentPrayer()
-    val scope = rememberCoroutineScope()
     val taraweehAlpha = if (prayerDay?.hasTaraweeh() == true) 1.0f else 0.8f
 
-    var pendingToggle by remember { mutableStateOf(Pair<Prayer?, Boolean>(null, false)) }
+    var pendingNotification by remember { mutableStateOf<Prayer?>(null) }
     var showPermissionAlert by remember { mutableStateOf(false) }
 
     val permissionState: PermissionState = rememberPermissionState(
@@ -53,10 +51,10 @@ fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager, sho
     )
 
     LaunchedEffect(permissionState.status.isGranted) {
-        val prayer = pendingToggle.first
+        val prayer = pendingNotification
         if (prayer != null && permissionState.status.isGranted) {
-            dataStoreManager.setNotification(pendingToggle.second, prayer)
-            pendingToggle = Pair(null, false)
+            viewModel.setNotification(true, prayer)
+            pendingNotification = null
         }
     }
 
@@ -65,7 +63,7 @@ fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager, sho
             dismiss = { showPermissionAlert = false},
             cancel = {
                 showPermissionAlert = false
-                pendingToggle = Pair(null, false)
+                pendingNotification = null
             }
         )
     }
@@ -79,16 +77,18 @@ fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager, sho
                 iqamah = prayerDay?.iqamahTime(prayer),
                 current = currentPrayer == prayer,
                 displayAlarm = true,
-                notificationEnabled = dataStoreManager.getNotificationEnabled(prayer),
+                notificationEnabled = viewModel.getNotificationEnabled(prayer),
                 toggleAction = {
-                    scope.launch {
+                    if (!it) {
+                        viewModel.setNotification(false, prayer)
+                    } else {
                         if (permissionState.status.isGranted) {
-                            dataStoreManager.setNotification(it, prayer)
+                            viewModel.setNotification(true, prayer)
                         } else if (permissionState.status.shouldShowRationale) {
-                            pendingToggle = Pair(prayer, it)
+                            pendingNotification = prayer
                             showPermissionAlert = true
                         } else {
-                            pendingToggle = Pair(prayer, it)
+                            pendingNotification = prayer
                             permissionState.launchPermissionRequest()
                         }
                     }
@@ -105,7 +105,7 @@ fun PrayerDayView(prayerDay: PrayerDay?, dataStoreManager: DataStoreManager, sho
                     iqamah = prayerDay?.iqamah?.taraweeh,
                     current = false,
                     displayAlarm = false,
-                    notificationEnabled = flowOf(false),
+                    notificationEnabled = MutableStateFlow(false),
                     toggleAction = { }
                 )
             }
