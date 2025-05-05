@@ -51,10 +51,15 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
     val scope = rememberCoroutineScope()
     var headerSize by remember { mutableIntStateOf(0) }
     var smallHeaderSize by remember { mutableIntStateOf(0) }
-    var remainingTime by remember { mutableLongStateOf(viewModel.upcoming?.timeRemaining() ?: -1) }
+    var timeRemaining by remember { mutableLongStateOf(viewModel.upcoming?.timeRemaining() ?: -1) }
+
+    LaunchedEffect(viewModel.upcoming) {
+        timeRemaining = viewModel.upcoming?.timeRemaining() ?: -1
+    }
 
     Countdown(viewModel.upcoming?.adhan?.time ?: 0) {
-        remainingTime = it
+        viewModel.updateNextPrayer()
+        timeRemaining = it
     }
 
     fun headerOpacity(): Float {
@@ -116,7 +121,7 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
                 }
             ) {
                 Box(modifier = Modifier.alpha(countdownOpacity())) {
-                    PrayerCountdown(viewModel.upcoming, timeRemaining = remainingTime)
+                    PrayerCountdown(viewModel.upcoming, timeRemaining = timeRemaining)
                 }
                 if (viewModel.loading) {
                     Row(modifier = Modifier.padding(end = 30.dp).align(Alignment.TopEnd)) {
@@ -142,6 +147,7 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
                     PrayerHeader(viewModel.prayerDays, prayerPagerState)
                     PrayerTimesView(
                         prayerDays = viewModel.prayerDays,
+                        current = viewModel.current,
                         pagerState = prayerPagerState
                     )
                 }
@@ -178,7 +184,7 @@ fun PrayerScreen(viewModel: PrayerTimesViewModel = hiltViewModel(), paddingValue
             Box(modifier = Modifier.padding(paddingValues).onSizeChanged { smallHeaderSize = it.height }) {
                 SmallPrayerCountdown(
                     upcoming = viewModel.upcoming,
-                    timeRemaining = remainingTime
+                    timeRemaining = timeRemaining
                 )
             }
         }

@@ -2,9 +2,8 @@ package com.madinaapps.iarmasjid.composable.prayer
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,18 +27,19 @@ fun PrayerTimesLoadError(dismissAction: () -> Unit, retryAction: () -> Unit) {
             dismissAction()
         }
     ) {
-        Surface(modifier = Modifier.wrapContentWidth().wrapContentHeight(),
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
-            tonalElevation = AlertDialogDefaults. TonalElevation
+            tonalElevation = AlertDialogDefaults.TonalElevation
         ) {
             Column(modifier = Modifier. padding(16.dp)) {
-                Text("Error",
+                Text("Network Error",
                     modifier = Modifier
-                        .padding(bottom = 16.dp) // space between title and content
+                        .padding(bottom = 12.dp) // space between title and content
                         .semantics { heading() },
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.titleLarge
                 )
-                Text("Unable to load prayer times",
+                Text("Unable to load prayer times. Check your internet connection.",
                     modifier = Modifier
                         .padding(bottom = 24.dp))
 
@@ -46,14 +47,14 @@ fun PrayerTimesLoadError(dismissAction: () -> Unit, retryAction: () -> Unit) {
                     TextButton(
                         onClick = { dismissAction() }
                     ) {
-                        Text("Dismiss")
+                        Text("Dismiss", fontSize = 16.sp)
                     }
                     TextButton(
                         onClick = {
                             retryAction()
                         }
                     ) {
-                        Text("Retry")
+                        Text("Retry", fontSize = 16.sp)
                     }
                 }
             }

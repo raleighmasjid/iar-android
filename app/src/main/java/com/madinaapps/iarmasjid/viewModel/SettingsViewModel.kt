@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     val notificationType: StateFlow<NotificationType> = dataStoreManager
         .getNotificationType()

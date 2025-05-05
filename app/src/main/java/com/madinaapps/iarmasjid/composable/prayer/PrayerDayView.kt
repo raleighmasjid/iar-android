@@ -22,6 +22,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.madinaapps.iarmasjid.model.Prayer
+import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.viewModel.SettingsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,8 +39,7 @@ fun PrayerRowDivider() {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PrayerDayView(prayerDay: PrayerDay?, showTaraweeh: Boolean, viewModel: SettingsViewModel = hiltViewModel()) {
-    val currentPrayer = prayerDay?.currentPrayer()
+fun PrayerDayView(prayerDay: PrayerDay?, current: PrayerTime?, showTaraweeh: Boolean, viewModel: SettingsViewModel = hiltViewModel()) {
     val taraweehAlpha = if (prayerDay?.hasTaraweeh() == true) 1.0f else 0.8f
 
     var pendingNotification by remember { mutableStateOf<Prayer?>(null) }
@@ -68,6 +68,14 @@ fun PrayerDayView(prayerDay: PrayerDay?, showTaraweeh: Boolean, viewModel: Setti
         )
     }
 
+    fun isCurrent(prayer: Prayer): Boolean {
+        if (current == null || prayerDay == null) {
+            return false
+        }
+
+        return current == prayerDay.prayerTimesMap[prayer]
+    }
+
     Column {
         Prayer.entries.forEach { prayer ->
             PrayerRowDivider()
@@ -75,7 +83,7 @@ fun PrayerDayView(prayerDay: PrayerDay?, showTaraweeh: Boolean, viewModel: Setti
                 prayer = prayer.title(),
                 adhan = prayerDay?.adhanTime(prayer),
                 iqamah = prayerDay?.iqamahTime(prayer),
-                current = currentPrayer == prayer,
+                current = isCurrent(prayer),
                 displayAlarm = true,
                 notificationEnabled = viewModel.getNotificationEnabled(prayer),
                 toggleAction = {

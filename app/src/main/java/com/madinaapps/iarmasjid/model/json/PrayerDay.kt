@@ -22,26 +22,31 @@ data class PrayerDay(
         }
     }
 
-    val prayerTimes: List<PrayerTime> by lazy {
-        Prayer.entries.map { PrayerTime(it, adhanTime(it), iqamahTime(it)) }
-    }
-
-    fun currentPrayer(time: Date = Date()): Prayer? {
+    fun currentPrayer(time: Date = Date()): PrayerTime? {
+        val map = prayerTimesMap
         return when {
             time.after(adhan.isha) -> {
                 return if (time.isSameDay(adhan.isha)) {
-                    Prayer.ISHA
+                    map[Prayer.ISHA]
                 } else {
                     null
                 }
             }
-            time.after(adhan.maghrib) -> Prayer.MAGHRIB
-            time.after(adhan.asr) -> Prayer.ASR
-            time.after(adhan.dhuhr) -> Prayer.DHUHR
-            time.after(adhan.shuruq) -> Prayer.SHURUQ
-            time.after(adhan.fajr) -> Prayer.FAJR
+            time.after(adhan.maghrib) -> map[Prayer.MAGHRIB]
+            time.after(adhan.asr) -> map[Prayer.ASR]
+            time.after(adhan.dhuhr) -> map[Prayer.DHUHR]
+            time.after(adhan.shuruq) -> map[Prayer.SHURUQ]
+            time.after(adhan.fajr) -> map[Prayer.FAJR]
             else -> null
         }
+    }
+
+    val prayerTimes: List<PrayerTime> by lazy {
+        Prayer.entries.map { PrayerTime(it, adhanTime(it), iqamahTime(it)) }
+    }
+
+    val prayerTimesMap: Map<Prayer, PrayerTime> by lazy {
+        prayerTimes.associateBy { it.prayer }
     }
 
     fun adhanTime(prayer: Prayer): Date {

@@ -1,7 +1,6 @@
 package com.madinaapps.iarmasjid.viewModel
 
 import android.content.Context
-import android.os.CountDownTimer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PrayerTimesViewModel @Inject constructor(
         @ApplicationContext val context: Context,
-        val dataStoreManager: DataStoreManager
+        private val dataStoreManager: DataStoreManager
     ) : ViewModel() {
 
     var prayerDays = mutableStateListOf<PrayerDay>()
@@ -43,6 +42,9 @@ class PrayerTimesViewModel @Inject constructor(
     var upcoming by mutableStateOf<PrayerTime?>(null)
         private set
 
+    var current by mutableStateOf<PrayerTime?>(null)
+        private set
+
     var error by mutableStateOf(false)
 
     var loading by mutableStateOf(false)
@@ -50,21 +52,12 @@ class PrayerTimesViewModel @Inject constructor(
     var didResume: Boolean = false
 
     private var notificationJob: Job? = null
-    private var timer: CountDownTimer? = null
     private val repository = PrayerScheduleRepository(dataStoreManager)
 
     init {
-        timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
-            override fun onTick(p0: Long) {
-                updateNextPrayer()
-            }
-
-            override fun onFinish() { }
-        }.start()
-
         viewModelScope.launch {
-            val flows = Prayer.entries.map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { Unit } }.toMutableList()
-            flows.add(dataStoreManager.getNotificationType().map { Unit })
+            val flows = Prayer.entries.map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { } }.toMutableList()
+            flows.add(dataStoreManager.getNotificationType().map { })
             val combinedFlows = combine(flows = flows) { it }
             combinedFlows.drop(1).collect {
                 updateNotifications()
@@ -82,10 +75,21 @@ class PrayerTimesViewModel @Inject constructor(
         }
     }
 
-    private fun updateNextPrayer() {
+    fun updateNextPrayer() {
         val newUpcoming = PrayerDay.upcomingPrayer(prayerDays)
         if (newUpcoming != upcoming) {
             upcoming = newUpcoming
+        }
+
+        var updatedCurrent: PrayerTime? = null
+        for (prayerDay in prayerDays) {
+            val newCurrent = prayerDay.currentPrayer()
+            if (newCurrent != null) {
+                updatedCurrent = newCurrent
+            }
+        }
+        if (updatedCurrent != current) {
+            current = updatedCurrent
         }
     }
 
