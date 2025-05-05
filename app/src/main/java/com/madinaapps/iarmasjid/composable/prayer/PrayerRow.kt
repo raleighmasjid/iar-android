@@ -39,35 +39,40 @@ fun PrayerRow(prayer: String,
     Row(
         modifier = Modifier
             .background(bgColor)
-            .padding(start = 16.dp)
-            .padding(vertical = 16.dp),
+            .padding(start = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            prayer,
-            modifier = Modifier.weight(1f, true),
-            color = textColor,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold
-        )
+            Text(
+                prayer,
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .weight(1f, true),
+                color = textColor,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
 
-        Text(
-            adhan?.formatToTime() ?: " ",
-            modifier = Modifier.weight(1f, true),
-            color = textColor,
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Normal
-        )
+            Text(
+                adhan?.formatToTime() ?: " ",
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .weight(1f, true),
+                color = textColor,
+                textAlign = TextAlign.Center,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Normal
+            )
 
-        Text(
-            iqamah?.formatToTime() ?: " ",
-            modifier = Modifier.weight(1f, true),
-            color = textColor,
-            textAlign = TextAlign.End,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Normal
-        )
+            Text(
+                iqamah?.formatToTime() ?: " ",
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .weight(1f, true),
+                color = textColor,
+                textAlign = TextAlign.End,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Normal
+            )
 
         IconToggleButton(
             checked = notification.value,
@@ -76,7 +81,7 @@ fun PrayerRow(prayer: String,
             },
             enabled = displayAlarm,
             modifier = Modifier
-                .size(64.dp, 24.dp)
+                .size(64.dp, 50.dp)
                 .alpha(if (displayAlarm) 1.0f else 0.0f)
         ) {
             var buttonImage = R.drawable.ic_alarm_off
