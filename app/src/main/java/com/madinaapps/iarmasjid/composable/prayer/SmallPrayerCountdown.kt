@@ -37,7 +37,7 @@ fun SmallPrayerCountdown(upcoming: PrayerTime?, timeRemaining: Long) {
         horizontalAlignment = Alignment.CenterHorizontally) {
         Text("$nextPrayerText $countdownText",
             fontWeight = FontWeight.SemiBold,
-            fontSize = 18.sp,
+            fontSize = 17.sp,
             color = Color.White,
         )
     }

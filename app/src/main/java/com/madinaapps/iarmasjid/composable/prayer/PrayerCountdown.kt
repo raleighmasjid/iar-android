@@ -49,7 +49,7 @@ fun PrayerCountdown(upcoming: PrayerTime?, timeRemaining: Long) {
             Text(nextPrayerText,
                 modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                 fontWeight = FontWeight.Medium,
-                fontSize = 17.sp,
+                fontSize = 16.sp,
                 color = Color.White
             )
         }

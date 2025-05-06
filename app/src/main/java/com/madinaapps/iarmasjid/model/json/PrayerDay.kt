@@ -1,11 +1,13 @@
 package com.madinaapps.iarmasjid.model.json
 
+import androidx.annotation.Keep
 import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.utils.isSameDay
 import com.squareup.moshi.JsonClass
 import java.util.Date
 
+@Keep
 @JsonClass(generateAdapter = true)
 data class PrayerDay(
     val date: Date,

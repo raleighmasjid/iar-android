@@ -48,7 +48,7 @@ fun DonateScreen(paddingValues: PaddingValues) {
             "Your Masjid relies on the generous people of this community to keep its doors open. Consider donating to help cover our running costs.",
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSecondary,
-            fontSize = 17.sp,
+            fontSize = 16.sp,
             modifier = Modifier.padding(vertical = 48.dp)
         )
         Button(
@@ -63,7 +63,7 @@ fun DonateScreen(paddingValues: PaddingValues) {
                 .fillMaxWidth()
         ) {
             Text("Donate Now",
-                fontSize = 17.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 10.dp))
         }

@@ -35,20 +35,20 @@ fun PrayerColumnHeaders() {
         Text(
             "Prayer",
             modifier = Modifier.weight(1f, true),
-            fontSize = 18.sp,
+            fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold
         )
         Text(
             "Adhan",
             modifier = Modifier.weight(1f, true),
-            fontSize = 18.sp,
+            fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center
         )
         Text(
             "Iqamah",
             modifier = Modifier.weight(1f, true).padding(end = 6.dp),
-            fontSize = 18.sp,
+            fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.End
         )

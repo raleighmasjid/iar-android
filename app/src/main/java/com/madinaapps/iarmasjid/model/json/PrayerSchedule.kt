@@ -1,10 +1,12 @@
 package com.madinaapps.iarmasjid.model.json
 
+import androidx.annotation.Keep
 import com.madinaapps.iarmasjid.utils.asLocalDate
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Date
 
+@Keep
 @JsonClass(generateAdapter = true)
 data class PrayerSchedule(
     @Json(name = "prayer_days")

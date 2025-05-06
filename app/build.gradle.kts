@@ -15,8 +15,8 @@ android {
         applicationId = "com.madinaapps.iarmasjid"
         minSdk = 23
         targetSdk = 35
-        versionCode = 225
-        versionName = "3.1.0"
+        versionCode = 233
+        versionName = "3.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

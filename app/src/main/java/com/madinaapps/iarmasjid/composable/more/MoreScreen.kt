@@ -5,6 +5,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,11 +15,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.madinaapps.iarmasjid.BuildConfig
@@ -50,7 +54,7 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: Pa
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             MoreRow(
                 content = {
-                    Text("Notifications", fontSize = 17.sp)
+                    Text("Notifications", fontSize = 16.sp)
                 },
                 icon = painterResource(R.drawable.ic_settings_notifications)
             ) {
@@ -62,18 +66,20 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: Pa
 
         MoreRow(
             content = {
-                Text("View Full Website", fontSize = 17.sp)
+                Text("View Full Website", fontSize = 16.sp)
             },
             icon = painterResource(R.drawable.ic_full_website)
         ) {
             uriHandler.openUri("https://raleighmasjid.org/")
         }
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
+            Text(text = "The Islamic Association of Raleigh", fontSize = 12.sp, color = Color.Gray)
+            Text(text = "Version $versionNumber ($buildNumber)", fontSize = 12.sp, color = Color.Gray)
+        }
     }
 
-//        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
-//            Text(text = "The Islamic Association of Raleigh", fontSize = 12.sp, color = Color.Gray)
-//            Text(text = "Version $versionNumber ($buildNumber)", fontSize = 12.sp, color = Color.Gray)
-//        }
+
 
 }
 

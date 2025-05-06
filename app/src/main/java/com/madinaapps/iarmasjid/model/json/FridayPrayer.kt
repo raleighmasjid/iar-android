@@ -1,8 +1,10 @@
 package com.madinaapps.iarmasjid.model.json
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+@Keep
 @JsonClass(generateAdapter = true)
 data class FridayPrayer(
     val title: String,

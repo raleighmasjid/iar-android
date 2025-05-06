@@ -51,14 +51,16 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                 contentScale = ContentScale.Crop
             )
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.weight(1.0f)) {
+            Column(modifier = Modifier.weight(1.0f)) {
                 Text(post.title,
+                    modifier = Modifier.padding(bottom = 2.dp),
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 18.sp,
+                    fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
                 Row(
+                    modifier = Modifier.padding(bottom = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -70,15 +72,15 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                     Text(
                         post.date.formatToDay(),
                         color = MaterialTheme.colorScheme.primary,
-                        fontSize = 13.sp
+                        fontSize = 12.sp
                     )
                 }
                 Text(post.text,
                     color = MaterialTheme.colorScheme.onSecondary,
-                    fontSize = 14.sp,
+                    fontSize = 13.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 3,
-                    lineHeight = 18.sp,
+                    lineHeight = 17.sp,
                     overflow = TextOverflow.Ellipsis)
             }
         }

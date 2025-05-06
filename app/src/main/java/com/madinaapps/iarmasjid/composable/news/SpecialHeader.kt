@@ -55,17 +55,17 @@ fun SpecialHeader(special: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                         modifier = Modifier.size(20.dp, 20.dp))
                     Text(special.title,
                         color = MaterialTheme.colorScheme.primary,
-                        fontSize = 16.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
 
                 Text(special.text,
                     color = MaterialTheme.colorScheme.primary,
-                    fontSize = 14.sp,
+                    fontSize = 13.sp,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 3,
-                    lineHeight = 22.sp
+                    lineHeight = 20.sp
                 )
             }
         }

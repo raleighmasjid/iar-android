@@ -3,6 +3,7 @@ package com.madinaapps.iarmasjid.composable.prayer
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -71,12 +72,12 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 })
             ) {
                 Column(
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = 15.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-
+                    verticalArrangement = Arrangement.spacedBy((-1).dp)
                 ) {
-                    Text(dateText, fontWeight = FontWeight.Medium, fontSize = 17.sp, color = MaterialTheme.colorScheme.onBackground)
-                    Text(hijriText, fontWeight = FontWeight.Normal, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSecondary)
+                    Text(dateText, fontWeight = FontWeight.Medium, fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground)
+                    Text(hijriText, fontWeight = FontWeight.Normal, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSecondary)
                 }
             }
         }

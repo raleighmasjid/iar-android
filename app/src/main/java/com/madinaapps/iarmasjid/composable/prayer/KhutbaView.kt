@@ -76,7 +76,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                         fridayPrayer.shift,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp,
+                        fontSize = 16.sp,
                         color = AppColors.primaryFixed
                     )
                 }
@@ -84,7 +84,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                 Text(
                     fridayPrayer.time,
                     color = Color.White,
-                    fontSize = 21.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -97,7 +97,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                     modifier = Modifier
                         .padding(bottom = 16.dp),
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 21.sp
+                    fontSize = 20.sp
                 )
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -122,13 +122,13 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                         Text(
                             fridayPrayer.speaker,
                             color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = 18.sp,
+                            fontSize = 17.sp,
                             fontWeight = FontWeight.SemiBold
                         )
                         Text(
                             fridayPrayer.description,
                             color = MaterialTheme.colorScheme.onSecondary,
-                            fontSize = 13.sp
+                            fontSize = 12.sp
                         )
                     }
                 }

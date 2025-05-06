@@ -1,8 +1,10 @@
 package com.madinaapps.iarmasjid.model.json
 
+import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
-import java.util.*
+import java.util.Date
 
+@Keep
 @JsonClass(generateAdapter = true)
 data class Post(
     val id: Int,

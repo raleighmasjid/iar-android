@@ -36,12 +36,12 @@ fun NotificationSoundRow(viewModel: SettingsViewModel, expanded: Boolean, dismis
     }
 
     Row {
-        Text("Adhan Sound", fontSize = 17.sp)
+        Text("Adhan Sound", fontSize = 16.sp)
         Spacer(modifier = Modifier.weight(1f))
         Box {
             Row {
                 Text(notificationType.value.title(),
-                    fontSize = 17.sp,
+                    fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.primary,
                 )
                 Icon(
@@ -61,7 +61,7 @@ fun NotificationSoundRow(viewModel: SettingsViewModel, expanded: Boolean, dismis
                 NotificationType.options().forEach { notifType ->
                     DropdownMenuItem(
                         text = {
-                            Text(notifType.title(), fontSize = 17.sp)
+                            Text(notifType.title(), fontSize = 16.sp)
                         },
                         leadingIcon = {
                             if (notificationType.value == notifType) {

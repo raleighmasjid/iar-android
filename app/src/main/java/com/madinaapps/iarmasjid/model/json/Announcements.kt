@@ -1,7 +1,9 @@
 package com.madinaapps.iarmasjid.model.json
 
+import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
 
+@Keep
 @JsonClass(generateAdapter = true)
 data class Announcements(
     val special: Post?,

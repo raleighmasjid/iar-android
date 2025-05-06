@@ -1,9 +1,11 @@
 package com.madinaapps.iarmasjid.model.json
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Date
 
+@Keep
 @JsonClass(generateAdapter = true)
 data class News (
     val announcements: Announcements,
