@@ -66,7 +66,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(AppColors.primaryFixed)
-                    .padding(16.dp)
+                    .padding(vertical = 14.dp, horizontal = 16.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -74,7 +74,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                 ) {
                     Text(
                         fridayPrayer.shift,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppColors.primaryFixed
@@ -91,11 +91,11 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
 
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(vertical = 14.dp, horizontal = 16.dp)
             ) {
                 Text(fridayPrayer.title,
                     modifier = Modifier
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 14.dp),
                     color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 20.sp
                 )

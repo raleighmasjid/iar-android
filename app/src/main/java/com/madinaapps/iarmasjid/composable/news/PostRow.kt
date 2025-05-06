@@ -45,7 +45,7 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                 ),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(104.dp)
+                    .size(96.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.background),
                 contentScale = ContentScale.Crop

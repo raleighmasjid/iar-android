@@ -36,14 +36,14 @@ fun SpecialHeader(special: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                 contentColor = MaterialTheme.colorScheme.primary
             ),
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 6.dp)
                 .clickable {
                     navigateToWeb(AppDestination.Web(special.url, special.title))
                 }
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -52,7 +52,7 @@ fun SpecialHeader(special: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                         painterResource(id = R.drawable.ic_announcement),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp, 20.dp))
+                        modifier = Modifier.size(18.dp, 18.dp))
                     Text(special.title,
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 15.sp,

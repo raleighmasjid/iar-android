@@ -65,7 +65,7 @@ fun DonateScreen(paddingValues: PaddingValues) {
             Text("Donate Now",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(vertical = 10.dp))
+                modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }
