@@ -59,13 +59,14 @@ fun DonateScreen(paddingValues: PaddingValues) {
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.primary
             ),
+            contentPadding = PaddingValues(14.dp),
             modifier = Modifier
                 .fillMaxWidth()
         ) {
             Text("Donate Now",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(vertical = 8.dp))
+                fontWeight = FontWeight.SemiBold
+            )
         }
     }
 }
