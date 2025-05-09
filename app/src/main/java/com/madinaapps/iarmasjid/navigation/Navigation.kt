@@ -35,12 +35,14 @@ import com.madinaapps.iarmasjid.composable.web.WebScreen
 import com.madinaapps.iarmasjid.composable.web.WebViewState
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
+import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation(
     prayerTimesViewModel: PrayerTimesViewModel,
-    newsViewModel: NewsViewModel
+    newsViewModel: NewsViewModel,
+    qiblaViewModel: QiblaViewModel
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -71,7 +73,12 @@ fun Navigation(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             if (!hideTopBar) {
-                TopNavigationBar(navController, webState, scrollBehavior)
+                TopNavigationBar(
+                    navController,
+                    webState,
+                    qiblaViewModel,
+                    scrollBehavior
+                )
             }
         },
         bottomBar = {
@@ -91,7 +98,7 @@ fun Navigation(
             }
 
             composable<AppDestination.Qibla> {
-                QiblaScreen(innerPadding)
+                QiblaScreen(innerPadding, qiblaViewModel)
             }
 
             navigation<AppDestination.NewsTab>(AppDestination.News) {

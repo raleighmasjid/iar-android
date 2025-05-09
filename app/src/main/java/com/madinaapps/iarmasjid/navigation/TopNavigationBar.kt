@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
@@ -21,11 +22,18 @@ import androidx.navigation.toRoute
 import com.madinaapps.iarmasjid.composable.qibla.LocationCard
 import com.madinaapps.iarmasjid.composable.web.WebActions
 import com.madinaapps.iarmasjid.composable.web.WebViewState
+import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavigationBar(navController: NavController, webState: WebViewState, scrollBehavior: TopAppBarScrollBehavior) {
+fun TopNavigationBar(
+    navController: NavController,
+    webState: WebViewState,
+    qiblaViewModel: QiblaViewModel,
+    scrollBehavior: TopAppBarScrollBehavior
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val locationState by qiblaViewModel.locationState.collectAsState()
 
     fun title(): String {
         if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true) {
@@ -71,7 +79,7 @@ fun TopNavigationBar(navController: NavController, webState: WebViewState, scrol
             if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true) {
                 WebActions(webState)
             } else if (navBackStackEntry?.destination?.hasRoute(AppDestination.Qibla::class) == true) {
-                LocationCard(null)
+                LocationCard(locationState)
             }
         }
     )

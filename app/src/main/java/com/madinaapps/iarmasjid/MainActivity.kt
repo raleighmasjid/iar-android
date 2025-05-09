@@ -6,10 +6,8 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavHostController
 import com.madinaapps.iarmasjid.navigation.Navigation
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
 import com.madinaapps.iarmasjid.utils.DayChangedBroadcastReceiver
@@ -17,12 +15,14 @@ import com.madinaapps.iarmasjid.utils.NotificationController
 import com.madinaapps.iarmasjid.utils.RefreshNotificationsWorker
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
+import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val prayerTimesViewModel: PrayerTimesViewModel by viewModels()
     private val newsViewModel: NewsViewModel by viewModels()
+    private val qiblaViewModel: QiblaViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IARTheme {
-                Navigation(prayerTimesViewModel, newsViewModel)
+                Navigation(prayerTimesViewModel, newsViewModel, qiblaViewModel)
             }
         }
     }

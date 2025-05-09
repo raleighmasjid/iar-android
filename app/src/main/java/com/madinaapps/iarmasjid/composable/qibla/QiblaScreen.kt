@@ -1,55 +1,85 @@
 package com.madinaapps.iarmasjid.composable.qibla
 
+import android.Manifest
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.batoulapps.adhan2.Coordinates
-import com.batoulapps.adhan2.Qibla
-import com.madinaapps.iarmasjid.ui.theme.IARTheme
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.madinaapps.iarmasjid.model.LocationState
+import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 
+@SuppressLint("MissingPermission")
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun QiblaScreen(paddingValues: PaddingValues) {
-    val coordinates = Coordinates(35.791836480187186, -78.6350442338134)
-    val qibla = Qibla(coordinates)
+fun QiblaScreen(
+    paddingValues: PaddingValues,
+    viewModel: QiblaViewModel
+) {
+    val locationState by viewModel.locationState.collectAsState()
+    
+    val locationPermissions = rememberMultiplePermissionsState(
+        permissions = listOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    )
 
+    val accessGranted = locationPermissions.permissions.any { it.status.isGranted }
+
+    // Request permissions when screen becomes visible
+    LaunchedEffect(Unit) {
+        if (!locationPermissions.allPermissionsGranted) {
+            locationPermissions.launchMultiplePermissionRequest()
+        }
+    }
+    
+    LaunchedEffect(locationPermissions.allPermissionsGranted) {
+        if (locationPermissions.allPermissionsGranted) {
+            viewModel.getCurrentLocation()
+        }
+    }
+    
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(horizontal = 50.dp)
             .padding(paddingValues)
             .fillMaxSize()
     ) {
-        Text("Qibla Direction is ${qibla.direction}")
-        Row {
-            Text("You're Facing ",
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text("Makkah",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
+        when {
+            !accessGranted -> {
+                LocationDenied()
+            }
+            locationState is LocationState.Error -> {
+                LocationError {
+                    viewModel.forceRefresh()
+                }
+            }
+            locationState is LocationState.Valid -> {
+                val validState = locationState as LocationState.Valid
+                CompassView(validState.location)
+            }
+            else -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun QiblaScreenPreview() {
-    IARTheme { QiblaScreen(paddingValues = PaddingValues()) }
 }
