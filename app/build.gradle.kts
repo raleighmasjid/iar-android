@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.play.services.location)
     implementation(libs.adhan)
+    implementation(libs.splashscreen)
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
     coreLibraryDesugaring(libs.desugar.jdk.libs)

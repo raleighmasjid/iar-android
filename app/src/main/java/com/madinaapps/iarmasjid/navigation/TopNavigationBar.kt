@@ -13,7 +13,9 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -33,7 +35,7 @@ fun TopNavigationBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val locationState by qiblaViewModel.locationState.collectAsState()
+    val userLocation by qiblaViewModel.locationState.collectAsState()
 
     fun title(): String {
         if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true) {
@@ -58,6 +60,8 @@ fun TopNavigationBar(
     TopAppBar(
         title = {
             Text(title(),
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Medium,
                 overflow = TextOverflow.Ellipsis
             )
         },
@@ -79,7 +83,7 @@ fun TopNavigationBar(
             if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true) {
                 WebActions(webState)
             } else if (navBackStackEntry?.destination?.hasRoute(AppDestination.Qibla::class) == true) {
-                LocationCard(locationState)
+                LocationCard(userLocation)
             }
         }
     )

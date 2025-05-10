@@ -5,15 +5,15 @@ ksp = "2.1.10-1.0.31"
 work-ktx = "2.10.1"
 onesignal = "5.1.29"
 androidx-core-ktx = "1.16.0"
-compose = "1.8.0"
-navigation-compose = "2.8.9"
-lifecycle = "2.8.7"
+compose = "1.8.1"
+navigation-compose = "2.9.0"
+lifecycle = "2.9.0"
 activity-compose = "1.10.1"
 accompanist = "0.36.0"
 accompanist-permissions = "0.37.2"
 retrofit = "2.11.0"
 moshi = "1.15.2"
-datastore = "1.1.4"
+datastore = "1.1.6"
 hilt = "2.55"
 hilt-navigation = "1.2.0"
 coil-compose = "2.7.0"
@@ -22,9 +22,10 @@ junit = "4.13.2"
 androidx-test = "1.2.1"
 espresso = "3.6.1"
 material = "1.3.2"
-kotlinx-serialization = "1.7.1"
+kotlinx-serialization = "1.7.3"
 play-services-location = "21.3.0"
 adhan = "0.0.5"
+splashscreen = "1.0.1"
 
 
 [plugins]
@@ -73,6 +74,7 @@ androidx-test-ext = { module = "androidx.test.ext:junit", version.ref = "android
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 adhan = { module = "com.batoulapps.adhan:adhan2", version.ref = "adhan" }
+splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 
 [bundles]
 accompanist = ["accompanist-pager", "accompanist-pager-indicators", "accompanist-swiperefresh","accompanist-navigation-animation","accompanist-permissions"]

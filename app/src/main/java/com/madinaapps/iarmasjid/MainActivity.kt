@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.madinaapps.iarmasjid.navigation.Navigation
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
 import com.madinaapps.iarmasjid.utils.DayChangedBroadcastReceiver
@@ -27,8 +28,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        NotificationController.setupNotificationChannels(applicationContext)
+        installSplashScreen()
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.Transparent.hashCode()))
+
+        NotificationController.setupNotificationChannels(applicationContext)
 
         setContent {
             IARTheme {
