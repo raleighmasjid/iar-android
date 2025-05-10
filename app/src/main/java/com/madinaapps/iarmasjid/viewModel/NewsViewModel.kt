@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
     var announcements by mutableStateOf<Announcements?>(null)
