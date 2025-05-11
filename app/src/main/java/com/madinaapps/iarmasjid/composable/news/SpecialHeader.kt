@@ -36,14 +36,14 @@ fun SpecialHeader(special: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                 contentColor = MaterialTheme.colorScheme.primary
             ),
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 6.dp)
+                .padding(16.dp)
                 .clickable {
                     navigateToWeb(AppDestination.Web(special.url, special.title))
                 }
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -64,8 +64,7 @@ fun SpecialHeader(special: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 13.sp,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 3,
-                    lineHeight = 20.sp
+                    maxLines = 3
                 )
             }
         }

@@ -51,16 +51,17 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                 contentScale = ContentScale.Crop
             )
 
-            Column(modifier = Modifier.weight(1.0f)) {
+            Column(
+                modifier = Modifier.weight(1.0f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Text(post.title,
-                    modifier = Modifier.padding(bottom = 2.dp),
                     color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
                 Row(
-                    modifier = Modifier.padding(bottom = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -68,7 +69,7 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                         painterResource(id = R.drawable.ic_calendar),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(13.dp, 13.dp))
+                        modifier = Modifier.size(12.dp, 12.dp))
                     Text(
                         post.date.formatToDay(),
                         color = MaterialTheme.colorScheme.primary,
@@ -80,7 +81,6 @@ fun PostRow(post: Post, navigateToWeb: (AppDestination.Web) -> Unit) {
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 3,
-                    lineHeight = 17.sp,
                     overflow = TextOverflow.Ellipsis)
             }
         }

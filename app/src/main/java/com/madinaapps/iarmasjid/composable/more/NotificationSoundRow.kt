@@ -47,7 +47,8 @@ fun NotificationSoundRow(viewModel: SettingsViewModel, expanded: Boolean, dismis
                 Icon(
                     dropdownArrow(),
                     contentDescription = "",
-                    modifier = Modifier.padding(start = 4.dp, end = 6.dp),
+                    modifier = Modifier
+                        .padding(start = 4.dp, end = 6.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }

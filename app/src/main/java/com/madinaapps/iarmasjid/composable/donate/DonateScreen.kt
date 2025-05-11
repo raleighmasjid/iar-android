@@ -59,7 +59,7 @@ fun DonateScreen(paddingValues: PaddingValues) {
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.primary
             ),
-            contentPadding = PaddingValues(14.dp),
+            contentPadding = PaddingValues(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
         ) {

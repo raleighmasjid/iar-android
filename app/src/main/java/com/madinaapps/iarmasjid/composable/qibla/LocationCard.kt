@@ -28,7 +28,7 @@ fun LocationCard(locationState: LocationState) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(12.dp))
-                .padding(horizontal = 12.dp, vertical = 4.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
             Icon(
                 painterResource(id = R.drawable.ic_location_marker),

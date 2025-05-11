@@ -43,13 +43,13 @@ fun QiblaScreen(
 
     // Request permissions when screen becomes visible
     LaunchedEffect(Unit) {
-        if (!locationPermissions.allPermissionsGranted) {
+        if (!accessGranted) {
             locationPermissions.launchMultiplePermissionRequest()
         }
     }
     
-    LaunchedEffect(locationPermissions.allPermissionsGranted) {
-        if (locationPermissions.allPermissionsGranted) {
+    LaunchedEffect(accessGranted) {
+        if (accessGranted) {
             viewModel.getCurrentLocation()
         }
     }

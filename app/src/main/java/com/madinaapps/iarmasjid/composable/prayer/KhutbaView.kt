@@ -66,7 +66,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(AppColors.primaryFixed)
-                    .padding(vertical = 14.dp, horizontal = 16.dp)
+                    .padding(16.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -74,7 +74,7 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                 ) {
                     Text(
                         fridayPrayer.shift,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppColors.primaryFixed
@@ -89,18 +89,21 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                 )
             }
 
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 14.dp, horizontal = 16.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(fridayPrayer.title,
-                    modifier = Modifier
-                        .padding(bottom = 14.dp),
                     color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 20.sp
                 )
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
                     Image(
                         painter = rememberAsyncImagePainter(
                             ImageRequest.Builder(LocalContext.current)
@@ -111,14 +114,11 @@ fun KhutbaView(fridayPrayer: FridayPrayer) {
                         ),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(50.dp)
+                            .size(48.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.onTertiary)
                     )
-                    Column(
-                        modifier = Modifier.padding(start = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy((-4).dp)
-                    ) {
+                    Column {
                         Text(
                             fridayPrayer.speaker,
                             color = MaterialTheme.colorScheme.onBackground,

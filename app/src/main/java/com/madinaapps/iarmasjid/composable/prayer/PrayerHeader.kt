@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -41,17 +43,18 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
     val dateText: String = prayerDay?.date?.formatToDay() ?: "Loading..."
     val hijriText: String = prayerDay?.hijri?.fomatted() ?: ""
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 14.dp)
-    ) {
-        IconButton(onClick = {
-            if (canGoBack) {
-                scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
-            }
-        },
-        enabled = canGoBack,
-        modifier = Modifier.size(32.dp, 32.dp)) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        IconButton(
+            onClick = {
+                if (canGoBack) {
+                    scope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    }
+                }
+            },
+            enabled = canGoBack,
+            modifier = Modifier.width(56.dp).fillMaxHeight()
+        ) {
             var buttonTint = MaterialTheme.colorScheme.primary
             if (!canGoBack) {
                 buttonTint = MaterialTheme.colorScheme.onTertiary
@@ -72,9 +75,9 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 })
             ) {
                 Column(
-                    modifier = Modifier.padding(vertical = 15.dp),
+                    modifier = Modifier.padding(vertical = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy((-1).dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(dateText, fontWeight = FontWeight.Medium, fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground)
                     Text(hijriText, fontWeight = FontWeight.Normal, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSecondary)
@@ -82,13 +85,16 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
             }
         }
 
-        IconButton(onClick = {
-            if (canGoForward) {
-                scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-            }
-        },
+        IconButton(
+            onClick = {
+                if (canGoForward) {
+                    scope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
+                }
+            },
             enabled = canGoForward,
-            modifier = Modifier.size(32.dp, 32.dp)) {
+            modifier = Modifier.width(56.dp).fillMaxHeight()) {
             var buttonTint = MaterialTheme.colorScheme.primary
             if (!canGoForward) {
                 buttonTint = MaterialTheme.colorScheme.onTertiary
@@ -96,7 +102,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "Next Day",
-                modifier = Modifier.size(20.dp, 20.dp),
+                modifier = Modifier.size(18.dp, 18.dp),
                 tint = buttonTint
             )
         }

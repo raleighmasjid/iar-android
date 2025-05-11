@@ -47,9 +47,7 @@ class QiblaViewModel @Inject constructor(
     }
 
     fun getCurrentLocation() {
-        Log.d("IARDebug", "getCurrentLocation")
         if (isValidCache()) {
-            Log.d("IARDebug", "using cached location")
             return
         }
 
@@ -74,7 +72,6 @@ class QiblaViewModel @Inject constructor(
             .setMaxUpdateAgeMillis(TimeUnit.MINUTES.toMillis(15))
         fusedLocationClient.getCurrentLocation(locationRequest.build(), cancellationToken)
             .addOnSuccessListener {
-                Log.d("IARDebug", "got location: $it")
                 if (it != null) {
                     updateLocation(it)
                 } else {

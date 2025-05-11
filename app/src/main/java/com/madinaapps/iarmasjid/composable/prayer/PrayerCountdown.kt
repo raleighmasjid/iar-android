@@ -47,7 +47,7 @@ fun PrayerCountdown(upcoming: PrayerTime?, timeRemaining: Long) {
         horizontalAlignment = Alignment.CenterHorizontally) {
         Box(modifier = Modifier.background(badgeColor, RoundedCornerShape(8.dp))) {
             Text(nextPrayerText,
-                modifier = Modifier.padding(horizontal = 9.dp, vertical = 2.dp),
+                modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 color = Color.White

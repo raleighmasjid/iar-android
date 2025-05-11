@@ -2,8 +2,10 @@ package com.madinaapps.iarmasjid.composable.prayer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
@@ -37,7 +39,7 @@ fun PrayerRow(prayer: String,
     val textColor: Color = if (current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
 
     val fontSize = 17.sp
-    val verticalPadding = 15.dp
+    val verticalPadding = 16.dp
 
     Row(
         modifier = Modifier
@@ -84,7 +86,8 @@ fun PrayerRow(prayer: String,
             },
             enabled = displayAlarm,
             modifier = Modifier
-                .size(64.dp, 50.dp)
+                .width(52.dp)
+                .fillMaxHeight()
                 .alpha(if (displayAlarm) 1.0f else 0.0f)
         ) {
             var buttonImage = R.drawable.ic_alarm_off
@@ -97,7 +100,7 @@ fun PrayerRow(prayer: String,
                 painter = painterResource(id = buttonImage),
                 contentDescription = "Alarm",
                 tint = buttonTint,
-                modifier = Modifier.size(18.dp, 18.dp)
+                modifier = Modifier.size(16.dp, 16.dp)
             )
         }
     }

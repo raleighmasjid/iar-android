@@ -90,6 +90,7 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: Pa
         Spacer(modifier = Modifier.weight(1f))
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text("Open Daily From Fajr to Isha",
                 fontSize = 15.sp,
@@ -106,9 +107,7 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: Pa
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.primary
                 ),
-                contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
-                modifier = Modifier
-                    .padding(top = 4.dp)
+                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -129,10 +128,10 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: Pa
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy((-4).dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 32.dp, top = 30.dp)
+                    .padding(vertical = 32.dp)
             ) {
                 Text("The Islamic Association of Raleigh",
                     fontSize = 11.sp,
