@@ -43,13 +43,13 @@ fun QiblaScreen(
 
     // Request permissions when screen becomes visible
     LaunchedEffect(Unit) {
-        if (!accessGranted) {
+        if (!accessGranted && viewModel.hasCompass()) {
             locationPermissions.launchMultiplePermissionRequest()
         }
     }
     
     LaunchedEffect(accessGranted) {
-        if (accessGranted) {
+        if (accessGranted && viewModel.hasCompass()) {
             viewModel.getCurrentLocation()
         }
     }
@@ -59,9 +59,13 @@ fun QiblaScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(paddingValues)
+            .padding(horizontal = 16.dp)
             .fillMaxSize()
     ) {
         when {
+            !viewModel.hasCompass() -> {
+                HeadingUnavailable()
+            }
             !accessGranted -> {
                 LocationDenied()
             }

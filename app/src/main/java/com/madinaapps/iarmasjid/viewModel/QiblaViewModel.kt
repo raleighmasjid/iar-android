@@ -2,6 +2,7 @@ package com.madinaapps.iarmasjid.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -40,6 +41,10 @@ class QiblaViewModel @Inject constructor(
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private val geocoder = Geocoder(context, Locale.getDefault())
+
+    fun hasCompass(): Boolean {
+        return context.packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS)
+    }
 
     fun forceRefresh() {
         _locationState.value = LocationState.Pending

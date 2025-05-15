@@ -1,13 +1,20 @@
 package com.madinaapps.iarmasjid.composable.qibla
 
 import android.location.Location
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +22,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
@@ -24,8 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.batoulapps.adhan2.Coordinates
 import com.batoulapps.adhan2.Qibla
 import com.madinaapps.iarmasjid.viewModel.CompassViewModel
+import com.madinaapps.iarmasjid.viewModel.deviation
 import java.util.Locale
-import kotlin.math.abs
 
 @Composable
 fun CompassView(
@@ -34,13 +43,11 @@ fun CompassView(
 ) {
     val context = LocalContext.current
     val currentOrientation by viewModel.currentOrientation.collectAsState()
+    val compassAngle by viewModel.compassAngle.collectAsState()
+    val percentCorrect by viewModel.percentCorrect.collectAsState()
+
     var wasFacingQibla by remember { mutableStateOf(false) }
     val haptic = LocalHapticFeedback.current
-
-    fun isFacingQibla(deviceOrientation: Float, qiblaDirection: Double): Boolean {
-        val difference = abs(deviceOrientation - qiblaDirection.toFloat())
-        return difference <= 10 || difference >= 350 // Handle the case when crossing 360/0 degrees
-    }
 
     val qibla = remember(location) { Qibla(Coordinates(location.latitude, location.longitude)) }
 
@@ -51,67 +58,58 @@ fun CompassView(
         }
     }
 
+    LaunchedEffect(location) {
+        viewModel.qibla = qibla
+    }
+
+    LaunchedEffect(percentCorrect) {
+        if (percentCorrect > 0 && !wasFacingQibla) {
+            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+        } else if(percentCorrect <= 0f && wasFacingQibla) {
+            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+        }
+        wasFacingQibla = percentCorrect > 0
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        when (val orientation = currentOrientation) {
-            null -> Text(
-                "Waiting for heading data",
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal
-            )
-            else -> {
-                Text(
-                    "Current orientation ${String.format(Locale.getDefault(), "%.1f", orientation.headingDegrees)}°",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal
+        currentOrientation?.also { orientation ->
+            Spacer(modifier = Modifier.weight(1f))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(
+                    modifier = Modifier
+                        .size(12.dp)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = percentCorrect), shape = CircleShape)
                 )
-
-                Text(
-                    "Max error ${String.format(Locale.getDefault(), "%.1f", orientation.headingErrorDegrees)}°",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal
-                )
-
-                if (orientation.hasConservativeHeadingErrorDegrees()) {
+                Spacer(modifier = Modifier.height(32.dp))
+                CompassStar(compassAngle, percentCorrect)
+                Row(
+                    modifier = Modifier.padding(top = 8.dp).alpha(percentCorrect)
+                ) {
                     Text(
-                        "Conservative error ${String.format(Locale.getDefault(), "%.1f", orientation.conservativeHeadingErrorDegrees)}°",
+                        "You're Facing ",
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        "Makkah",
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
-        }
-
-        Text(
-            "Qibla Direction is ${String.format(Locale.getDefault(), "%.1f", qibla.direction)}°",
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal
-        )
-
-        if (wasFacingQibla) {
-            Row(
-                modifier = Modifier.padding(top = 8.dp)
-            ) {
-                Text(
-                    "You're Facing ",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    "Makkah",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                "Heading Accuracy: ±${String.format(Locale.getDefault(), "%.1f", orientation.deviation())}°",
+                color = MaterialTheme.colorScheme.onSecondary,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
         }
     }
 }
