@@ -1,89 +1,64 @@
 package com.madinaapps.iarmasjid.composable.qibla
 
-import android.Manifest
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.madinaapps.iarmasjid.model.LocationState
+import com.google.maps.android.compose.GoogleMap
+import com.madinaapps.iarmasjid.model.QiblaMode
 import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 
-@SuppressLint("MissingPermission")
-@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun tabTextColor(mode: QiblaMode, selectedMode: QiblaMode): Color {
+    return if (mode == selectedMode) {
+        MaterialTheme.colorScheme.onBackground
+    } else {
+        MaterialTheme.colorScheme.onSecondary
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QiblaScreen(
     paddingValues: PaddingValues,
     viewModel: QiblaViewModel
 ) {
-    val locationState by viewModel.locationState.collectAsState()
-    
-    val locationPermissions = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-    )
-
-    val accessGranted = locationPermissions.permissions.any { it.status.isGranted }
-
-    // Request permissions when screen becomes visible
-    LaunchedEffect(Unit) {
-        if (!accessGranted && viewModel.hasCompass()) {
-            locationPermissions.launchMultiplePermissionRequest()
-        }
-    }
-    
-    LaunchedEffect(accessGranted) {
-        if (accessGranted && viewModel.hasCompass()) {
-            viewModel.getCurrentLocation()
-        }
-    }
-    
     Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(paddingValues)
-            .padding(horizontal = 16.dp)
             .fillMaxSize()
     ) {
-        when {
-            !viewModel.hasCompass() -> {
-                HeadingUnavailable()
-            }
-            !accessGranted -> {
-                LocationDenied()
-            }
-            locationState is LocationState.Error -> {
-                LocationError {
-                    viewModel.forceRefresh()
+        SecondaryTabRow(
+            viewModel.mode.index,
+            containerColor = MaterialTheme.colorScheme.background,
+            divider = {}
+        ) {
+            QiblaMode.entries.forEach {
+                Tab(
+                    selected = viewModel.mode == it,
+                    onClick = { viewModel.mode = it }
+                ) {
+                    Text(it.title,
+                        fontWeight = FontWeight.Medium,
+                        color = tabTextColor(it, viewModel.mode),
+                        modifier = Modifier.padding(vertical = 14.dp)
+                    )
                 }
             }
-            locationState is LocationState.Valid -> {
-                val validState = locationState as LocationState.Valid
-                CompassView(validState.location)
-            }
-            else -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+        }
+        when(viewModel.mode) {
+            QiblaMode.MAP -> GoogleMap()
+            QiblaMode.COMPASS -> QiblaCompass(viewModel)
         }
     }
 }

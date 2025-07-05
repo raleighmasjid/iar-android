@@ -84,7 +84,7 @@ fun CompassView(
                         .background(MaterialTheme.colorScheme.primary.copy(alpha = percentCorrect), shape = CircleShape)
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-                CompassStar(compassAngle, percentCorrect)
+                CompassArrow(compassAngle, percentCorrect)
                 Row(
                     modifier = Modifier.padding(top = 8.dp).alpha(percentCorrect)
                 ) {

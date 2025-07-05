@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.adhan)
     implementation(libs.splashscreen)
+    implementation(libs.google.maps)
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
     coreLibraryDesugaring(libs.desugar.jdk.libs)

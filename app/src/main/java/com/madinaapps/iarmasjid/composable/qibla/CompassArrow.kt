@@ -31,7 +31,7 @@ import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.utils.pxToDp
 
 @Composable
-fun CompassStar(angle: Double, percentCorrect: Float) {
+fun CompassArrow(angle: Double, percentCorrect: Float) {
 
     var compassSize by remember { mutableIntStateOf(0) }
 

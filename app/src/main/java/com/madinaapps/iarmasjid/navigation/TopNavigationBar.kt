@@ -24,6 +24,7 @@ import androidx.navigation.toRoute
 import com.madinaapps.iarmasjid.composable.qibla.LocationCard
 import com.madinaapps.iarmasjid.composable.web.WebActions
 import com.madinaapps.iarmasjid.composable.web.WebViewState
+import com.madinaapps.iarmasjid.model.QiblaMode
 import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,7 +83,7 @@ fun TopNavigationBar(
         actions = {
             if (navBackStackEntry?.destination?.hasRoute(AppDestination.Web::class) == true) {
                 WebActions(webState)
-            } else if (navBackStackEntry?.destination?.hasRoute(AppDestination.Qibla::class) == true) {
+            } else if (navBackStackEntry?.destination?.hasRoute(AppDestination.Qibla::class) == true && qiblaViewModel.mode == QiblaMode.COMPASS) {
                 LocationCard(userLocation)
             }
         }
