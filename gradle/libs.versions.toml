@@ -27,6 +27,7 @@ play-services-location = "21.3.0"
 adhan = "0.0.5"
 splashscreen = "1.0.1"
 google-maps = "6.6.0"
+mapsecrets = "2.0.1"
 
 
 [plugins]
@@ -77,6 +78,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 adhan = { module = "com.batoulapps.adhan:adhan2", version.ref = "adhan" }
 splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 google-maps = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps" }
+maps-secrets-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "mapsecrets" }
 
 [bundles]
 accompanist = ["accompanist-pager", "accompanist-pager-indicators", "accompanist-swiperefresh","accompanist-navigation-animation","accompanist-permissions"]
