@@ -8,9 +8,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class FridayPrayer(
     val title: String,
+    @Json(name = "shift_name")
     val shift: String,
     val time: String,
     val speaker: String,
+    val campus: Campus,
     val description: String,
     @Json(name = "image_url")
     val imageUrl: String

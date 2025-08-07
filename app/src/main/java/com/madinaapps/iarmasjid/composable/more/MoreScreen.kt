@@ -11,13 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,7 +32,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.madinaapps.iarmasjid.BuildConfig
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.viewModel.SettingsViewModel
-import java.net.URLEncoder
 
 @Composable
 fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: PaddingValues) {
@@ -47,7 +40,6 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: Pa
     val context = LocalContext.current
     val versionNumber = BuildConfig.VERSION_NAME
     val buildNumber = BuildConfig.VERSION_CODE
-    val address = "808 Atwater St, Raleigh, NC 27607"
 
     Column(
         modifier = Modifier
@@ -82,64 +74,41 @@ fun MoreScreen(viewModel: SettingsViewModel = hiltViewModel(), paddingValues: Pa
                 Text("View Full Website", fontSize = 16.sp)
             },
             icon = painterResource(R.drawable.ic_full_website),
-            showDivider = false
         ) {
             uriHandler.openUri("https://raleighmasjid.org/")
         }
 
+        Text("App version $versionNumber ($buildNumber)",
+            fontSize = 11.sp,
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 20.dp)
+        )
+
         Spacer(modifier = Modifier.weight(1f))
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Text("Open Daily From Fajr to Isha",
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Button(
-                onClick = {
-                    val addressParam: String = URLEncoder.encode(address, Charsets.UTF_8.name())
-                    uriHandler.openUri("https://www.google.com/maps/dir/?api=1&destination=$addressParam")
-                },
-                elevation = null,
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary
-                ),
-                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    Icon(
-                        painterResource(id = R.drawable.ic_location_marker),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(12.dp, 14.dp)
-                    )
-                    Text(address,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-            }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 32.dp)
-            ) {
-                Text("The Islamic Association of Raleigh",
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSecondary
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                DirectionsButton(
+                    title = "Atwater St",
+                    address = "808 Atwater St, Raleigh, NC 27607",
+                    modifier = Modifier.weight(1f)
                 )
-                Text("App version $versionNumber ($buildNumber)",
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSecondary
+                DirectionsButton(
+                    title = "Page Rd",
+                    address = "3104 Page Rd, Morrisville, NC 27560",
+                    modifier = Modifier.weight(1f)
                 )
             }
         }

@@ -33,6 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.madinaapps.iarmasjid.R
+import com.madinaapps.iarmasjid.model.json.Campus
 import com.madinaapps.iarmasjid.model.json.FridayPrayer
 import com.madinaapps.iarmasjid.ui.theme.AppColors
 import com.madinaapps.iarmasjid.ui.theme.IARTheme
@@ -144,12 +145,13 @@ fun KhutbaViewPreviewDark() {
         Surface(color = MaterialTheme.colorScheme.surfaceVariant) {
         KhutbaView(
             FridayPrayer(
-                "This Is A title",
-                "1st Shift",
-                "11:30",
-                "Imam Misbah Badaway",
-                "Imam at the IAR",
-                "https://raleighmasjid.org/wp-content/uploads/2021/08/istockphoto-944796774-170667a.jpg"
+                title = "This Is A title",
+                shift = "1st Shift",
+                time = "11:30",
+                speaker = "Imam Misbah Badaway",
+                campus = Campus.atwater,
+                description = "Imam at the IAR",
+                imageUrl = "https://raleighmasjid.org/wp-content/uploads/2021/08/istockphoto-944796774-170667a.jpg"
             )
         )
     }
@@ -163,12 +165,13 @@ fun KhutbaViewPreviewLight() {
         Surface(color = MaterialTheme.colorScheme.surfaceVariant) {
             KhutbaView(
                 FridayPrayer(
-                    "This Is A title",
-                    "1st Shift",
-                    "11:30",
-                    "Imam Misbah Badaway",
-                    "Imam at the IAR",
-                    "https://raleighmasjid.org/wp-content/uploads/2021/08/istockphoto-944796774-170667a.jpg"
+                    title = "This Is A title",
+                    shift = "1st Shift",
+                    time = "11:30",
+                    speaker = "Imam Misbah Badaway",
+                    campus = Campus.atwater,
+                    description = "Imam at the IAR",
+                    imageUrl = "https://raleighmasjid.org/wp-content/uploads/2021/08/istockphoto-944796774-170667a.jpg"
                 )
             )
         }

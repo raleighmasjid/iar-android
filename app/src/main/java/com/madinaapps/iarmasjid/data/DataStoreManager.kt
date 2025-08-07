@@ -19,7 +19,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 
 class DataStoreManager(appContext: Context) {
     companion object {
-        val PRAYER_CACHE_KEY = stringPreferencesKey("PRAYER_SCHEDULE_CACHE_B1")
+        val PRAYER_CACHE_KEY = stringPreferencesKey("PRAYER_SCHEDULE_CACHE_B3")
         val NEWS_CACHE_KEY = stringPreferencesKey("NEWS_CACHE_B2")
         val NOTIFICATION_TYPE_KEY = stringPreferencesKey("NOTIFICATION_TYPE_B1")
         val VIEWED_ANNOUNCEMENTS_KEY = stringSetPreferencesKey("VIEWED_ANNOUNCEMENTS_B1")

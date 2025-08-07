@@ -1,7 +1,9 @@
 package com.madinaapps.iarmasjid.api
 
+import com.madinaapps.iarmasjid.model.json.Campus
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -16,6 +18,7 @@ class ApiClient {
         private const val BASE_URL = "https://raleighmasjid.org/API/app/"
         val moshi: Moshi = Moshi.Builder()
             .add(Date::class.java, Rfc3339DateJsonAdapter())
+            .add(Campus::class.java, EnumJsonAdapter.create(Campus::class.java).withUnknownFallback(Campus.atwater))
             .build()
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

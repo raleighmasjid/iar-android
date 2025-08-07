@@ -10,19 +10,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.madinaapps.iarmasjid.model.json.Campus
 import com.madinaapps.iarmasjid.model.json.FridayPrayer
 
 @Composable
 fun FridayScheduleView(fridayPrayers: List<FridayPrayer>) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Friday Prayers",
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.SemiBold)
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(bottom = 32.dp)) {
-            fridayPrayers.forEach {
-                KhutbaView(it)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+        modifier = Modifier.padding(bottom = 32.dp)
+    ) {
+        Campus.entries.forEach { campus ->
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text("Jummah @ ${campus.campusName()}",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.SemiBold)
+                fridayPrayers.filter { it.campus == campus }.forEach {
+                    KhutbaView(it)
+                }
             }
         }
     }
