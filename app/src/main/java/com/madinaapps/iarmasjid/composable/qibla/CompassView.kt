@@ -71,10 +71,10 @@ fun CompassView(
     )
 
     fun accuracyMessage(): String {
-        if (showExpandedMessage.value) {
-            return "Compass direction may not be 100% accurate when used inside or near electric or magnetic interference. Please verify with map overlay."
+        return if (showExpandedMessage.value) {
+            "Compass direction may not be 100% accurate when used inside or near electric or magnetic interference. Please verify with map overlay."
         } else {
-            return "Compass direction may not be 100% accurate."
+            "Compass direction may not be 100% accurate"
         }
     }
 
@@ -155,7 +155,8 @@ fun CompassView(
                             painter = painterResource(id = R.drawable.ic_info),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp, 20.dp))
+                            modifier = Modifier.size(20.dp, 20.dp)
+                        )
                         Text(accuracyMessage(),
                             fontSize = 13.sp,
                             textAlign = TextAlign.Start,
@@ -164,7 +165,6 @@ fun CompassView(
                             modifier = Modifier.weight(1f)
                         )
                         Icon(
-                            //painter = painterResource(id = if (showExpandedMessage.value) R.drawable.ic_chevron_up else R.drawable.ic_chevron_down),
                             painter = painterResource(id = R.drawable.ic_chevron_down),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,

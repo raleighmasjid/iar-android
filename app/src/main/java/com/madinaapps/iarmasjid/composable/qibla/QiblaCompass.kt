@@ -25,9 +25,7 @@ import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 @SuppressLint("MissingPermission")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun QiblaCompass(
-    viewModel: QiblaViewModel
-) {
+fun QiblaCompass(viewModel: QiblaViewModel) {
     val locationState by viewModel.locationState.collectAsState()
 
     val locationPermissions = rememberMultiplePermissionsState(
