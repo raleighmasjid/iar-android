@@ -21,13 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.batoulapps.adhan2.Qibla
 import com.google.maps.android.compose.MapType
 import com.madinaapps.iarmasjid.R
 import java.util.Locale
 
 @Composable
-fun MapControls(qiblaDirection: Qibla, followUser: Boolean, mapType: MapType, followUserAction: () -> Unit, mapTypeAction: () -> Unit) {
+fun MapControls(qiblaDirection: Double, followUser: Boolean, mapType: MapType, followUserAction: () -> Unit, mapTypeAction: () -> Unit) {
     Row {
         Column(modifier = Modifier.padding(8.dp)) {
             Spacer(Modifier.weight(1f))
@@ -36,7 +35,7 @@ fun MapControls(qiblaDirection: Qibla, followUser: Boolean, mapType: MapType, fo
 
             ) {
                 Text(
-                    text = "Qibla ${String.format(Locale.getDefault(), "%.1f", qiblaDirection.direction)}°",
+                    text = "Qibla ${String.format(Locale.getDefault(), "%.1f", qiblaDirection)}°",
                     color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp,
                     modifier = Modifier
@@ -46,7 +45,7 @@ fun MapControls(qiblaDirection: Qibla, followUser: Boolean, mapType: MapType, fo
             Spacer(Modifier.height(32.dp))
         }
         Spacer(Modifier.weight(1f))
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = {
@@ -87,7 +86,6 @@ fun MapControls(qiblaDirection: Qibla, followUser: Boolean, mapType: MapType, fo
                     modifier = Modifier.size(16.dp, 16.dp)
                 )
             }
-            Spacer(Modifier.height(96.dp))
         }
     }
 }

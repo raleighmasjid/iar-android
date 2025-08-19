@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -47,6 +48,13 @@ fun QiblaCompass(viewModel: QiblaViewModel) {
     LaunchedEffect(accessGranted) {
         if (accessGranted && viewModel.hasCompass()) {
             viewModel.getCurrentLocation()
+            viewModel.startLocationUpdates()
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.removeLocationUpdates()
         }
     }
 

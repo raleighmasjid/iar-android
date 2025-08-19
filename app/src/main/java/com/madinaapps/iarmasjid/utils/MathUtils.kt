@@ -3,6 +3,7 @@ package com.madinaapps.iarmasjid.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import kotlin.math.floor
 
 @Composable
 fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }
@@ -16,4 +17,12 @@ fun Double.adjustedAngleEnd(to: Double): Double {
 
     // Mod the distance with 360, shifting by 180 to keep on the same side of a circle
     return (end - this + 180.0).rem(360.0) - 180.0 + this
+}
+
+fun Float.normalizedSmallestAngle(): Float {
+    var correctedAngle = this
+    while (correctedAngle < 0) { correctedAngle += 360 }
+    correctedAngle -= (360 * (floor(correctedAngle / 360)))
+
+    return if (correctedAngle > 180) { correctedAngle - 360 } else { correctedAngle }
 }

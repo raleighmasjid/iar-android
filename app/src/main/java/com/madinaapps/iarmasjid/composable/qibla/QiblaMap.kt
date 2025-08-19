@@ -3,12 +3,16 @@ package com.madinaapps.iarmasjid.composable.qibla
 import android.Manifest
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import com.batoulapps.adhan2.Coordinates
 import com.batoulapps.adhan2.Qibla
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -71,6 +75,18 @@ fun QiblaMap(viewModel: QiblaViewModel) {
         }
     }
 
+    fun refreshUserLocation() {
+        viewModel.removeLocationUpdates()
+        viewModel.forceRefresh()
+        viewModel.startLocationUpdates()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.removeLocationUpdates()
+        }
+    }
+
     // Request permissions when screen becomes visible
     LaunchedEffect(Unit) {
         if (!accessGranted) {
@@ -81,6 +97,7 @@ fun QiblaMap(viewModel: QiblaViewModel) {
     LaunchedEffect(accessGranted) {
         if (accessGranted) {
             viewModel.getCurrentLocation()
+            viewModel.startLocationUpdates()
         }
     }
 
@@ -96,19 +113,20 @@ fun QiblaMap(viewModel: QiblaViewModel) {
         }
     }
 
-    Box {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.clipToBounds()) {
         GoogleMap(
             cameraPositionState = cameraPositionState,
             properties = MapProperties(isMyLocationEnabled = accessGranted, mapType = mapType.value),
-            uiSettings = MapUiSettings(rotationGesturesEnabled = false)
+            uiSettings = MapUiSettings(rotationGesturesEnabled = false, myLocationButtonEnabled = false, zoomControlsEnabled = false)
         )
-
+        MapArrow(qiblaDirection.direction)
         MapControls(
-            qiblaDirection = qiblaDirection,
+            qiblaDirection = qiblaDirection.direction,
             followUser = followUser.value,
             mapType = mapType.value,
             followUserAction = {
                 followUser.value = true
+                refreshUserLocation()
                 goToUser()
             },
             mapTypeAction = {

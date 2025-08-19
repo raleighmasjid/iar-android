@@ -12,13 +12,13 @@ plugins {
 
 android {
     namespace = "com.madinaapps.iarmasjid"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.madinaapps.iarmasjid"
         minSdk = 23
-        targetSdk = 35
-        versionCode = 239
+        targetSdk = 36
+        versionCode = 242
         versionName = "3.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

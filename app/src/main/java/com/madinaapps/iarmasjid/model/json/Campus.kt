@@ -1,5 +1,8 @@
 package com.madinaapps.iarmasjid.model.json
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = false)
 enum class Campus {
     atwater,
     page;
@@ -9,6 +12,5 @@ enum class Campus {
             atwater -> "Atwater St"
             page -> "Page Rd"
         }
-
     }
 }

@@ -43,4 +43,5 @@ val tertiaryDark = Color(0x0761c469)
 
 object AppColors {
     val primaryFixed = Color(0xFF1B5E20)
+    val compassOutline = Color(0xFF61C469)
 }

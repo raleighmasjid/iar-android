@@ -8,6 +8,7 @@ import com.google.android.gms.location.DeviceOrientationListener
 import com.google.android.gms.location.DeviceOrientationRequest
 import com.google.android.gms.location.LocationServices
 import com.madinaapps.iarmasjid.utils.adjustedAngleEnd
+import com.madinaapps.iarmasjid.utils.normalizedSmallestAngle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.util.concurrent.Executors
 import javax.inject.Inject
 import kotlin.math.abs
-import kotlin.math.floor
 import kotlin.math.min
 
 @HiltViewModel
@@ -65,10 +65,7 @@ class CompassViewModel @Inject constructor(
     private fun normalizedSmallestAngle(): Float? {
         var correctedAngle = _currentOrientation.value?.headingDegrees ?: return null
         correctedAngle -= qibla?.direction?.toFloat() ?: return null
-        while (correctedAngle < 0) { correctedAngle += 360 }
-        correctedAngle -= (360 * (floor(correctedAngle / 360)))
-
-        return if (correctedAngle > 180) { correctedAngle - 360 } else { correctedAngle }
+        return correctedAngle.normalizedSmallestAngle()
     }
 
     private fun calculatePercentCorrect(): Float {
