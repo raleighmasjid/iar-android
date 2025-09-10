@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -52,6 +53,7 @@ fun QiblaMap(viewModel: QiblaViewModel) {
 
     val mapType = remember { mutableStateOf(MapType.HYBRID) }
     val followUser = remember { mutableStateOf(true) }
+    var isMapLoaded by remember { mutableStateOf(false) } // Added state for map loaded
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -61,6 +63,7 @@ fun QiblaMap(viewModel: QiblaViewModel) {
     }
 
     fun goToUser() {
+        if (!isMapLoaded) return // Guard against calling before map is loaded
         val state = locationState
         if (state is LocationState.Valid) {
             val location = state.location
@@ -101,8 +104,8 @@ fun QiblaMap(viewModel: QiblaViewModel) {
         }
     }
 
-    LaunchedEffect(locationState) {
-        if (followUser.value) {
+    LaunchedEffect(locationState, isMapLoaded) { // Add isMapLoaded as a key
+        if (followUser.value && isMapLoaded) { // Check isMapLoaded
             goToUser()
         }
     }
@@ -117,24 +120,29 @@ fun QiblaMap(viewModel: QiblaViewModel) {
         GoogleMap(
             cameraPositionState = cameraPositionState,
             properties = MapProperties(isMyLocationEnabled = accessGranted, mapType = mapType.value),
-            uiSettings = MapUiSettings(rotationGesturesEnabled = false, myLocationButtonEnabled = false, zoomControlsEnabled = false)
-        )
-        MapArrow(qiblaDirection.direction)
-        MapControls(
-            qiblaDirection = qiblaDirection.direction,
-            followUser = followUser.value,
-            mapType = mapType.value,
-            followUserAction = {
-                followUser.value = true
-                refreshUserLocation()
-                goToUser()
-            },
-            mapTypeAction = {
-                mapType.value = when (mapType.value) {
-                    MapType.HYBRID -> MapType.NORMAL
-                    else -> MapType.HYBRID
-                }
+            uiSettings = MapUiSettings(rotationGesturesEnabled = false, myLocationButtonEnabled = false, zoomControlsEnabled = false),
+            onMapLoaded = {
+                isMapLoaded = true // Set map loaded state to true
             }
         )
+        if (isMapLoaded) {
+            MapArrow(qiblaDirection.direction)
+            MapControls(
+                qiblaDirection = qiblaDirection.direction,
+                followUser = followUser.value,
+                mapType = mapType.value,
+                followUserAction = {
+                    followUser.value = true
+                    refreshUserLocation()
+                    goToUser()
+                },
+                mapTypeAction = {
+                    mapType.value = when (mapType.value) {
+                        MapType.HYBRID -> MapType.NORMAL
+                        else -> MapType.HYBRID
+                    }
+                }
+            )
+        }
     }
 }
