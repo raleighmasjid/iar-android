@@ -52,6 +52,12 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: Paddin
                 AnnouncementsDivider()
             }
         }
-        PullRefreshIndicator(viewModel.loading, pullRefreshState, Modifier.align(Alignment.TopCenter), backgroundColor = MaterialTheme.colorScheme.primary)
+        PullRefreshIndicator(
+            refreshing = viewModel.loading,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter),
+            backgroundColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.surfaceContainer
+        )
     }
 }
