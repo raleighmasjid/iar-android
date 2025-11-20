@@ -36,7 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.utils.Countdown
 import com.madinaapps.iarmasjid.utils.pxToDp
