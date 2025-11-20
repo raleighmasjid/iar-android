@@ -18,11 +18,7 @@ class NewsRepository(private val dataStoreManager: DataStoreManager) {
         }
 
         try {
-            val response = ApiClient.getNews()
-            val news = response.body()
-            if (!response.isSuccessful || news == null) {
-                return Result.failure(Exception("Network Error"))
-            }
+            val news = ApiClient.getNews()
             news.cacheTimestamp = Date().time
             val jsonString = ApiClient.moshi.adapter(News::class.java).toJson(news)
             dataStoreManager.cacheNewsData(jsonString)
