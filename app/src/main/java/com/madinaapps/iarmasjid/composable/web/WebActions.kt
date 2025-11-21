@@ -1,8 +1,6 @@
 package com.madinaapps.iarmasjid.composable.web
 
 import android.content.Intent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -16,7 +14,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.core.net.toUri
+import com.madinaapps.iarmasjid.R
 
 @Composable
 fun WebActions(state: WebViewState) {
@@ -51,7 +51,7 @@ fun WebActions(state: WebViewState) {
     IconButton(onClick = {
         expandedDropdown = true
     }) {
-        Icon(Icons.Filled.MoreVert, contentDescription = "Actions")
+        Icon(painterResource(id = R.drawable.more_vert_24px), contentDescription = "Actions")
     }
     DropdownMenu(
         expanded = expandedDropdown,

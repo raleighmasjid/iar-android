@@ -1,7 +1,5 @@
 package com.madinaapps.iarmasjid.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -13,6 +11,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
@@ -21,6 +20,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
+import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.composable.qibla.LocationCard
 import com.madinaapps.iarmasjid.composable.web.WebActions
 import com.madinaapps.iarmasjid.composable.web.WebViewState
@@ -76,7 +76,7 @@ fun TopNavigationBar(
                 IconButton(onClick = {
                     navController.navigateUp()
                 }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    Icon(painterResource(id = R.drawable.arrow_back_24px), contentDescription = "Back")
                 }
             }
         },

@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -67,7 +65,7 @@ fun NotificationSoundRow(viewModel: SettingsViewModel, expanded: Boolean, dismis
                         leadingIcon = {
                             if (notificationType.value == notifType) {
                                 Icon(
-                                    Icons.Filled.Check,
+                                    painterResource(id = R.drawable.check_24px),
                                     contentDescription = "Selected"
                                 )
                             }

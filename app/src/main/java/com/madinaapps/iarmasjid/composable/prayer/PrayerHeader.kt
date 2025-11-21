@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -24,9 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.utils.formatToDay
 import kotlinx.coroutines.launch
@@ -60,7 +59,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 buttonTint = MaterialTheme.colorScheme.onTertiary
             }
             Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
+                painterResource(id = R.drawable.arrow_back_24px),
                 contentDescription = "Previous Day",
                 modifier = Modifier.size(20.dp, 20.dp),
                 tint = buttonTint
@@ -100,7 +99,7 @@ fun PrayerHeader(prayerDays: List<PrayerDay>, pagerState: PagerState) {
                 buttonTint = MaterialTheme.colorScheme.onTertiary
             }
             Icon(
-                Icons.AutoMirrored.Filled.ArrowForward,
+                painterResource(id = R.drawable.arrow_forward_24px),
                 contentDescription = "Next Day",
                 modifier = Modifier.size(18.dp, 18.dp),
                 tint = buttonTint
