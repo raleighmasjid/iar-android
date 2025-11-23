@@ -85,6 +85,8 @@ dependencies {
     implementation(libs.adhan)
     implementation(libs.splashscreen)
     implementation(libs.google.maps)
+    implementation(libs.glance.app.widget)
+    implementation(libs.glance.material3)
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
