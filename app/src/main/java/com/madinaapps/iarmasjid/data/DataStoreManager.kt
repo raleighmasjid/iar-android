@@ -29,7 +29,7 @@ class DataStoreManager(appContext: Context) {
         }
     }
 
-    private val context: Context = appContext
+    private val context: Context = appContext.applicationContext
 
     suspend fun setViewedAnnouncments(ids: Set<String>) {
         context.dataStore.edit { pref ->

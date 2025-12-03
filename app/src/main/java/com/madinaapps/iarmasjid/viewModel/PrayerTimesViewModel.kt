@@ -93,7 +93,7 @@ class PrayerTimesViewModel @Inject constructor(
         }
     }
 
-    private fun setPrayerData(schedule: PrayerSchedule, cached: Boolean) {
+    fun setPrayerData(schedule: PrayerSchedule, cached: Boolean) {
         prayerDays.apply {
             clear()
             addAll(schedule.validDays())

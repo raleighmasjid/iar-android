@@ -1,22 +1,43 @@
 package com.madinaapps.iarmasjid.widget
 
+import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProvider
 import android.content.Context
-import androidx.glance.GlanceId
-import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.provideContent
-import androidx.glance.text.Text
+import android.widget.RemoteViews
+import com.madinaapps.iarmasjid.R
+import com.madinaapps.iarmasjid.data.DataStoreManager
+import com.madinaapps.iarmasjid.data.PrayerScheduleRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class AppWidget : GlanceAppWidget() {
+class AppWidget : AppWidgetProvider() {
 
-    override suspend fun provideGlance(context: Context, id: GlanceId) {
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        val scope = CoroutineScope(Dispatchers.IO)
 
-        // In this method, load data needed to render the AppWidget.
-        // Use `withContext` to switch to another thread for long running
-        // operations.
+        scope.launch {
+            val dataStoreManager = DataStoreManager(context)
+            val repository = PrayerScheduleRepository(dataStoreManager)
+            val schedule = repository.getCachedPrayerSchedule()
 
-        provideContent {
-            // create your AppWidget here
-            Text("Hello World")
+            val prayerName = schedule?.let {
+                val today = it.validDays().first()
+                today.currentPrayer()?.prayer?.toString() ?: "..."
+            } ?: "Loading..."
+
+            // There may be multiple widgets active, so update all of them
+            for (appWidgetId in appWidgetIds) {
+                updateAppWidget(context, appWidgetManager, appWidgetId, prayerName)
+            }
         }
     }
+}
+
+internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, prayerName: String) {
+    val views = RemoteViews(context.packageName, R.layout.prayer_widget_layout)
+    views.setTextViewText(R.id.widget_text, prayerName)
+
+    // Instruct the widget manager to update the widget
+    appWidgetManager.updateAppWidget(appWidgetId, views)
 }

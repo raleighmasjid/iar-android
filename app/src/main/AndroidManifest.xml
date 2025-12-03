@@ -38,8 +38,8 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".widget.WidgetReceiver"
-            android:exported="true">
+        <receiver android:name=".widget.AppWidget"
+            android:exported="true"  android:label="Prayer Times">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
