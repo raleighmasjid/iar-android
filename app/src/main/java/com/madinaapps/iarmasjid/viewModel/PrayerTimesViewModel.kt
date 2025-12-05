@@ -6,31 +6,20 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.data.PrayerScheduleRepository
-import com.madinaapps.iarmasjid.model.NotificationType
-import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.model.json.FridayPrayer
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.model.json.PrayerSchedule
-import com.madinaapps.iarmasjid.utils.NotificationController
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.madinaapps.iarmasjid.utils.isToday
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class PrayerTimesViewModel @Inject constructor(
         @ApplicationContext val context: Context,
-        private val dataStoreManager: DataStoreManager
+        dataStoreManager: DataStoreManager,
+        val onPrayerTimesUpdated: (() -> Unit)? = null
     ) : ViewModel() {
 
     var prayerDays = mutableStateListOf<PrayerDay>()
@@ -49,30 +38,10 @@ class PrayerTimesViewModel @Inject constructor(
 
     var loading by mutableStateOf(false)
 
-    var didResume: Boolean = false
-
-    private var notificationJob: Job? = null
     private val repository = PrayerScheduleRepository(dataStoreManager)
 
-    init {
-        viewModelScope.launch {
-            val flows = Prayer.entries.map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { } }.toMutableList()
-            flows.add(dataStoreManager.getNotificationType().map { })
-            val combinedFlows = combine(flows = flows) { it }
-            combinedFlows.drop(1).collect {
-                updateNotifications()
-            }
-        }
-    }
-
-    private fun updateNotifications() {
-        notificationJob?.cancel()
-        notificationJob = viewModelScope.launch {
-            delay(500)
-            val enabledPrayers = Prayer.entries.filter { dataStoreManager.getNotificationEnabled(it).first() }
-            val type: NotificationType = dataStoreManager.getNotificationType().first()
-            NotificationController.scheduleNotifications(context, prayerDays, enabledPrayers, type)
-        }
+    fun today(): PrayerDay? {
+        return prayerDays.firstOrNull { it.date.isToday() }
     }
 
     fun updateNextPrayer() {
@@ -104,24 +73,22 @@ class PrayerTimesViewModel @Inject constructor(
         }
         updateNextPrayer()
         if (!cached) {
-            updateNotifications()
+            onPrayerTimesUpdated?.invoke()
         }
     }
 
-    fun loadData() {
+    suspend fun loadData() {
         loading = true
-        viewModelScope.launch {
-            repository.getCachedPrayerSchedule()?.also { cache ->
-                setPrayerData(cache, true)
-            }
-
-            val scheduleResult = repository.fetchPrayerSchedule(forceRefresh = false)
-            scheduleResult.onSuccess {
-                setPrayerData(it, false)
-            }.onFailure {
-                error = true
-            }
-            loading = false
+        repository.getCachedPrayerSchedule()?.also { cache ->
+            setPrayerData(cache, true)
         }
+
+        val scheduleResult = repository.fetchPrayerSchedule(forceRefresh = false)
+        scheduleResult.onSuccess {
+            setPrayerData(it, false)
+        }.onFailure {
+            error = true
+        }
+        loading = false
     }
 }

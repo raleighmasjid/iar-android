@@ -15,13 +15,13 @@ import com.madinaapps.iarmasjid.utils.DayChangedBroadcastReceiver
 import com.madinaapps.iarmasjid.utils.NotificationController
 import com.madinaapps.iarmasjid.utils.RefreshNotificationsWorker
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
-import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
+import com.madinaapps.iarmasjid.viewModel.PrayerScreenViewModel
 import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val prayerTimesViewModel: PrayerTimesViewModel by viewModels()
+    private val prayerScreenViewModel: PrayerScreenViewModel by viewModels()
     private val newsViewModel: NewsViewModel by viewModels()
     private val qiblaViewModel: QiblaViewModel by viewModels()
 
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IARTheme {
-                Navigation(prayerTimesViewModel, newsViewModel, qiblaViewModel)
+                Navigation(prayerScreenViewModel, newsViewModel, qiblaViewModel)
             }
         }
     }
@@ -43,8 +43,8 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         RefreshNotificationsWorker.schedulePeriodic(applicationContext)
-        prayerTimesViewModel.loadData()
-        prayerTimesViewModel.didResume = true
+        prayerScreenViewModel.loadData()
+        prayerScreenViewModel.didResume = true
 
         newsViewModel.loadData(forceRefresh = false)
 
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
     private val dayChangedBroadcastReceiver = object : DayChangedBroadcastReceiver() {
 
         override fun onDayChanged() {
-            prayerTimesViewModel.loadData()
+            prayerScreenViewModel.loadData()
             newsViewModel.loadData(forceRefresh = false)
         }
     }

@@ -47,6 +47,10 @@ class Utils {
     }
 }
 
+fun Date.isToday(): Boolean {
+    return this.isSameDay(Date())
+}
+
 fun Date.isSameDay(comparison: Date): Boolean {
     val local1 = this.asLocalDate()
     val local2 = comparison.asLocalDate()

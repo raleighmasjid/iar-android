@@ -34,13 +34,13 @@ import com.madinaapps.iarmasjid.composable.web.WebContent
 import com.madinaapps.iarmasjid.composable.web.WebScreen
 import com.madinaapps.iarmasjid.composable.web.WebViewState
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
-import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
+import com.madinaapps.iarmasjid.viewModel.PrayerScreenViewModel
 import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation(
-    prayerTimesViewModel: PrayerTimesViewModel,
+    prayerScreenViewModel: PrayerScreenViewModel,
     newsViewModel: NewsViewModel,
     qiblaViewModel: QiblaViewModel
 ) {
@@ -94,7 +94,7 @@ fun Navigation(
             exitTransition = { NavTransition.defaultExitTransition }
         ) {
             composable<AppDestination.Prayer> {
-                PrayerScreen(prayerTimesViewModel, innerPadding)
+                PrayerScreen(prayerScreenViewModel, innerPadding)
             }
 
             composable<AppDestination.Qibla> {

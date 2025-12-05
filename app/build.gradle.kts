@@ -16,10 +16,10 @@ android {
 
     defaultConfig {
         applicationId = "com.madinaapps.iarmasjid"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 36
         versionCode = 244
-        versionName = "3.2.2"
+        versionName = "3.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

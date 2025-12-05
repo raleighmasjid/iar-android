@@ -15,6 +15,6 @@ data class Hijri(
     val monthName: String
 ) {
     fun fomatted(): String {
-        return "$monthName $day, $year h"
+        return "$monthName $day, ${year}h"
     }
 }

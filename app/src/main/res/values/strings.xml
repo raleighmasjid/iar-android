@@ -2,4 +2,5 @@
     <string name="app_name">IAR</string>
     <string name="widget_description">Prayer times for the current day</string>
     <string name="next_prayer_widget_description">Shows the next prayer time</string>
+    <string name="widget_loading_error">Unable to load prayer times, please launch the app to update.</string>
 </resources>
