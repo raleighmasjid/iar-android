@@ -5,11 +5,13 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.os.SystemClock
 import android.widget.RemoteViews
 import com.madinaapps.iarmasjid.MainActivity
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.data.DataStoreManager
+import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.utils.formatToTime
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +30,23 @@ class AppWidget: AppWidgetProvider() {
             for (appWidgetId in appWidgetIds) {
                 updateAppWidget(context, appWidgetManager, appWidgetId, viewModel)
             }
+        }
+    }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
+        val scope = CoroutineScope(Dispatchers.IO)
+        val dataStoreManager = DataStoreManager(context)
+        val viewModel = PrayerTimesViewModel(context, dataStoreManager)
+
+        // Rerun the update logic immediately with the new size data
+        scope.launch {
+            viewModel.loadData()
+            updateAppWidget(context, appWidgetManager, appWidgetId, viewModel)
         }
     }
 }
@@ -49,6 +68,11 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
     val upcoming = viewModel.upcoming
     val today = viewModel.today()
 
+    val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+    val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+    val isWideLayout = minWidth >= 290
+    //Log.d("IARDebug", "minWidth: $minWidth, isWideLayout: $isWideLayout")
+
     if (upcoming == null || today == null) {
         val views = RemoteViews(context.packageName, R.layout.widget_error)
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -56,13 +80,44 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
         val timeRemaining = upcoming.adhan.time - System.currentTimeMillis()
         val chronometerBase = SystemClock.elapsedRealtime() + timeRemaining
         val prayerName = upcoming.prayer.title()
-        val views = RemoteViews(context.packageName, R.layout.prayer_widget_layout)
+
+        val views = when {
+            isWideLayout -> RemoteViews(context.packageName, R.layout.prayer_widget_layout)
+            else -> RemoteViews(context.packageName, R.layout.small_prayer_widget_layout)
+        }
+
         views.setTextViewText(R.id.tv_date, today.hijri.fomatted())
         views.setTextViewText(R.id.tv_countdown_label, "$prayerName is in")
-        views.setTextViewText(R.id.tv_prayer_name, prayerName)
-        views.setTextViewText(R.id.tv_prayer_time, upcoming.adhan.formatToTime())
+
         views.setChronometer(R.id.chronometer_countdown, chronometerBase, null, true)
         views.setChronometerCountDown(R.id.chronometer_countdown, true)
+
+        if (isWideLayout) {
+            val prayerRows = listOf(
+                Triple(Prayer.FAJR, R.id.tv_fajr_time, R.id.tv_fajr_name),
+                Triple(Prayer.SHURUQ, R.id.tv_sunrise_time, R.id.tv_sunrise_name),
+                Triple(Prayer.DHUHR, R.id.tv_duhr_time, R.id.tv_duhr_name),
+                Triple(Prayer.ASR, R.id.tv_asr_time, R.id.tv_asr_name),
+                Triple(Prayer.MAGHRIB, R.id.tv_maghrib_time, R.id.tv_maghrib_name),
+                Triple(Prayer.ISHA, R.id.tv_isha_time, R.id.tv_isha_name)
+            )
+
+            prayerRows.forEach { (prayer, timeViewId, labelViewId) ->
+                val adhanTime = today.adhanTime(prayer)
+                views.setTextViewText(timeViewId, adhanTime.formatToTime())
+
+                val color = when {
+                    prayer == viewModel.current?.prayer -> 0xFF30DB5B.toInt() // current prayer
+                    adhanTime.time < System.currentTimeMillis() -> 0xCCFFFFFF.toInt() // past time
+                    else -> 0xFFFFFFFF.toInt() // upcoming
+                }
+                views.setTextColor(timeViewId, color)
+                views.setTextColor(labelViewId, color)
+            }
+        } else {
+            views.setTextViewText(R.id.tv_prayer_name, prayerName)
+            views.setTextViewText(R.id.tv_prayer_time, upcoming.adhan.formatToTime())
+        }
 
         views.setOnClickPendingIntent(
             R.id.widget_root,
