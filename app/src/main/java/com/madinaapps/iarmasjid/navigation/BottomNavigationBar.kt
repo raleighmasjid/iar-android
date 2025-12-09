@@ -43,13 +43,35 @@ fun BottomNavigationBar(navController: NavController, newsViewModel: NewsViewMod
                     unselectedTextColor = MaterialTheme.colorScheme.onSecondary
                 ),
                 onClick = {
-                    navController.navigate(tabItem.route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    if (!isSelected) {
+                        navController.navigate(tabItem.route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    } else {
+                        val currentDestination = navBackStackEntry?.destination
+                        var isAtRoot = currentDestination?.hasRoute(tabItem.route::class) == true
+                        if (tabItem == TabBarItem.NEWS) {
+                            // Check if the current destination's PARENT is the NewsTab graph
+                            val parentGraphRoute = currentDestination?.parent?.hasRoute(AppDestination.NewsTab::class) == true
+                            // The root is the start destination of the graph, which is AppDestination.News
+                            val isAtGraphStart = currentDestination?.hasRoute(AppDestination.News::class) == true
+                            isAtRoot = parentGraphRoute && isAtGraphStart
+                        }
+
+                        if (!isAtRoot) {
+                            navController.navigate(tabItem.route) {
+                                popUpTo(tabItem.route) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
                             }
                         }
-                        launchSingleTop = true
                     }
                 },
                 selected = isSelected
