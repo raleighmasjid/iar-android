@@ -11,9 +11,9 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.madinaapps.iarmasjid.MainActivity
+import com.madinaapps.iarmasjid.model.NotificationEvent
 import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.model.Prayer
-import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import java.time.Instant
 import java.util.UUID
@@ -22,6 +22,7 @@ class NotificationController {
     companion object {
         const val PRAYER_NAME_KEY = "PRAYER_NAME"
         const val NOTIFICATION_TYPE_KEY = "NOTIFICATION_TYPE"
+        const val WIDGET_NOTIFICATION_TYPE = "WIDGET"
 
         private const val MAX_NOTIFICATIONS: Int = 42
 
@@ -58,23 +59,37 @@ class NotificationController {
             notificationManager.createNotificationChannel(channel)
         }
 
-        private fun notificationTimes(prayerDays: List<PrayerDay>, enabledPrayers: List<Prayer>): List<PrayerTime> {
+        private fun notificationEvents(prayerDays: List<PrayerDay>, enabledPrayers: List<Prayer>, hasWidgets: Boolean): List<NotificationEvent> {
             val now = Instant.now()
-            return prayerDays
-                .flatMap { it.prayerTimes }
-                .filter { enabledPrayers.contains(it.prayer) && it.notificationTime() > now }
+            val events: MutableList<NotificationEvent> = mutableListOf()
+            events.addAll(
+                prayerDays
+                    .flatMap { it.prayerTimes }
+                    .map { NotificationEvent(it.prayer, it.adhan, it.iqamah, false) }
+            )
+            if (hasWidgets) {
+                events.addAll(
+                    prayerDays.map { NotificationEvent(Prayer.SHURUQ, it.adhanTime(Prayer.SHURUQ), null, true) }
+                )
+            }
+            return events.filter { it.notificationTime() > now && it.shouldSchedule(enabledPrayers, hasWidgets) }.sortedBy { it.notificationTime() }
         }
 
-        fun scheduleNotifications(context: Context, prayerDays: List<PrayerDay>, enabledPrayers: List<Prayer>, type: NotificationType) {
-            val prayerTimes = notificationTimes(prayerDays, enabledPrayers).take(MAX_NOTIFICATIONS)
+        fun scheduleNotifications(context: Context, type: NotificationType, prayerDays: List<PrayerDay>, enabledPrayers: List<Prayer>, widgetsEnabled: Boolean) {
+            val events = notificationEvents(prayerDays, enabledPrayers, widgetsEnabled).take(MAX_NOTIFICATIONS)
 
             for (index in 0..MAX_NOTIFICATIONS) {
-                val prayerTime = prayerTimes.getOrNull(index)
+                val event = events.getOrNull(index)
                 val intent = Intent(context, AlarmReceiver::class.java).apply {
-                    if (prayerTime != null) {
-                        this.putExtra(PRAYER_NAME_KEY, prayerTime.prayer.toString())
+                    if (event != null) {
+                        this.putExtra(PRAYER_NAME_KEY, event.prayer.toString())
 
-                        if (prayerTime.prayer == Prayer.SHURUQ && type != NotificationType.SILENT) {
+                        if (event.widgetOnly || !enabledPrayers.contains(event.prayer)) {
+                            this.putExtra(
+                                NOTIFICATION_TYPE_KEY,
+                                WIDGET_NOTIFICATION_TYPE
+                            )
+                        } else if (event.prayer == Prayer.SHURUQ && type != NotificationType.SILENT) {
                             this.putExtra(
                                 NOTIFICATION_TYPE_KEY,
                                 NotificationType.SHURUQ.toString()
@@ -89,10 +104,10 @@ class NotificationController {
                 }
                 val pendingIntent: PendingIntent = PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                if (prayerTime != null) {
+                if (event != null) {
                     val contentIntent = Intent(context, MainActivity::class.java)
                     val alarmIntent: PendingIntent = PendingIntent.getActivity(context, UUID.randomUUID().hashCode(), contentIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-                    alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(prayerTime.notificationTime().toEpochMilli(), alarmIntent), pendingIntent)
+                    alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(event.notificationTime().toEpochMilli(), alarmIntent), pendingIntent)
                 } else {
                     alarmManager.cancel(pendingIntent)
                 }

@@ -34,6 +34,8 @@ class PrayerScreenViewModel @Inject constructor(
 
     private var notificationJob: Job? = null
 
+    private val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
+
     init {
         viewModelScope.launch {
             val flows = Prayer.entries.map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { } }.toMutableList()
@@ -47,16 +49,17 @@ class PrayerScreenViewModel @Inject constructor(
 
     private fun prayerTimesDidUpdate() {
         updateNotifications()
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(
-            ComponentName(context, AppWidget::class.java)
-        )
-
+        val appWidgetIds = widgetIds()
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId, prayerTimes)
         }
     }
 
+    private fun widgetIds(): IntArray {
+        return appWidgetManager.getAppWidgetIds(
+            ComponentName(context, AppWidget::class.java)
+        )
+    }
 
     private fun updateNotifications() {
         notificationJob?.cancel()
@@ -64,7 +67,7 @@ class PrayerScreenViewModel @Inject constructor(
             delay(500)
             val enabledPrayers = Prayer.entries.filter { dataStoreManager.getNotificationEnabled(it).first() }
             val type: NotificationType = dataStoreManager.getNotificationType().first()
-            NotificationController.scheduleNotifications(context, prayerTimes.prayerDays, enabledPrayers, type)
+            NotificationController.scheduleNotifications(context, type, prayerTimes.prayerDays, enabledPrayers, widgetIds().isNotEmpty())
         }
     }
 

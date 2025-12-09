@@ -77,10 +77,14 @@ class PrayerTimesViewModel @Inject constructor(
         }
     }
 
-    suspend fun loadData() {
+    suspend fun loadData(cacheOnly: Boolean = false) {
         loading = true
         repository.getCachedPrayerSchedule()?.also { cache ->
             setPrayerData(cache, true)
+        }
+        if (cacheOnly) {
+            loading = false
+            return
         }
 
         val scheduleResult = repository.fetchPrayerSchedule(forceRefresh = false)

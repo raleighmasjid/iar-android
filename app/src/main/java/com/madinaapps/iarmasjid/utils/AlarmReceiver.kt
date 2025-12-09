@@ -2,7 +2,9 @@ package com.madinaapps.iarmasjid.utils
 
 import android.Manifest
 import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,9 +15,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.madinaapps.iarmasjid.MainActivity
 import com.madinaapps.iarmasjid.R
+import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.ui.theme.AppColors
+import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
+import com.madinaapps.iarmasjid.widget.AppWidget
+import com.madinaapps.iarmasjid.widget.updateAppWidget
+import kotlinx.coroutines.runBlocking
 import java.time.Instant
 import java.util.UUID
 
@@ -27,6 +34,26 @@ class AlarmReceiver: BroadcastReceiver() {
 
         val prayerName = intent.getStringExtra(NotificationController.PRAYER_NAME_KEY) ?: return
         val typeName = intent.getStringExtra(NotificationController.NOTIFICATION_TYPE_KEY) ?: return
+
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(context, AppWidget::class.java)
+        )
+        if (!appWidgetIds.isEmpty()) {
+            val dataStoreManager = DataStoreManager(context)
+            val viewModel = PrayerTimesViewModel(context, dataStoreManager)
+            runBlocking {
+                viewModel.loadData(cacheOnly = true)
+            }
+            for (appWidgetId in appWidgetIds) {
+                updateAppWidget(context, appWidgetManager, appWidgetId, viewModel)
+            }
+        }
+
+        if (typeName == NotificationController.WIDGET_NOTIFICATION_TYPE) {
+            return
+        }
+
         val prayer: Prayer
         val type: NotificationType
         try {

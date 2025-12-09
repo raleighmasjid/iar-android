@@ -1,5 +1,7 @@
 package com.madinaapps.iarmasjid.utils
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -15,6 +17,7 @@ import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.data.PrayerScheduleRepository
 import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.model.Prayer
+import com.madinaapps.iarmasjid.widget.AppWidget
 import kotlinx.coroutines.flow.first
 import java.util.concurrent.TimeUnit
 
@@ -60,13 +63,18 @@ class RefreshNotificationsWorker(private val appContext: Context, workerParams: 
     override suspend fun doWork(): Result {
         val dataStoreManager = DataStoreManager(appContext = appContext)
         val enabledPrayers = Prayer.entries.filter { dataStoreManager.getNotificationEnabled(it).first() }
+        val appWidgetManager = AppWidgetManager.getInstance(appContext)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(appContext, AppWidget::class.java)
+        )
+        val widgetsEnabled = appWidgetIds.isNotEmpty()
         val repository = PrayerScheduleRepository(dataStoreManager)
         val type: NotificationType = dataStoreManager.getNotificationType().first()
         val scheduleResult = repository.fetchPrayerSchedule(forceRefresh = false)
         if (scheduleResult.isSuccess) {
             val prayerDays = scheduleResult.getOrNull()?.validDays() ?: emptyList()
-            if (prayerDays.isNotEmpty() && enabledPrayers.isNotEmpty()) {
-                NotificationController.scheduleNotifications(appContext, prayerDays, enabledPrayers, type)
+            if (prayerDays.isNotEmpty() && (enabledPrayers.isNotEmpty() || widgetsEnabled)) {
+                NotificationController.scheduleNotifications(appContext, type, prayerDays, enabledPrayers, widgetsEnabled)
             }
             return Result.success()
         } else {

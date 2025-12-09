@@ -5,13 +5,17 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.widget.RemoteViews
 import com.madinaapps.iarmasjid.MainActivity
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.data.DataStoreManager
 import com.madinaapps.iarmasjid.model.Prayer
+import com.madinaapps.iarmasjid.utils.RefreshNotificationsWorker
 import com.madinaapps.iarmasjid.utils.formatToTime
 import com.madinaapps.iarmasjid.viewModel.PrayerTimesViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +34,7 @@ class AppWidget: AppWidgetProvider() {
             for (appWidgetId in appWidgetIds) {
                 updateAppWidget(context, appWidgetManager, appWidgetId, viewModel)
             }
+            RefreshNotificationsWorker.scheduleOneTime(context)
         }
     }
 
@@ -70,8 +75,8 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
 
     val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
     val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
-    val isWideLayout = minWidth >= 290
-    //Log.d("IARDebug", "minWidth: $minWidth, isWideLayout: $isWideLayout")
+    val isWideLayout = minWidth >= 300
+    Log.d("IARDebug", "minWidth: $minWidth, isWideLayout: $isWideLayout")
 
     if (upcoming == null || today == null) {
         val views = RemoteViews(context.packageName, R.layout.widget_error)
@@ -115,8 +120,28 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
                 views.setTextColor(labelViewId, color)
             }
         } else {
-            views.setTextViewText(R.id.tv_prayer_name, prayerName)
-            views.setTextViewText(R.id.tv_prayer_time, upcoming.adhan.formatToTime())
+            val prayerTime = upcoming.adhan.formatToTime()
+            val combinedText = "$prayerName  $prayerTime"
+
+            val density = context.resources.displayMetrics.density
+            val widgetWidthPx = (minWidth * density).toInt()
+            val paddingPx = (32 * density).toInt() // 16dp on each side
+            val availableWidth = widgetWidthPx - paddingPx
+
+            val paint = Paint().apply {
+                textSize = 16 * context.resources.displayMetrics.scaledDensity
+                typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+            }
+
+            val textWidth = paint.measureText(combinedText)
+
+            if (textWidth >= availableWidth) {
+                views.setTextViewText(R.id.tv_prayer_name, combinedText)
+                views.setTextViewText(R.id.tv_prayer_time, "")
+            } else {
+                views.setTextViewText(R.id.tv_prayer_name, prayerName)
+                views.setTextViewText(R.id.tv_prayer_time, prayerTime)
+            }
         }
 
         views.setOnClickPendingIntent(
