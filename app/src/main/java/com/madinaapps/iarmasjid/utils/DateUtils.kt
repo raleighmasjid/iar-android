@@ -1,5 +1,6 @@
 package com.madinaapps.iarmasjid.utils
 
+import android.content.Context
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -9,19 +10,11 @@ import java.util.TimeZone
 
 class Utils {
     companion object {
-        private fun timeFormatter(): SimpleDateFormat {
-            val timeFormatter = SimpleDateFormat("h:mm a", Locale.getDefault())
-            timeFormatter.timeZone = TimeZone.getTimeZone("America/New_York")
-            return timeFormatter
-        }
-
         private fun dayFormatter(): SimpleDateFormat {
             val timeFormatter = SimpleDateFormat("E, MMM d, y", Locale.getDefault())
             timeFormatter.timeZone = TimeZone.getTimeZone("America/New_York")
             return timeFormatter
         }
-
-        val timeFormatter = timeFormatter()
 
         val dayFormatter = dayFormatter()
 
@@ -61,8 +54,10 @@ fun Date.asLocalDate(): LocalDate {
     return this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 }
 
-fun Date.formatToTime(): String {
-    return Utils.timeFormatter.format(this)
+fun Date.formatToTime(context: Context): String {
+    val formatter = android.text.format.DateFormat.getTimeFormat(context)
+    formatter.timeZone = TimeZone.getTimeZone("America/New_York")
+    return formatter.format(this)
 }
 
 fun Date.formatToDay(): String {

@@ -76,18 +76,18 @@
                 android:paddingEnd="16dp">
 
                 <LinearLayout style="@style/PrayerRowStyle">
-                    <TextView style="@style/PrayerNameStyle" android:text="@string/fajrName" android:id="@+id/tv_fajr_name" />
-                    <TextView style="@style/PrayerTimeStyle" android:text="@string/placeholderTime" android:id="@+id/tv_fajr_time" />
+                    <TextView style="@style/PrayerNameStyle" android:text="" android:id="@+id/tv_fajr_label" />
+                    <TextView style="@style/PrayerTimeStyle" android:text="" android:id="@+id/tv_fajr_time" />
                 </LinearLayout>
 
                 <LinearLayout style="@style/PrayerRowStyle">
-                    <TextView style="@style/PrayerNameStyle" android:text="@string/sunriseName" android:id="@+id/tv_sunrise_name" />
-                    <TextView style="@style/PrayerTimeStyle" android:text="@string/placeholderTime" android:id="@+id/tv_sunrise_time" />
+                    <TextView style="@style/PrayerNameStyle" android:text="" android:id="@+id/tv_sunrise_label" />
+                    <TextView style="@style/PrayerTimeStyle" android:text="" android:id="@+id/tv_sunrise_time" />
                 </LinearLayout>
 
                 <LinearLayout style="@style/PrayerRowStyle">
-                    <TextView style="@style/PrayerNameStyle" android:text="@string/duhrName" android:id="@+id/tv_duhr_name" />
-                    <TextView style="@style/PrayerTimeStyle" android:text="@string/placeholderTime" android:id="@+id/tv_duhr_time" />
+                    <TextView style="@style/PrayerNameStyle" android:text="" android:id="@+id/tv_dhuhr_label" />
+                    <TextView style="@style/PrayerTimeStyle" android:text="" android:id="@+id/tv_dhuhr_time" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -106,18 +106,18 @@
                 android:paddingStart="16dp">
 
                 <LinearLayout style="@style/PrayerRowStyle">
-                    <TextView style="@style/PrayerNameStyle" android:text="@string/asrName" android:id="@+id/tv_asr_name" />
-                    <TextView style="@style/PrayerTimeStyle" android:text="@string/placeholderTime" android:id="@+id/tv_asr_time" />
+                    <TextView style="@style/PrayerNameStyle" android:text="" android:id="@+id/tv_asr_label" />
+                    <TextView style="@style/PrayerTimeStyle" android:text="" android:id="@+id/tv_asr_time" />
                 </LinearLayout>
 
                 <LinearLayout style="@style/PrayerRowStyle">
-                    <TextView style="@style/PrayerNameStyle" android:text="@string/maghribName" android:id="@+id/tv_maghrib_name" />
-                    <TextView style="@style/PrayerTimeStyle" android:text="@string/placeholderTime" android:id="@+id/tv_maghrib_time" />
+                    <TextView style="@style/PrayerNameStyle" android:text="" android:id="@+id/tv_maghrib_label" />
+                    <TextView style="@style/PrayerTimeStyle" android:text="" android:id="@+id/tv_maghrib_time" />
                 </LinearLayout>
 
                 <LinearLayout style="@style/PrayerRowStyle">
-                    <TextView style="@style/PrayerNameStyle" android:text="@string/ishaName" android:id="@+id/tv_isha_name" />
-                    <TextView style="@style/PrayerTimeStyle" android:text="@string/placeholderTime" android:id="@+id/tv_isha_time" />
+                    <TextView style="@style/PrayerNameStyle" android:text="" android:id="@+id/tv_isha_label" />
+                    <TextView style="@style/PrayerTimeStyle" android:text="" android:id="@+id/tv_isha_time" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

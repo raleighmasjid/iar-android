@@ -10,6 +10,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.util.TypedValue
 import android.widget.RemoteViews
 import com.madinaapps.iarmasjid.MainActivity
 import com.madinaapps.iarmasjid.R
@@ -99,17 +100,18 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
 
         if (isWideLayout) {
             val prayerRows = listOf(
-                Triple(Prayer.FAJR, R.id.tv_fajr_time, R.id.tv_fajr_name),
-                Triple(Prayer.SHURUQ, R.id.tv_sunrise_time, R.id.tv_sunrise_name),
-                Triple(Prayer.DHUHR, R.id.tv_duhr_time, R.id.tv_duhr_name),
-                Triple(Prayer.ASR, R.id.tv_asr_time, R.id.tv_asr_name),
-                Triple(Prayer.MAGHRIB, R.id.tv_maghrib_time, R.id.tv_maghrib_name),
-                Triple(Prayer.ISHA, R.id.tv_isha_time, R.id.tv_isha_name)
+                Triple(Prayer.FAJR, R.id.tv_fajr_time, R.id.tv_fajr_label),
+                Triple(Prayer.SHURUQ, R.id.tv_sunrise_time, R.id.tv_sunrise_label),
+                Triple(Prayer.DHUHR, R.id.tv_dhuhr_time, R.id.tv_dhuhr_label),
+                Triple(Prayer.ASR, R.id.tv_asr_time, R.id.tv_asr_label),
+                Triple(Prayer.MAGHRIB, R.id.tv_maghrib_time, R.id.tv_maghrib_label),
+                Triple(Prayer.ISHA, R.id.tv_isha_time, R.id.tv_isha_label)
             )
 
             prayerRows.forEach { (prayer, timeViewId, labelViewId) ->
                 val adhanTime = today.adhanTime(prayer)
-                views.setTextViewText(timeViewId, adhanTime.formatToTime())
+                views.setTextViewText(timeViewId, adhanTime.formatToTime(context))
+                views.setTextViewText(labelViewId, prayer.title())
 
                 val color = when {
                     prayer == viewModel.current?.prayer -> 0xFF30DB5B.toInt() // current prayer
@@ -120,7 +122,7 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
                 views.setTextColor(labelViewId, color)
             }
         } else {
-            val prayerTime = upcoming.adhan.formatToTime()
+            val prayerTime = upcoming.adhan.formatToTime(context)
             val combinedText = "$prayerName  $prayerTime"
 
             val density = context.resources.displayMetrics.density
@@ -129,7 +131,11 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
             val availableWidth = widgetWidthPx - paddingPx
 
             val paint = Paint().apply {
-                textSize = 16 * context.resources.displayMetrics.scaledDensity
+                textSize = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    16f,
+                    context.resources.displayMetrics
+                )
                 typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
             }
 

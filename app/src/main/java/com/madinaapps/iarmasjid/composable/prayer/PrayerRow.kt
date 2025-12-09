@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +42,8 @@ fun PrayerRow(prayer: String,
     val fontSize = 17.sp
     val verticalPadding = 16.dp
 
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .background(bgColor)
@@ -58,7 +61,7 @@ fun PrayerRow(prayer: String,
             )
 
             Text(
-                adhan?.formatToTime() ?: " ",
+                adhan?.formatToTime(context) ?: " ",
                 modifier = Modifier
                     .padding(vertical = verticalPadding)
                     .weight(1f, true),
@@ -69,7 +72,7 @@ fun PrayerRow(prayer: String,
             )
 
             Text(
-                iqamah?.formatToTime() ?: " ",
+                iqamah?.formatToTime(context) ?: " ",
                 modifier = Modifier
                     .padding(vertical = verticalPadding)
                     .weight(1f, true),
