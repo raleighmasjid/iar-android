@@ -18,7 +18,7 @@ android {
         applicationId = "com.madinaapps.iarmasjid"
         minSdk = 24
         targetSdk = 36
-        versionCode = 248
+        versionCode = 249
         versionName = "3.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
