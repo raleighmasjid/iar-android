@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativePaint
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
@@ -63,7 +64,7 @@ fun CompassArrow(angle: Double, percentCorrect: Float) {
                         val blurRadius = 50.dp
                         val offset = 48.dp
                         val paint = Paint()
-                        val frameworkPaint = paint.asFrameworkPaint()
+                        val frameworkPaint = paint.nativePaint
                         frameworkPaint.maskFilter = BlurMaskFilter(
                             blurRadius.toPx(),
                             BlurMaskFilter.Blur.NORMAL

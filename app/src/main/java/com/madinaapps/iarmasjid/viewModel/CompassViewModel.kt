@@ -20,7 +20,7 @@ import kotlin.math.min
 
 @HiltViewModel
 class CompassViewModel @Inject constructor(
-    @ApplicationContext val context: Context
+    @param:ApplicationContext val context: Context
 ) : ViewModel(), DeviceOrientationListener {
 
     var qibla: Qibla? = null

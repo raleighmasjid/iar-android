@@ -40,7 +40,7 @@ import javax.inject.Inject
 @SuppressLint("MissingPermission")
 @HiltViewModel
 class QiblaViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : ViewModel() {
     private var cacheTimestamp: Long? = null
     private val _locationState = MutableStateFlow<LocationState>(LocationState.Pending)

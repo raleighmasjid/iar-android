@@ -4,20 +4,21 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.Settings
+import androidx.core.net.toUri
 
 enum class NotificationType {
     SAADALGHAMIDI {
         override fun title() = "Saad Al-Ghamdi"
         override fun channelId() = namespacedId("SAAD_ALGHAMIDI")
-        override fun soundUri(context: Context): Uri? {
-            return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/saad_alghamdi")
+        override fun soundUri(context: Context): Uri {
+            return "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/saad_alghamdi".toUri()
         }
     },
     ALAFASY {
         override fun title() = "Mishary Alafasy"
         override fun channelId() = namespacedId("ALAFASY")
-        override fun soundUri(context: Context): Uri? {
-            return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/alafasy")
+        override fun soundUri(context: Context): Uri {
+            return "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/alafasy".toUri()
         }
     },
     SILENT {

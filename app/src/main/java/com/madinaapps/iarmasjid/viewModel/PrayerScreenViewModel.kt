@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PrayerScreenViewModel @Inject constructor(
-        @ApplicationContext val context: Context,
+        @param:ApplicationContext val context: Context,
         private val dataStoreManager: DataStoreManager
     ) : ViewModel() {
 
