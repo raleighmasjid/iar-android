@@ -11,7 +11,7 @@ plugins {
 
 android {
     namespace = "com.madinaapps.iarmasjid"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.madinaapps.iarmasjid"
@@ -67,7 +67,7 @@ android {
 dependencies {
     implementation(libs.work.ktx)
     implementation(libs.onesignal)
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core)
     implementation(libs.bundles.compose)
     implementation(libs.navigation.compose)
     implementation(libs.bundles.lifecycle)
