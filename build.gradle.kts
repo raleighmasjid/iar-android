@@ -1,16 +1,16 @@
 buildscript {
     dependencies {
         classpath(libs.hilt.android.gradle.plugin)
-        classpath(libs.maps.secrets.plugin)
     }
 }
 
 plugins {
-    alias(libs.plugins.android.application).apply(false)
-    alias(libs.plugins.android.library).apply(false)
-    alias(libs.plugins.ksp).apply(false)
-    alias(libs.plugins.jetbrains.kotlin.compose).apply(false)
-    alias(libs.plugins.kotlinX.serialization).apply(false)
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.jetbrains.kotlin.compose) apply false
+    alias(libs.plugins.kotlinx.serialization) apply false
+    alias(libs.plugins.maps.secrets) apply false
 }
 
 tasks.register<Delete>("clean") {

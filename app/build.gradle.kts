@@ -1,12 +1,10 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.dagger.hilt.android)
+    id("com.google.dagger.hilt.android")
     alias(libs.plugins.ksp)
     alias(libs.plugins.jetbrains.kotlin.compose)
-    alias(libs.plugins.kotlinX.serialization)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.maps.secrets)
 }
 
 android {
@@ -44,17 +42,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlin {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
+
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
     }
 
     packaging {
@@ -65,7 +62,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.work.ktx)
+    implementation(libs.work.runtime)
     implementation(libs.onesignal)
     implementation(libs.androidx.core)
     implementation(libs.bundles.compose)
@@ -84,9 +81,12 @@ dependencies {
     implementation(libs.adhan)
     implementation(libs.splashscreen)
     implementation(libs.google.maps)
+
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
+
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.espresso.core)
