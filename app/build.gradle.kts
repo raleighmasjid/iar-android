@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.bundles.lifecycle)
     implementation(libs.activity.compose)
-    implementation(libs.bundles.accompanist)
+    implementation(libs.accompanist.permissions)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.moshi)
     implementation(libs.datastore.preferences)

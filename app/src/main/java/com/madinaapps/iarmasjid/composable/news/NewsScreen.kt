@@ -1,15 +1,14 @@
 package com.madinaapps.iarmasjid.composable.news
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -19,20 +18,30 @@ import com.madinaapps.iarmasjid.navigation.AppDestination
 import com.madinaapps.iarmasjid.viewModel.NewsViewModel
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: PaddingValues, navigateToWeb: (AppDestination.Web) -> Unit) {
     val announcements = viewModel.announcements
-
-    val pullRefreshState = rememberPullRefreshState(viewModel.loading, {
-        viewModel.loadData(forceRefresh = true)
-    })
+    val state = rememberPullToRefreshState()
 
     LaunchedEffect(viewModel.announcements) {
         viewModel.didViewAnnouncements()
     }
 
-    Box(Modifier.pullRefresh(pullRefreshState)) {
+    PullToRefreshBox(
+        isRefreshing = viewModel.loading,
+        onRefresh = { viewModel.loadData(forceRefresh = true) },
+        state = state,
+        indicator = {
+            PullToRefreshDefaults.Indicator(
+                state = state,
+                isRefreshing = viewModel.loading,
+                modifier = Modifier.align(Alignment.TopCenter),
+                containerColor = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.surfaceContainer
+            )
+        }
+    ) {
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             if (announcements?.special != null) {
                 item {
@@ -52,12 +61,5 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel(), paddingValues: Paddin
                 AnnouncementsDivider()
             }
         }
-        PullRefreshIndicator(
-            refreshing = viewModel.loading,
-            state = pullRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter),
-            backgroundColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.surfaceContainer
-        )
     }
 }

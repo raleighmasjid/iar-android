@@ -9,7 +9,6 @@ compose = "1.12.0"
 navigation-compose = "2.10.0"
 lifecycle = "2.11.0"
 activity-compose = "1.13.0"
-accompanist = "0.36.0"
 accompanist-permissions = "0.37.3"
 retrofit = "3.0.0"
 moshi = "1.15.2"
@@ -52,10 +51,6 @@ navigation-compose = { module = "androidx.navigation:navigation-compose", versio
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime", version.ref = "lifecycle" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
@@ -78,7 +73,6 @@ splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "spla
 google-maps = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps" }
 
 [bundles]
-accompanist = ["accompanist-pager", "accompanist-pager-indicators", "accompanist-swiperefresh", "accompanist-navigation-animation", "accompanist-permissions"]
 compose = ["compose-ui", "compose-material", "compose-tooling-preview", "compose-runtime"]
 lifecycle = ["lifecycle-viewmodel", "lifecycle-runtime"]
 retrofit = ["retrofit", "retrofit-converter-moshi"]
