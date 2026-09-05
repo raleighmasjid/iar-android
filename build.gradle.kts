@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.compose) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.maps.secrets) apply false
+    alias(libs.plugins.google.services) apply false
 }
 
 tasks.register<Delete>("clean") {

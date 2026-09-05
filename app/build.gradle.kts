@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.maps.secrets)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -63,7 +64,6 @@ android {
 
 dependencies {
     implementation(libs.work.runtime)
-    implementation(libs.onesignal)
     implementation(libs.androidx.core)
     implementation(libs.bundles.compose)
     implementation(libs.navigation.compose)
@@ -81,6 +81,10 @@ dependencies {
     implementation(libs.adhan)
     implementation(libs.splashscreen)
     implementation(libs.google.maps)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.firebase.analytics)
 
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)

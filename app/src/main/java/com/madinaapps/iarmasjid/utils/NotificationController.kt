@@ -33,6 +33,18 @@ class NotificationController {
                 NotificationType.entries.forEach { type ->
                     createChannel(type.title(), type.channelId(), type.soundUri(context), context)
                 }
+                val channelId = "general_notifications" // Must match manifest value
+                val channelName = "General Notifications" // User-visible title in Settings
+                val channelDescription = "Important updates and announcements"
+                val importance = NotificationManager.IMPORTANCE_HIGH // Controls heads-up banner
+
+                val channel = NotificationChannel(channelId, channelName, importance).apply {
+                    description = channelDescription
+                }
+
+                val notificationManager =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.createNotificationChannel(channel)
             }
         }
 
