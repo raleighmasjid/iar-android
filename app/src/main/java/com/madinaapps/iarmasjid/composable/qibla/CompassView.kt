@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.batoulapps.adhan2.Coordinates
 import com.batoulapps.adhan2.Qibla
 import com.madinaapps.iarmasjid.R
@@ -54,9 +54,9 @@ fun CompassView(
     viewModel: CompassViewModel = hiltViewModel<CompassViewModel>()
 ) {
     val context = LocalContext.current
-    val currentOrientation by viewModel.currentOrientation.collectAsState()
-    val compassAngle by viewModel.compassAngle.collectAsState()
-    val percentCorrect by viewModel.percentCorrect.collectAsState()
+    val currentOrientation by viewModel.currentOrientation.collectAsStateWithLifecycle()
+    val compassAngle by viewModel.compassAngle.collectAsStateWithLifecycle()
+    val percentCorrect by viewModel.percentCorrect.collectAsStateWithLifecycle()
 
     var wasFacingQibla by remember { mutableStateOf(false) }
     val haptic = LocalHapticFeedback.current

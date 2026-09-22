@@ -16,4 +16,10 @@ class DataStoreModule {
     fun providesDataStoreManager(@ApplicationContext context: Context): DataStoreManager {
         return DataStoreManager(context)
     }
+
+    @Singleton
+    @Provides
+    fun providesPrayerScheduleRepository(dataStoreManager: DataStoreManager): PrayerScheduleRepository {
+        return PrayerScheduleRepository(dataStoreManager)
+    }
 }

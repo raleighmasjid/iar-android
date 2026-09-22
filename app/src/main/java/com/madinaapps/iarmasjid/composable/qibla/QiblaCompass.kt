@@ -12,11 +12,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -27,7 +27,7 @@ import com.madinaapps.iarmasjid.viewModel.QiblaViewModel
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun QiblaCompass(viewModel: QiblaViewModel) {
-    val locationState by viewModel.locationState.collectAsState()
+    val locationState by viewModel.locationState.collectAsStateWithLifecycle()
 
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(

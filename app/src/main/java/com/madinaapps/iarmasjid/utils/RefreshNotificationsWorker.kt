@@ -62,7 +62,8 @@ class RefreshNotificationsWorker(private val appContext: Context, workerParams: 
 
     override suspend fun doWork(): Result {
         val dataStoreManager = DataStoreManager(appContext = appContext)
-        val enabledPrayers = Prayer.entries.filter { dataStoreManager.getNotificationEnabled(it).first() }
+        val notificationsMap = dataStoreManager.getAllNotificationsEnabled().first()
+        val enabledPrayers = Prayer.entries.filter { notificationsMap[it] == true }
         val appWidgetManager = AppWidgetManager.getInstance(appContext)
         val appWidgetIds = appWidgetManager.getAppWidgetIds(
             ComponentName(appContext, AppWidget::class.java)

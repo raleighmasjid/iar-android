@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.batoulapps.adhan2.Coordinates
 import com.batoulapps.adhan2.Qibla
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun QiblaMap(viewModel: QiblaViewModel) {
-    val locationState by viewModel.locationState.collectAsState()
+    val locationState by viewModel.locationState.collectAsStateWithLifecycle()
 
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(

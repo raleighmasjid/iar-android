@@ -1,12 +1,8 @@
 package com.madinaapps.iarmasjid.viewModel
 
 import android.content.Context
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.madinaapps.iarmasjid.data.DataStoreManager
+import androidx.lifecycle.viewModelScope
 import com.madinaapps.iarmasjid.data.PrayerScheduleRepository
 import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.model.json.FridayPrayer
@@ -14,62 +10,58 @@ import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.model.json.PrayerSchedule
 import com.madinaapps.iarmasjid.utils.isToday
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PrayerTimesViewModel @Inject constructor(
-        @ApplicationContext val context: Context,
-        dataStoreManager: DataStoreManager,
-        val onPrayerTimesUpdated: (() -> Unit)? = null
-    ) : ViewModel() {
-
-    var prayerDays = mutableStateListOf<PrayerDay>()
-        private set
-
-    var fridayPrayers = mutableStateListOf<FridayPrayer>()
-        private set
-
-    var upcoming by mutableStateOf<PrayerTime?>(null)
-        private set
-
-    var current by mutableStateOf<PrayerTime?>(null)
-        private set
-
-    var error by mutableStateOf(false)
-
-    var loading by mutableStateOf(false)
-
-    private val repository = PrayerScheduleRepository(dataStoreManager)
-
+data class PrayerTimesUiState(
+    val prayerDays: List<PrayerDay> = emptyList(),
+    val fridayPrayers: List<FridayPrayer> = emptyList(),
+    val upcoming: PrayerTime? = null,
+    val current: PrayerTime? = null,
+    val error: Boolean = false,
+    val loading: Boolean = false
+) {
     fun today(): PrayerDay? {
         return prayerDays.firstOrNull { it.date.isToday() }
     }
+}
+
+class PrayerTimesViewModel @Inject constructor(
+        @ApplicationContext val context: Context,
+        private val repository: PrayerScheduleRepository,
+        val onPrayerTimesUpdated: (() -> Unit)? = null
+    ) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(PrayerTimesUiState())
+    val uiState: StateFlow<PrayerTimesUiState> = _uiState.asStateFlow()
+
+    // Compatibility properties for internal logic (should eventually be removed)
+    val prayerDays: List<PrayerDay> get() = _uiState.value.prayerDays
 
     fun updateNextPrayer() {
-        val newUpcoming = PrayerDay.upcomingPrayer(prayerDays)
-        if (newUpcoming != upcoming) {
-            upcoming = newUpcoming
-        }
-
+        val newUpcoming = PrayerDay.upcomingPrayer(_uiState.value.prayerDays)
+        
         var updatedCurrent: PrayerTime? = null
-        for (prayerDay in prayerDays) {
+        for (prayerDay in _uiState.value.prayerDays) {
             val newCurrent = prayerDay.currentPrayer()
             if (newCurrent != null) {
                 updatedCurrent = newCurrent
             }
         }
-        if (updatedCurrent != current) {
-            current = updatedCurrent
-        }
+
+        _uiState.update { it.copy(upcoming = newUpcoming, current = updatedCurrent) }
     }
 
-    fun setPrayerData(schedule: PrayerSchedule, cached: Boolean) {
-        prayerDays.apply {
-            clear()
-            addAll(schedule.validDays())
-        }
-        fridayPrayers.apply {
-            clear()
-            addAll(schedule.fridaySchedule)
+    private fun setPrayerData(schedule: PrayerSchedule, cached: Boolean) {
+        _uiState.update { 
+            it.copy(
+                prayerDays = schedule.validDays(),
+                fridayPrayers = schedule.fridaySchedule
+            )
         }
         updateNextPrayer()
         if (!cached) {
@@ -78,12 +70,14 @@ class PrayerTimesViewModel @Inject constructor(
     }
 
     suspend fun loadData(cacheOnly: Boolean = false) {
-        loading = true
+        _uiState.update { it.copy(loading = true) }
+        
         repository.getCachedPrayerSchedule()?.also { cache ->
             setPrayerData(cache, true)
         }
+        
         if (cacheOnly) {
-            loading = false
+            _uiState.update { it.copy(loading = false) }
             return
         }
 
@@ -91,8 +85,8 @@ class PrayerTimesViewModel @Inject constructor(
         scheduleResult.onSuccess {
             setPrayerData(it, false)
         }.onFailure {
-            error = true
+            _uiState.update { it.copy(error = true) }
         }
-        loading = false
+        _uiState.update { it.copy(loading = false) }
     }
 }

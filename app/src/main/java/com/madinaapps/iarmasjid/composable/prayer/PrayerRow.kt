@@ -11,7 +11,6 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -24,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.utils.formatToTime
-import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
 
 @Composable
@@ -33,10 +31,9 @@ fun PrayerRow(prayer: String,
               iqamah: Date?,
               current: Boolean,
               displayAlarm: Boolean,
-              notificationEnabled: StateFlow<Boolean>,
+              notificationEnabled: Boolean,
               toggleAction: (Boolean) -> Unit) {
     val bgColor: Color = if (current) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.background
-    val notification = notificationEnabled.collectAsState()
     val textColor: Color = if (current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
 
     val fontSize = 17.sp
@@ -83,7 +80,7 @@ fun PrayerRow(prayer: String,
             )
 
         IconToggleButton(
-            checked = notification.value,
+            checked = notificationEnabled,
             onCheckedChange = {
                 toggleAction(it)
             },
@@ -95,7 +92,7 @@ fun PrayerRow(prayer: String,
         ) {
             var buttonImage = R.drawable.ic_alarm_off
             var buttonTint = MaterialTheme.colorScheme.onTertiary
-            if (notification.value) {
+            if (notificationEnabled) {
                 buttonImage = R.drawable.ic_alarm_on
                 buttonTint = MaterialTheme.colorScheme.primary
             }

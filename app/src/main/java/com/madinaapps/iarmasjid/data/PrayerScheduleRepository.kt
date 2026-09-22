@@ -3,8 +3,11 @@ package com.madinaapps.iarmasjid.data
 import com.madinaapps.iarmasjid.api.ApiClient
 import com.madinaapps.iarmasjid.model.json.PrayerSchedule
 import java.util.Date
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PrayerScheduleRepository(private val dataStoreManager: DataStoreManager) {
+@Singleton
+class PrayerScheduleRepository @Inject constructor(private val dataStoreManager: DataStoreManager) {
 
     suspend fun getCachedPrayerSchedule(): PrayerSchedule? {
         val jsonString = dataStoreManager.getCachedPrayerScheduleData() ?: return null

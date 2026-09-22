@@ -41,7 +41,8 @@ class AlarmReceiver: BroadcastReceiver() {
         )
         if (!appWidgetIds.isEmpty()) {
             val dataStoreManager = DataStoreManager(context)
-            val viewModel = PrayerTimesViewModel(context, dataStoreManager)
+            val repository = com.madinaapps.iarmasjid.data.PrayerScheduleRepository(dataStoreManager)
+            val viewModel = PrayerTimesViewModel(context, repository)
             runBlocking {
                 viewModel.loadData(cacheOnly = true)
             }

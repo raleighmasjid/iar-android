@@ -42,22 +42,25 @@ import com.madinaapps.iarmasjid.utils.Countdown
 import com.madinaapps.iarmasjid.utils.pxToDp
 import com.madinaapps.iarmasjid.viewModel.PrayerScreenViewModel
 import kotlinx.coroutines.launch
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlin.math.max
 
 @Composable
 fun PrayerScreen(viewModel: PrayerScreenViewModel = hiltViewModel(), paddingValues: PaddingValues) {
-    val prayerPagerState = rememberPagerState(pageCount = { max(1, viewModel.prayerTimes.prayerDays.count()) })
+    val uiState by viewModel.prayerTimes.uiState.collectAsStateWithLifecycle()
+    
+    val prayerPagerState = rememberPagerState(pageCount = { max(1, uiState.prayerDays.count()) })
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
     var headerSize by remember { mutableIntStateOf(0) }
     var smallHeaderSize by remember { mutableIntStateOf(0) }
-    var timeRemaining by remember { mutableLongStateOf(viewModel.prayerTimes.upcoming?.timeRemaining() ?: -1) }
+    var timeRemaining by remember { mutableLongStateOf(uiState.upcoming?.timeRemaining() ?: -1) }
 
-    LaunchedEffect(viewModel.prayerTimes.upcoming) {
-        timeRemaining = viewModel.prayerTimes.upcoming?.timeRemaining() ?: -1
+    LaunchedEffect(uiState.upcoming) {
+        timeRemaining = uiState.upcoming?.timeRemaining() ?: -1
     }
 
-    Countdown(viewModel.prayerTimes.upcoming?.adhan?.time ?: 0) {
+    Countdown(uiState.upcoming?.adhan?.time ?: 0) {
         viewModel.prayerTimes.updateNextPrayer()
         timeRemaining = it
     }
@@ -121,9 +124,9 @@ fun PrayerScreen(viewModel: PrayerScreenViewModel = hiltViewModel(), paddingValu
                 }
             ) {
                 Box(modifier = Modifier.alpha(countdownOpacity())) {
-                    PrayerCountdown(viewModel.prayerTimes.upcoming, timeRemaining = timeRemaining)
+                    PrayerCountdown(uiState.upcoming, timeRemaining = timeRemaining)
                 }
-                if (viewModel.prayerTimes.loading) {
+                if (uiState.loading) {
                     Row(modifier = Modifier.padding(end = 30.dp).align(Alignment.TopEnd)) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(25.dp),
@@ -144,10 +147,10 @@ fun PrayerScreen(viewModel: PrayerScreenViewModel = hiltViewModel(), paddingValu
                     .background(MaterialTheme.colorScheme.surfaceContainer, shape = RoundedCornerShape(16.dp))
                     .clip(RoundedCornerShape(16.dp))
                 ) {
-                    PrayerHeader(viewModel.prayerTimes.prayerDays, prayerPagerState)
+                    PrayerHeader(uiState.prayerDays, prayerPagerState)
                     PrayerTimesView(
-                        prayerDays = viewModel.prayerTimes.prayerDays,
-                        current = viewModel.prayerTimes.current,
+                        prayerDays = uiState.prayerDays,
+                        current = uiState.current,
                         pagerState = prayerPagerState
                     )
                 }
@@ -155,17 +158,16 @@ fun PrayerScreen(viewModel: PrayerScreenViewModel = hiltViewModel(), paddingValu
 
             Spacer(modifier = Modifier.size(32.dp))
 
-            if (viewModel.prayerTimes.fridayPrayers.isNotEmpty()) {
-                FridayScheduleView(viewModel.prayerTimes.fridayPrayers)
+            if (uiState.fridayPrayers.isNotEmpty()) {
+                FridayScheduleView(uiState.fridayPrayers)
             }
 
-            if (viewModel.prayerTimes.error) {
+            if (uiState.error) {
                 PrayerTimesLoadError(
                     dismissAction = {
-                        viewModel.prayerTimes.error = false
+                        // handled externally if needed
                     },
                     retryAction = {
-                        viewModel.prayerTimes.error = false
                         viewModel.loadData()
                     })
             }
@@ -183,11 +185,10 @@ fun PrayerScreen(viewModel: PrayerScreenViewModel = hiltViewModel(), paddingValu
             )
             Box(modifier = Modifier.padding(paddingValues).onSizeChanged { smallHeaderSize = it.height }) {
                 SmallPrayerCountdown(
-                    upcoming = viewModel.prayerTimes.upcoming,
+                    upcoming = uiState.upcoming,
                     timeRemaining = timeRemaining
                 )
             }
         }
     }
-
 }

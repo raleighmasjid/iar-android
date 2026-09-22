@@ -19,16 +19,20 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PrayerScreenViewModel @Inject constructor(
         @param:ApplicationContext val context: Context,
-        private val dataStoreManager: DataStoreManager
+        private val dataStoreManager: DataStoreManager,
+        private val repository: com.madinaapps.iarmasjid.data.PrayerScheduleRepository
     ) : ViewModel() {
 
-    val prayerTimes: PrayerTimesViewModel = PrayerTimesViewModel(context, dataStoreManager, ::prayerTimesDidUpdate)
+    val prayerTimes: PrayerTimesViewModel = PrayerTimesViewModel(context, repository, ::prayerTimesDidUpdate)
 
     var didResume: Boolean = false
 
@@ -36,12 +40,28 @@ class PrayerScreenViewModel @Inject constructor(
 
     private val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
 
+    val notificationsEnabled: StateFlow<Map<Prayer, Boolean>> = dataStoreManager
+        .getAllNotificationsEnabled()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyMap()
+        )
+
+    val notificationType: StateFlow<NotificationType> = dataStoreManager
+        .getNotificationType()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = NotificationType.SAADALGHAMIDI
+        )
+
     init {
         viewModelScope.launch {
-            val flows = Prayer.entries.map { prayer -> dataStoreManager.getNotificationEnabled(prayer).map { } }.toMutableList()
-            flows.add(dataStoreManager.getNotificationType().map { })
-            val combinedFlows = combine(flows = flows) { it }
-            combinedFlows.drop(1).collect {
+            combine(
+                notificationsEnabled,
+                notificationType
+            ) { _, _ -> }.drop(1).collect {
                 updateNotifications()
             }
         }
@@ -65,8 +85,8 @@ class PrayerScreenViewModel @Inject constructor(
         notificationJob?.cancel()
         notificationJob = viewModelScope.launch {
             delay(500)
-            val enabledPrayers = Prayer.entries.filter { dataStoreManager.getNotificationEnabled(it).first() }
-            val type: NotificationType = dataStoreManager.getNotificationType().first()
+            val enabledPrayers = Prayer.entries.filter { notificationsEnabled.value[it] == true }
+            val type = notificationType.value
             NotificationController.scheduleNotifications(context, type, prayerTimes.prayerDays, enabledPrayers, widgetIds().isNotEmpty())
         }
     }

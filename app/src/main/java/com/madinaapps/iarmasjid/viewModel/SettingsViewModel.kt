@@ -22,23 +22,21 @@ class SettingsViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = NotificationType.SILENT
+            initialValue = NotificationType.SAADALGHAMIDI
+        )
+
+    val notificationsEnabled: StateFlow<Map<Prayer, Boolean>> = dataStoreManager
+        .getAllNotificationsEnabled()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyMap()
         )
 
     fun setNotificationType(type: NotificationType) {
         viewModelScope.launch {
             dataStoreManager.setNotificationType(type)
         }
-    }
-
-    fun getNotificationEnabled(prayer: Prayer): StateFlow<Boolean> {
-        return dataStoreManager
-            .getNotificationEnabled(prayer)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = false
-            )
     }
 
     fun setNotification(enabled: Boolean, prayer: Prayer) {

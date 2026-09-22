@@ -28,7 +28,8 @@ class AppWidget: AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val scope = CoroutineScope(Dispatchers.IO)
         val dataStoreManager = DataStoreManager(context)
-        val viewModel = PrayerTimesViewModel(context, dataStoreManager)
+        val repository = com.madinaapps.iarmasjid.data.PrayerScheduleRepository(dataStoreManager)
+        val viewModel = PrayerTimesViewModel(context, repository)
 
         scope.launch {
             viewModel.loadData()
@@ -47,7 +48,8 @@ class AppWidget: AppWidgetProvider() {
     ) {
         val scope = CoroutineScope(Dispatchers.IO)
         val dataStoreManager = DataStoreManager(context)
-        val viewModel = PrayerTimesViewModel(context, dataStoreManager)
+        val repository = com.madinaapps.iarmasjid.data.PrayerScheduleRepository(dataStoreManager)
+        val viewModel = PrayerTimesViewModel(context, repository)
 
         // Rerun the update logic immediately with the new size data
         scope.launch {
@@ -71,8 +73,8 @@ internal fun appLaunchIntent(context: Context, requestCode: Int): PendingIntent 
 }
 
 internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, viewModel: PrayerTimesViewModel) {
-    val upcoming = viewModel.upcoming
-    val today = viewModel.today()
+    val upcoming = viewModel.uiState.value.upcoming
+    val today = viewModel.uiState.value.today()
 
     val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
     val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
@@ -114,7 +116,7 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
                 views.setTextViewText(labelViewId, prayer.title())
 
                 val color = when {
-                    prayer == viewModel.current?.prayer -> 0xFF30DB5B.toInt() // current prayer
+                    prayer == viewModel.uiState.value.current?.prayer -> 0xFF30DB5B.toInt() // current prayer
                     adhanTime.time < System.currentTimeMillis() -> 0xCCFFFFFF.toInt() // past time
                     else -> 0xFFFFFFFF.toInt() // upcoming
                 }

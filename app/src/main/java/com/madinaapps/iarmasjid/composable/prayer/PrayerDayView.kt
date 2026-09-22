@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -25,7 +26,6 @@ import com.madinaapps.iarmasjid.model.Prayer
 import com.madinaapps.iarmasjid.model.PrayerTime
 import com.madinaapps.iarmasjid.model.json.PrayerDay
 import com.madinaapps.iarmasjid.viewModel.SettingsViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun PrayerRowDivider() {
@@ -44,6 +44,8 @@ fun PrayerDayView(prayerDay: PrayerDay?, current: PrayerTime?, showTaraweeh: Boo
 
     var pendingNotification by remember { mutableStateOf<Prayer?>(null) }
     var showPermissionAlert by remember { mutableStateOf(false) }
+
+    val notificationsEnabled by viewModel.notificationsEnabled.collectAsStateWithLifecycle()
 
     val permissionState: PermissionState = rememberPermissionState(
         permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
@@ -85,7 +87,7 @@ fun PrayerDayView(prayerDay: PrayerDay?, current: PrayerTime?, showTaraweeh: Boo
                 iqamah = prayerDay?.iqamahTime(prayer),
                 current = isCurrent(prayer),
                 displayAlarm = true,
-                notificationEnabled = viewModel.getNotificationEnabled(prayer),
+                notificationEnabled = notificationsEnabled[prayer] ?: false,
                 toggleAction = {
                     if (!it) {
                         viewModel.setNotification(false, prayer)
@@ -113,7 +115,7 @@ fun PrayerDayView(prayerDay: PrayerDay?, current: PrayerTime?, showTaraweeh: Boo
                     iqamah = prayerDay?.iqamah?.taraweeh,
                     current = false,
                     displayAlarm = false,
-                    notificationEnabled = MutableStateFlow(false),
+                    notificationEnabled = false,
                     toggleAction = { }
                 )
             }

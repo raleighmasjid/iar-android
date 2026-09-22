@@ -73,6 +73,14 @@ class DataStoreManager(appContext: Context) {
         }.distinctUntilChanged()
     }
 
+    fun getAllNotificationsEnabled(): Flow<Map<Prayer, Boolean>> {
+        return context.dataStore.data.map { pref ->
+            Prayer.entries.associateWith { prayer ->
+                pref[notificationKey(prayer = prayer)] ?: false
+            }
+        }.distinctUntilChanged()
+    }
+
     suspend fun getCachedPrayerScheduleData(): String? {
         val data = context.dataStore.data.firstOrNull() ?: return null
         return data[PRAYER_CACHE_KEY]

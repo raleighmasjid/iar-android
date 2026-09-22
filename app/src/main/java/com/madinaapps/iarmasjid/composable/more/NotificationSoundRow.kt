@@ -10,20 +10,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.madinaapps.iarmasjid.R
 import com.madinaapps.iarmasjid.model.NotificationType
 import com.madinaapps.iarmasjid.viewModel.SettingsViewModel
 
 @Composable
 fun NotificationSoundRow(viewModel: SettingsViewModel, expanded: Boolean, dismissAction: () -> Unit) {
-    val notificationType = viewModel.notificationType.collectAsState()
+    val notificationType by viewModel.notificationType.collectAsStateWithLifecycle()
 
     @Composable
     fun dropdownArrow(): Painter {
@@ -38,7 +39,7 @@ fun NotificationSoundRow(viewModel: SettingsViewModel, expanded: Boolean, dismis
         Spacer(modifier = Modifier.weight(1f))
         Box {
             Row {
-                Text(notificationType.value.title(),
+                Text(notificationType.title(),
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -63,7 +64,7 @@ fun NotificationSoundRow(viewModel: SettingsViewModel, expanded: Boolean, dismis
                             Text(notifType.title(), fontSize = 16.sp)
                         },
                         leadingIcon = {
-                            if (notificationType.value == notifType) {
+                            if (notificationType == notifType) {
                                 Icon(
                                     painterResource(id = R.drawable.check_24px),
                                     contentDescription = "Selected"
