@@ -1,11 +1,11 @@
 [versions]
-agp = "9.3.2"
-kotlin = "2.4.10"
+agp = "9.4.1"
+kotlin = "2.4.20"
 ksp = "2.3.10"
 work = "2.11.2"
 androidx-core = "1.19.0"
-compose = "1.12.0"
-navigation-compose = "2.10.0"
+compose = "1.12.1"
+navigation-compose = "2.10.1"
 lifecycle = "2.11.0"
 activity-compose = "1.13.0"
 accompanist-permissions = "0.37.3"
@@ -24,10 +24,10 @@ kotlinx-serialization = "1.11.0"
 play-services-location = "21.4.0"
 adhan = "0.0.7"
 splashscreen = "1.2.0"
-google-maps = "8.5.0"
+google-maps = "8.6.0"
 mapsecrets = "2.0.1"
 googleServices = "4.5.0"
-firebaseBom = "34.18.0"
+firebaseBom = "34.19.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -51,6 +51,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime", version.ref = "lifecycle" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
@@ -79,6 +80,6 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 
 [bundles]
 compose = ["compose-ui", "compose-material", "compose-tooling-preview", "compose-runtime"]
-lifecycle = ["lifecycle-viewmodel", "lifecycle-runtime"]
+lifecycle = ["lifecycle-viewmodel", "lifecycle-runtime", "lifecycle-runtime-compose"]
 retrofit = ["retrofit", "retrofit-converter-moshi"]
 moshi = ["moshi", "moshi-adapters"]
